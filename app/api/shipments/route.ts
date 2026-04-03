@@ -1,8 +1,8 @@
 import { createServiceRoleClient } from "@/lib/supabaseService";
 
 export async function GET() {
-  const supabase = createServiceRoleClient("order_schema");
-  const { data, error } = await supabase.from("orders").select("*");
+  const supabase = createServiceRoleClient("shipment_schema");
+  const { data, error } = await supabase.from("shipments").select("*");
 
   if (error) {
     return new Response(JSON.stringify({ error }), { status: 500 });
