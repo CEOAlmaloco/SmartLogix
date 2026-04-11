@@ -1,4 +1,4 @@
-import { createServiceRoleClient } from "@/lib/supabaseService";
+import { createServiceRoleClient } from "@/lib/supabase/supabaseService";
 
 export async function GET() {
   const supabase = createServiceRoleClient("order_schema");

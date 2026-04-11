@@ -2,8 +2,19 @@
 
 Plataforma inteligente para la gestión logística de eCommerce (Desarrollo Fullstack III).
 
-## Estructura prevista
+## Estructura del Proyecto
 
+```text
+app/api/{dominio}/       → Route Handlers (endpoints REST)
+app/dashboard/{dominio}/ → Páginas frontend por módulo
+lib/supabase/            → Clientes de Supabase (browser/server)
+lib/repositories/        → Repository Pattern por dominio
+lib/factories/           → Factory Method de clientes
+lib/handlers/            → Handlers/controladores por dominio
+lib/shared/              → Tipos y utilidades compartidas
+lib/circuit-breaker/     → Circuit Breaker para integraciones externas
+types/                   → Tipos TypeScript por dominio
+```
 
 ## Configuración local
 
@@ -67,7 +78,7 @@ tipo: descripción
 - `fix: resolve authentication error`
 - `docs: update git workflow`
 
-## 🔒 Protección de ramas
+## Protección de ramas
 ### `main`
 - Pull Request obligatorio
 - mínimo 1 aprobación
@@ -76,14 +87,14 @@ tipo: descripción
 ### `develop`
 - Pull Request obligatorio (recomendado)
   
-## 📋 Checklist de Pull Request
+## Checklist de Pull Request
 - Código probado
 - No rompe funcionalidades existentes
 - Sigue convención de commits
 - PR revisado por al menos 1 integrante
 - Rama actualizada con la base
   
-## 🎯 Buenas prácticas
+## Buenas prácticas
 - No trabajar directamente en ramas principales
 - Mantener PR pequeños y claros
 - Hacer commits descriptivos
