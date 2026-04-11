@@ -2,27 +2,90 @@
 
 Plataforma inteligente para la gestión logística de eCommerce (Desarrollo Fullstack III).
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Estructura prevista
 
-## Getting Started
 
-First, run the development server:
+## Configuración local
 
+
+## Estrategia de ramas
+
+El proyecto usa un flujo de trabajo ambientado en multiples entornos:
+
+### Ramas principales
+
+- `main`: Producción (codigo éstable)
+- `develop`: Desarrollo
+
+### Ramas de trabajo
+
+Todas las ramas de trabajo se crearan desde `develop`:
+- `feature/nombre-feature`: nuevas funcionalidades
+- `fix/nombre-bug`: corrección de errores
+- `chore/nombre-tarea`: tareas técnicas
+
+#### Ejemplos:
+
+- `feature/login`
+- `fix/register-error`
+- `chore/update-deps`
+
+## Flujo de Trabajo
+
+### 1. Desarrollo
 ```bash
-npm run dev
+git checkout develop
+git pull origin develop
+git checkout -b feature/nueva-funcionalidad
+```
+### 2. Integración
+- Pull Request: `feature/*` -> `develop`
+- Revisión obligatoria
+
+### 3. Producción
+- Pull Request: `develop` -> `main`
+- Código estable listo para deploy
+
+## Convención de Commits
+
+Se utilizaran **Conventional Commits** para estructurar los mensajes de Commit en Git. Esto permitira que sean faciles de leer para el Desarrollador.
+
+### Formato
+```bash
+tipo: descripción
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Tipos
+- `feat`: nueva funcionalidad
+- `fix`: corrección de bug
+- `chore`: tareas internas
+- `docs`: documentación
+- `refactor`: mejora de código
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+#### Ejemplos:
+- `feat: add login form`
+- `fix: resolve authentication error`
+- `docs: update git workflow`
 
-## Learn More
+## 🔒 Protección de ramas
+### `main`
+- Pull Request obligatorio
+- mínimo 1 aprobación
+- sin push directo
+  
+### `develop`
+- Pull Request obligatorio (recomendado)
+  
+## 📋 Checklist de Pull Request
+- Código probado
+- No rompe funcionalidades existentes
+- Sigue convención de commits
+- PR revisado por al menos 1 integrante
+- Rama actualizada con la base
+  
+## 🎯 Buenas prácticas
+- No trabajar directamente en ramas principales
+- Mantener PR pequeños y claros
+- Hacer commits descriptivos
+- Eliminar ramas después del merge
 
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Next.js GitHub repository](https://github.com/vercel/next.js)
-
-## Deploy on Vercel
-
-Deploy with the [Vercel Platform](https://vercel.com/new).
-
-See [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying).
