@@ -1,28 +1,12 @@
--- Tabla `pyme`
+/**
+SmartLogix — Paso 2 de 3: integridad tenant/pedido, updated_at, índices
+Ejecutar después de 01_schema_y_tablas.sql
 
-CREATE TABLE public.pyme (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  name TEXT NOT NULL,
-  owner_id UUID NOT NULL REFERENCES auth.users(id),
-  created_at TIMESTAMPTZ DEFAULT NOW()
-);
+Siguiente archivo: 03_rls_y_grants.sql
 
--- Tabla `pyme_user`
+Integridad cross-schema: el envío debe pertenecer al mismo tenant que el pedido.
+**/
 
-CREATE TABLE public.pyme_user (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  pyme_id UUID NOT NULL REFERENCES public.pyme(id),
-  user_id UUID NOT NULL REFERENCES auth.users(id),
-  role TEXT NOT NULL DEFAULT 'admin'
-    CHECK (role IN ('owner', 'admin')),
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  UNIQUE(pyme_id, user_id)
-);-- SmartLogix — Paso 2 de 3: integridad tenant/pedido, updated_at, índices
--- Ejecutar después de 01_schema_y_tablas.sql
---
--- Siguiente archivo: 03_rls_y_grants.sql
-
--- Integridad cross-schema: el envío debe pertenecer al mismo tenant que el pedido.
 CREATE OR REPLACE FUNCTION shipment_schema.enforce_shipment_order_same_pyme()
 RETURNS TRIGGER
 LANGUAGE plpgsql
@@ -30,7 +14,7 @@ AS $$
 BEGIN
   IF NOT EXISTS (
     SELECT 1
-    FROM order_schema."order" o
+    FROM order_schema.purchase_order o
     WHERE o.id = NEW.order_id
       AND o.pyme_id = NEW.pyme_id
   ) THEN
@@ -64,9 +48,9 @@ CREATE TRIGGER trg_item_updated
   FOR EACH ROW
   EXECUTE PROCEDURE public.set_updated_at();
 
-DROP TRIGGER IF EXISTS trg_order_updated ON order_schema."order";
+DROP TRIGGER IF EXISTS trg_order_updated ON order_schema.purchase_order;
 CREATE TRIGGER trg_order_updated
-  BEFORE UPDATE ON order_schema."order"
+  BEFORE UPDATE ON order_schema.purchase_order
   FOR EACH ROW
   EXECUTE PROCEDURE public.set_updated_at();
 
@@ -78,7 +62,9 @@ CREATE TRIGGER trg_shipment_updated
 
 -- Índices para consultas por tenant e integraciones
 CREATE INDEX IF NOT EXISTS idx_item_pyme_id ON inventory_schema.item (pyme_id);
-CREATE INDEX IF NOT EXISTS idx_order_pyme_id ON order_schema."order" (pyme_id);
-CREATE INDEX IF NOT EXISTS idx_order_status ON order_schema."order" (pyme_id, status);
+CREATE INDEX IF NOT EXISTS idx_order_pyme_id ON order_schema.purchase_order (pyme_id);
+CREATE INDEX IF NOT EXISTS idx_order_status ON order_schema.purchase_order (pyme_id, status);
 CREATE INDEX IF NOT EXISTS idx_shipment_pyme_id ON shipment_schema.shipment (pyme_id);
 CREATE INDEX IF NOT EXISTS idx_shipment_order_id ON shipment_schema.shipment (order_id);
+
+

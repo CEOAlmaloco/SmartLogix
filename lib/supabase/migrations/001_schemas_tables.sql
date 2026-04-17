@@ -1,14 +1,23 @@
--- SmartLogix — Paso 1 de 3: esquemas y tablas
--- Ejecutar en Supabase → SQL Editor (proyecto vacío o tras borrar objetos previos del mismo modelo)
---
--- Siguiente archivo: 02_triggers_indices_y_funciones.sql
---
--- Dashboard: Settings → API → Exposed schemas:
---   public, inventory_schema, order_schema, shipment_schema
---
--- Nota: "order" es palabra reservada en PostgreSQL → tabla order_schema."order"
+/**
+  SmartLogix — Paso 1 de 3: esquemas y tablas
+  Ejecutar en Supabase → SQL Editor (proyecto vacío o tras borrar objetos previos del mismo modelo)
 
--- ── Multi-tenant (public) ─────────────────────────────────────────────
+  Siguiente archivo: 02_triggers_indices_y_funciones.sql
+
+  Dashboard: Settings → API → Exposed schemas:
+    public, inventory_schema, order_schema, shipment_schema
+**/
+
+DROP TABLE IF EXISTS public.pyme CASCADE;
+DROP TABLE IF EXISTS public.pyme_user CASCADE;
+DROP TABLE IF EXISTS inventory_schema.item CASCADE;
+DROP TABLE IF EXISTS order_schema.purchase_order CASCADE;
+DROP TABLE IF EXISTS shipment_schema.shipment CASCADE;
+DROP SCHEMA IF EXISTS order_schema CASCADE;
+DROP SCHEMA IF EXISTS shipment_schema CASCADE;
+DROP SCHEMA IF EXISTS inventory_schema CASCADE;
+
+-- Multi Tenant
 CREATE TABLE public.pyme (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT NOT NULL,
@@ -26,7 +35,7 @@ CREATE TABLE public.pyme_user (
   UNIQUE (pyme_id, user_id)
 );
 
--- ── Inventario ────────────────────────────────────────────────────────
+-- Inventario
 CREATE SCHEMA IF NOT EXISTS inventory_schema;
 
 CREATE TABLE inventory_schema.item (
@@ -41,10 +50,10 @@ CREATE TABLE inventory_schema.item (
   UNIQUE (pyme_id, sku)
 );
 
--- ── Pedidos ───────────────────────────────────────────────────────────
+-- Pedidos
 CREATE SCHEMA IF NOT EXISTS order_schema;
 
-CREATE TABLE order_schema."order" (
+CREATE TABLE order_schema.purchase_order (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   pyme_id UUID NOT NULL REFERENCES public.pyme (id) ON DELETE CASCADE,
   customer_name TEXT NOT NULL,
@@ -57,13 +66,13 @@ CREATE TABLE order_schema."order" (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
--- ── Envíos ─────────────────────────────────────────────────────────────
+-- Envios
 CREATE SCHEMA IF NOT EXISTS shipment_schema;
 
 CREATE TABLE shipment_schema.shipment (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   pyme_id UUID NOT NULL REFERENCES public.pyme (id) ON DELETE CASCADE,
-  order_id UUID NOT NULL REFERENCES order_schema."order" (id) ON DELETE RESTRICT,
+  order_id UUID NOT NULL REFERENCES order_schema.purchase_order (id) ON DELETE RESTRICT,
   status TEXT NOT NULL DEFAULT 'pending'
     CHECK (status IN ('pending', 'in_transit', 'delivered', 'cancelled')),
   carrier TEXT,

@@ -1,12 +1,14 @@
--- SmartLogix — Paso 3 de 3: Row Level Security + permisos PostgREST
--- Ejecutar después de 02_triggers_indices_y_funciones.sql
---
--- Políticas multi-tenant: el usuario solo ve/gestiona datos de PYMEs donde es miembro.
+/**
+  SmartLogix — Paso 3 de 3: Row Level Security + permisos PostgREST
+  Ejecutar después de 02_triggers_indices_y_funciones.sql
+
+  Políticas multi-tenant: el usuario solo ve/gestiona datos de PYMEs donde es miembro.
+**/
 
 ALTER TABLE public.pyme ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.pyme_user ENABLE ROW LEVEL SECURITY;
 ALTER TABLE inventory_schema.item ENABLE ROW LEVEL SECURITY;
-ALTER TABLE order_schema."order" ENABLE ROW LEVEL SECURITY;
+ALTER TABLE order_schema.purchase_order ENABLE ROW LEVEL SECURITY;
 ALTER TABLE shipment_schema.shipment ENABLE ROW LEVEL SECURITY;
 
 -- pyme: el dueño ve y crea su registro
@@ -52,7 +54,7 @@ CREATE POLICY "item_by_membership"
   );
 
 CREATE POLICY "order_by_membership"
-  ON order_schema."order" FOR ALL
+  ON order_schema.purchase_order FOR ALL
   USING (
     pyme_id IN (
       SELECT pu.pyme_id FROM public.pyme_user pu WHERE pu.user_id = auth.uid()
@@ -77,7 +79,7 @@ CREATE POLICY "shipment_by_membership"
     )
   );
 
--- ── PostgREST (Supabase Data API): permisos sobre esquemas custom ─────
+-- PostgREST (Supabase Data API): permisos sobre esquemas custom 
 GRANT USAGE ON SCHEMA inventory_schema TO anon, authenticated, service_role;
 GRANT USAGE ON SCHEMA order_schema TO anon, authenticated, service_role;
 GRANT USAGE ON SCHEMA shipment_schema TO anon, authenticated, service_role;
