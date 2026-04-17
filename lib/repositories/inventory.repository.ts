@@ -1,5 +1,7 @@
 import { createServiceRoleClient } from "../supabase/supabaseService";
 
+// Repositorio de inventario: encapsula las consultas e inserciones al esquema inventory_schema usando service role.
+
 const SCHEMA = "inventory_schema";
 
 export const InventoryRepository = {

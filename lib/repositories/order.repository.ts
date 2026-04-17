@@ -30,5 +30,18 @@ export const OrderRepository = {
             .single()
         if (error) throw error;
         return data;
+    },
+    
+    async updateOrderStatus(id: string, pymeId: string, status:string){
+        const db = createServiceRoleClient(SCHEMA);
+        const {data, error} = await db
+            .from('purchase_order')
+            .update({status})
+            .eq('id', id)
+            .eq('pyme_id', pymeId)
+            .select()
+            .single()
+        if (error) throw error;
+        return data;
     }
 }
