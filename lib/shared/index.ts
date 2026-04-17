@@ -1,4 +1,4 @@
-// SY-9 
+// SY-12 Este archivo contiene tipos y funciones comunes para manejar respuestas de API.
 
 export type ApiSuccess<T> = {
   data: T;
