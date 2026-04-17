@@ -26,7 +26,7 @@ export async function getAuthenticatedUser(){
     const { data: { user }, error } = await supabase.auth.getUser();
 
     if (error || !user){
-        return {user: null, pymeId: null, response: errorResponse('UNAUTHORIZED', 'Usuario no autenticado', error, 401)}
+        return {user: null, pymeId: null, response: errorResponse('UNAUTHORIZED', 'Usuario no autenticado', 401)}
     }
 
     const { data: pymeUser, error: pymeError } = await supabase
@@ -36,7 +36,7 @@ export async function getAuthenticatedUser(){
         .single();
 
     if (pymeError || !pymeUser){
-        return {user: null, pymeId: null, response: errorResponse('UNAUTHORIZED', 'Usuario no autorizado', pymeError, 403)}
+        return {user: null, pymeId: null, response: errorResponse('UNAUTHORIZED', 'Usuario no autorizado', 403)}
     }
     
     return {user, pymeId: pymeUser.pyme_id, role: pymeUser.role, response: null}
