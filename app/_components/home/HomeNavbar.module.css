@@ -6,6 +6,18 @@
   backdrop-filter: blur(6px);
 }
 
+.logoWrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.logoImage {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
 .logoMark {
   display: inline-flex;
   width: 34px;
