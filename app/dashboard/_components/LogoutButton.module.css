@@ -1,0 +1,14 @@
+.logoutBtn {
+  --bs-btn-color: #fff7f7;
+  --bs-btn-bg: #c63d3d;
+  --bs-btn-border-color: #c63d3d;
+  --bs-btn-hover-color: #fff7f7;
+  --bs-btn-hover-bg: #af3030;
+  --bs-btn-hover-border-color: #af3030;
+  --bs-btn-active-color: #fff7f7;
+  --bs-btn-active-bg: #972626;
+  --bs-btn-active-border-color: #972626;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.86rem;
+}

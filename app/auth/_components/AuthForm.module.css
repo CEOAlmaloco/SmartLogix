@@ -1,0 +1,59 @@
+.form {
+  margin-top: 1.2rem;
+  display: grid;
+  gap: 0.78rem;
+}
+
+.passwordChecklist {
+  margin: -0.1rem 0 0;
+  padding: 0.7rem 0.75rem;
+  border-radius: 12px;
+  border: 1px solid rgb(223 126 48 / 16%);
+  background: rgb(255 248 236 / 85%);
+  list-style: none;
+  display: grid;
+  gap: 0.3rem;
+}
+
+.passwordChecklist li {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.8rem;
+}
+
+.passwordChecklist li span {
+  min-width: 14px;
+}
+
+.met {
+  color: #2f8f48;
+  font-weight: 700;
+}
+
+.unmet {
+  color: #8e572b;
+}
+
+.passwordReady {
+  margin: -0.1rem 0 0;
+  color: #2f8f48;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.switchAuth {
+  margin-top: 0.35rem;
+  text-align: center;
+}
+
+.switchAuth a {
+  color: #9a4f18;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.switchAuth a:hover {
+  text-decoration: underline;
+}

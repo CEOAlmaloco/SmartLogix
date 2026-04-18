@@ -1,0 +1,137 @@
+.wrapper {
+  position: relative;
+}
+
+.toggleBtn {
+  --bs-btn-color: #8f4b16;
+  --bs-btn-bg: rgb(254 237 211 / 92%);
+  --bs-btn-border-color: rgb(223 126 48 / 22%);
+  --bs-btn-hover-color: #8f4b16;
+  --bs-btn-hover-bg: #f5dcba;
+  --bs-btn-hover-border-color: rgb(223 126 48 / 32%);
+  border-radius: 10px;
+  width: 42px;
+  height: 40px;
+  padding: 0;
+  position: relative;
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.burger {
+  position: relative;
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: #8f4b16;
+}
+
+.burger::before,
+.burger::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 2px;
+  background: #8f4b16;
+  left: 0;
+}
+
+.burger::before {
+  top: -6px;
+}
+
+.burger::after {
+  top: 6px;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  background: rgb(38 21 10 / 40%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms ease;
+  z-index: 35;
+}
+
+.overlayOpen {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100dvh;
+  width: min(82vw, 300px);
+  border-left: 1px solid rgb(223 126 48 / 20%);
+  background: linear-gradient(180deg, rgb(255 252 247 / 98%) 0%, rgb(255 245 228 / 98%) 100%);
+  box-shadow: -16px 0 28px rgb(56 31 14 / 22%);
+  transform: translateX(108%);
+  transition: transform 250ms ease;
+  z-index: 40;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  padding: 0.9rem;
+}
+
+.drawerOpen {
+  transform: translateX(0);
+}
+
+.drawerHeader {
+  border-bottom: 1px solid rgb(223 126 48 / 18%);
+  padding-bottom: 0.65rem;
+}
+
+.drawerKicker {
+  margin: 0;
+  color: #8c4d1b;
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.drawerHeader h2 {
+  margin: 0.25rem 0 0;
+  color: #5f2a08;
+  font-size: 1.2rem;
+}
+
+.menuList {
+  margin-top: 0.8rem;
+  display: grid;
+  gap: 0.5rem;
+  align-content: start;
+}
+
+.drawerFooter {
+  border-top: 1px solid rgb(223 126 48 / 18%);
+  padding-top: 0.7rem;
+}
+
+.drawerLogout {
+  width: 100%;
+  text-align: left;
+}
+
+.menuLink {
+  --bs-btn-color: #8f4b16;
+  --bs-btn-bg: rgb(254 237 211 / 92%);
+  --bs-btn-border-color: rgb(223 126 48 / 22%);
+  --bs-btn-hover-color: #8f4b16;
+  --bs-btn-hover-bg: #f5dcba;
+  --bs-btn-hover-border-color: rgb(223 126 48 / 32%);
+  border-radius: 9px;
+  font-weight: 700;
+  font-size: 0.84rem;
+  text-align: left;
+  width: 100%;
+}

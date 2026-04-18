@@ -1,0 +1,57 @@
+.navbar {
+  border: 1px solid rgb(223 126 48 / 18%);
+  border-radius: 16px;
+  background: rgb(255 252 247 / 82%);
+  padding: 0.6rem;
+  backdrop-filter: blur(6px);
+}
+
+.logoMark {
+  display: inline-flex;
+  width: 34px;
+  height: 34px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #df7e30 0%, #f9b455 100%);
+  color: #fff9f0;
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.logoText {
+  color: #5d2a08;
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.btnPrimary {
+  --bs-btn-color: #fff8f0;
+  --bs-btn-bg: #df7e30;
+  --bs-btn-border-color: #df7e30;
+  --bs-btn-hover-color: #fff8f0;
+  --bs-btn-hover-bg: #c96d23;
+  --bs-btn-hover-border-color: #c96d23;
+  --bs-btn-active-color: #fff8f0;
+  --bs-btn-active-bg: #b8611c;
+  --bs-btn-active-border-color: #b8611c;
+  border-radius: 12px;
+  font-weight: 700;
+  padding: 0.62rem 0.92rem;
+}
+
+.btnGhost {
+  --bs-btn-color: #8f4b16;
+  --bs-btn-bg: rgb(254 237 211 / 92%);
+  --bs-btn-border-color: rgb(223 126 48 / 22%);
+  --bs-btn-hover-color: #8f4b16;
+  --bs-btn-hover-bg: #f5dcba;
+  --bs-btn-hover-border-color: rgb(223 126 48 / 32%);
+  --bs-btn-active-color: #8f4b16;
+  --bs-btn-active-bg: #f2d3aa;
+  --bs-btn-active-border-color: rgb(223 126 48 / 35%);
+  border-radius: 12px;
+  font-weight: 700;
+  padding: 0.62rem 0.92rem;
+}

@@ -1,0 +1,47 @@
+.ctaPanel {
+  margin-top: 2.8rem;
+  border-radius: 20px;
+  border: 1px solid rgb(223 126 48 / 18%);
+  background: linear-gradient(140deg, rgb(255 248 235 / 94%) 0%, rgb(255 242 220 / 94%) 100%);
+  box-shadow: 0 20px 44px rgb(223 126 48 / 10%);
+  padding: clamp(1rem, 2.4vw, 1.6rem);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ctaPanel h2 {
+  margin: 0;
+  color: #602b08;
+  font-size: clamp(1.3rem, 2.4vw, 1.8rem);
+}
+
+.ctaPanel p {
+  margin: 0.45rem 0 0;
+  color: #835025;
+  line-height: 1.58;
+  max-width: 58ch;
+}
+
+.ctaButton {
+  --bs-btn-color: #fff8f0;
+  --bs-btn-bg: #df7e30;
+  --bs-btn-border-color: #df7e30;
+  --bs-btn-hover-color: #fff8f0;
+  --bs-btn-hover-bg: #c96d23;
+  --bs-btn-hover-border-color: #c96d23;
+  --bs-btn-active-color: #fff8f0;
+  --bs-btn-active-bg: #b8611c;
+  --bs-btn-active-border-color: #b8611c;
+  border-radius: 12px;
+  font-weight: 700;
+  padding: 0.74rem 1.08rem;
+}
+
+@media (max-width: 992px) {
+  .ctaPanel {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

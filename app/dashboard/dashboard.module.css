@@ -1,0 +1,207 @@
+.page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 12% 6%, rgb(249 180 85 / 20%) 0%, rgb(249 180 85 / 0%) 30%),
+    radial-gradient(circle at 90% 96%, rgb(223 126 48 / 12%) 0%, rgb(223 126 48 / 0%) 34%),
+    linear-gradient(170deg, #fef1dd 0%, #feedd3 100%);
+}
+
+.topbar {
+  border-radius: 16px;
+  border: 1px solid rgb(223 126 48 / 16%);
+  background: rgb(255 252 248 / 82%);
+  padding: 0.9rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.kicker {
+  margin: 0;
+  color: #8f4b16;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.title {
+  margin: 0.25rem 0 0;
+  color: #5f2a08;
+  font-size: clamp(1.3rem, 2.2vw, 1.85rem);
+}
+
+.pymeName {
+  margin: 0.3rem 0 0;
+  color: #875127;
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+.navBtn {
+  --bs-btn-color: #8f4b16;
+  --bs-btn-bg: rgb(254 237 211 / 92%);
+  --bs-btn-border-color: rgb(223 126 48 / 22%);
+  --bs-btn-hover-color: #8f4b16;
+  --bs-btn-hover-bg: #f5dcba;
+  --bs-btn-hover-border-color: rgb(223 126 48 / 32%);
+  --bs-btn-active-color: #8f4b16;
+  --bs-btn-active-bg: #f2d3aa;
+  --bs-btn-active-border-color: rgb(223 126 48 / 35%);
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.86rem;
+}
+
+.desktopNav {
+  display: flex;
+}
+
+.mobileNav {
+  display: none;
+}
+
+.content {
+  margin-top: 1rem;
+}
+
+.panel {
+  border-radius: 16px;
+  border: 1px solid rgb(223 126 48 / 15%);
+  background: rgb(255 251 246 / 90%);
+  box-shadow: 0 18px 34px rgb(223 126 48 / 10%);
+  padding: 1rem;
+}
+
+.panel h2 {
+  margin: 0;
+  color: #602b08;
+  font-size: 1.2rem;
+}
+
+.panel p {
+  margin: 0.5rem 0 0;
+  color: #865127;
+  line-height: 1.56;
+}
+
+.statsGrid {
+  margin-top: 0.8rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+
+.statsGrid article {
+  border-radius: 12px;
+  border: 1px solid rgb(223 126 48 / 16%);
+  background: rgb(255 247 233 / 90%);
+  padding: 0.7rem;
+}
+
+.statsGrid strong {
+  color: #6f360e;
+  font-size: 1.2rem;
+}
+
+.statsGrid span {
+  display: block;
+  margin-top: 0.2rem;
+  color: #8f582d;
+  font-size: 0.8rem;
+}
+
+.moduleCard {
+  height: 100%;
+  border-radius: 14px;
+  border: 1px solid rgb(223 126 48 / 15%);
+  background: rgb(255 250 242 / 86%);
+  padding: 0.9rem;
+}
+
+.moduleCard h3 {
+  margin: 0;
+  color: #6a330d;
+  font-size: 0.98rem;
+}
+
+.moduleCard p {
+  margin: 0.46rem 0 0;
+  color: #845127;
+  font-size: 0.86rem;
+  line-height: 1.54;
+}
+
+.moduleLink {
+  margin-top: 0.7rem;
+}
+
+.tableWrap {
+  overflow: auto;
+  margin-top: 0.8rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table th,
+.table td {
+  text-align: left;
+  padding: 0.66rem;
+  font-size: 0.86rem;
+  border-bottom: 1px solid rgb(223 126 48 / 12%);
+}
+
+.table th {
+  color: #7a4319;
+  font-weight: 700;
+  background: rgb(255 246 230 / 85%);
+}
+
+.table td {
+  color: #67320d;
+}
+
+.badge {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 0.18rem 0.46rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.pending {
+  background: rgb(223 126 48 / 14%);
+  color: #95501f;
+}
+
+.approved {
+  background: rgb(66 164 99 / 15%);
+  color: #2b7f49;
+}
+
+.dispatched {
+  background: rgb(77 133 235 / 16%);
+  color: #365ea0;
+}
+
+.cancelled {
+  background: rgb(170 77 60 / 15%);
+  color: #954031;
+}
+
+@media (max-width: 992px) {
+  .desktopNav {
+    display: none !important;
+  }
+
+  .mobileNav {
+    display: block;
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+}

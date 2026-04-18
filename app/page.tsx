@@ -1,19 +1,20 @@
-"use client";
-
-import { getSupabaseBrowserClient } from "@/lib/supabase/supabaseClient";
-import { useEffect } from "react";
+import { HomeBenefits } from "./_components/home/HomeBenefits";
+import { HomeCTA } from "./_components/home/HomeCTA";
+import { HomeFlow } from "./_components/home/HomeFlow";
+import { HomeHero } from "./_components/home/HomeHero";
+import { HomeNavbar } from "./_components/home/HomeNavbar";
+import styles from "./page.module.css";
 
 export default function Home() {
-  useEffect(() => {
-    const test = async () => {
-      const supabase = getSupabaseBrowserClient();
-      const { data, error } = await supabase.from("orders").select("*");
-
-      console.log(data, error);
-    };
-
-    test();
-  }, []);
-
-  return <h1>SmartLogix conectado</h1>;
+  return (
+    <main className={styles.page}>
+      <section className="container py-4 py-lg-5">
+        <HomeNavbar />
+        <HomeHero />
+        <HomeBenefits />
+        <HomeFlow />
+        <HomeCTA />
+      </section>
+    </main>
+  );
 }

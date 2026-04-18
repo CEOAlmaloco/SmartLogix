@@ -1,0 +1,19 @@
+.message {
+  width: 100%;
+  border-radius: 12px;
+  padding: 0.68rem 0.78rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.success {
+  color: #315a1d;
+  background: rgb(109 190 64 / 16%);
+  border: 1px solid rgb(109 190 64 / 35%);
+}
+
+.error {
+  color: #8e3200;
+  background: rgb(223 126 48 / 16%);
+  border: 1px solid rgb(223 126 48 / 34%);
+}
