@@ -1,19 +1,10 @@
 import { AuthRepository } from '@/lib/repositories/auth.repository'
 import { PymeRepository } from '@/lib/repositories/pyme.repository'
+import { HandlerError } from '../shared'
 
 export type RegisterResult = {
   userId: string
   pymeId: string
-}
-
-class HandlerError extends Error {
-  code: string
-  status: number
-  constructor(code: string, message: string, status: number) {
-    super(message)
-    this.code = code
-    this.status = status
-  }
 }
 
 export async function registerHandler(email: string, password: string, pymeName: string): Promise<RegisterResult> {

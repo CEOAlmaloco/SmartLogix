@@ -1,4 +1,14 @@
-// SL-12 Este archivo contiene tipos y funciones comunes para manejar respuestas de API.
+// Este archivo contiene tipos, clases y funciones comunes para manejar respuestas de API.
+
+export class HandlerError extends Error {
+  code: string
+  status: number
+  constructor(code: string, message: string, status: number) {
+    super(message)
+    this.code = code
+    this.status = status
+  }
+}
 
 export type ApiSuccess<T> = {
   data: T;

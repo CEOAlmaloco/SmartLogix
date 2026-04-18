@@ -25,7 +25,14 @@ export const OrderRepository = {
         const db = createServiceRoleClient(SCHEMA);
         const {data, error} = await db
             .from('purchase_order')
-            .insert({...payload, pyme_id: pymeId, status: 'pending'})
+            .insert({
+                pyme_id: pymeId,
+                customer_name: payload.customerName,
+                customer_email: payload.customerEmail,
+                total: payload.total,
+                notes: payload.notes,
+                status: 'pending'
+            })
             .select()
             .single()
         if (error) throw error;
