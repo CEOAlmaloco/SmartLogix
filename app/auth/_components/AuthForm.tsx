@@ -63,13 +63,13 @@ export function AuthForm({ mode }: AuthFormProps) {
   const helperLink = useMemo(() => {
     if (isRegister) {
       return {
-        text: "Ya tienes cuenta? Inicia sesion",
+        text: "¿Ya tienes cuenta? Inicia sesión",
         href: "/auth/login",
       };
     }
 
     return {
-      text: "No tienes cuenta? Registrate",
+      text: "¿No tienes cuenta? Regístrate",
       href: "/auth/register",
     };
   }, [isRegister]);
@@ -81,12 +81,12 @@ export function AuthForm({ mode }: AuthFormProps) {
     const errors: FieldErrors = {};
 
     if (!emailRegex.test(emailValue)) {
-      errors.email = "Ingresa un email valido";
+      errors.email = "Ingresa un email válido";
     }
 
     if (!passwordRegex.test(passwordValue)) {
       errors.password =
-        "Minimo 8 caracteres, incluyendo mayuscula, minuscula y un numero";
+        "Mínimo 8 caracteres, incluyendo mayúscula, minúscula y un número";
     }
 
     if (pymeValue.length < 3 || pymeValue.length > 80) {
@@ -100,11 +100,11 @@ export function AuthForm({ mode }: AuthFormProps) {
     const errors: FieldErrors = {};
 
     if (!emailRegex.test(emailValue)) {
-      errors.email = "Ingresa un email valido";
+      errors.email = "Ingresa un email válido";
     }
 
     if (!passwordValue.trim()) {
-      errors.password = "Ingresa tu contrasena";
+      errors.password = "Ingresa tu contraseña";
     }
 
     return errors;
@@ -185,7 +185,7 @@ export function AuthForm({ mode }: AuthFormProps) {
           setFeedback({
             type: "success",
             message:
-              "Cuenta creada correctamente. Si no se inicia sesion automaticamente, confirma tu email e inicia sesion.",
+              "Cuenta creada correctamente. Si no se inicia sesión automáticamente, confirma tu email e inicia sesión.",
           });
           return;
         }
@@ -211,14 +211,14 @@ export function AuthForm({ mode }: AuthFormProps) {
       } | null;
 
       if (!loginResponse.ok) {
-        throw new Error(loginJson?.message || "Credenciales invalidas");
+        throw new Error(loginJson?.message || "Credenciales inválidas");
       }
 
       router.push("/dashboard");
       router.refresh();
     } catch (error: unknown) {
       const message =
-        error instanceof Error ? error.message : "Ocurrio un error inesperado al autenticar";
+        error instanceof Error ? error.message : "Ocurrió un error inesperado al autenticar";
 
       setFeedback({
         type: "error",
@@ -256,7 +256,7 @@ export function AuthForm({ mode }: AuthFormProps) {
           }
 
           setFieldStates((prev) => ({ ...prev, email: "error" }));
-          setFieldErrors((prev) => ({ ...prev, email: "Ingresa un email valido" }));
+          setFieldErrors((prev) => ({ ...prev, email: "Ingresa un email válido" }));
         }}
         state={fieldStates.email}
         error={fieldErrors.email}
@@ -266,7 +266,7 @@ export function AuthForm({ mode }: AuthFormProps) {
       <TextField
         id={`${mode}-password`}
         label="Contraseña"
-        placeholder="Minimo 8 caracteres"
+        placeholder="Mínimo 8 caracteres"
         type="password"
         autoComplete={isRegister ? "new-password" : "current-password"}
         value={password}
@@ -289,7 +289,7 @@ export function AuthForm({ mode }: AuthFormProps) {
               setFieldStates((prev) => ({ ...prev, password: "error" }));
               setFieldErrors((prev) => ({
                 ...prev,
-                password: "La contrasena aun no cumple todos los requisitos",
+                password: "La contraseña aún no cumple todos los requisitos",
               }));
             }
 
@@ -308,16 +308,16 @@ export function AuthForm({ mode }: AuthFormProps) {
         <>
           <ul className={styles.passwordChecklist}>
             <li className={passwordChecks.minLength ? styles.met : styles.unmet}>
-              <span aria-hidden>{passwordChecks.minLength ? "✓" : "○"}</span> Minimo 8 caracteres
+              <span aria-hidden>{passwordChecks.minLength ? "✓" : "○"}</span> Mínimo 8 caracteres
             </li>
             <li className={passwordChecks.hasUppercase ? styles.met : styles.unmet}>
-              <span aria-hidden>{passwordChecks.hasUppercase ? "✓" : "○"}</span> Al menos una mayuscula
+              <span aria-hidden>{passwordChecks.hasUppercase ? "✓" : "○"}</span> Al menos una mayúscula
             </li>
             <li className={passwordChecks.hasLowercase ? styles.met : styles.unmet}>
-              <span aria-hidden>{passwordChecks.hasLowercase ? "✓" : "○"}</span> Al menos una minuscula
+              <span aria-hidden>{passwordChecks.hasLowercase ? "✓" : "○"}</span> Al menos una minúscula
             </li>
             <li className={passwordChecks.hasNumber ? styles.met : styles.unmet}>
-              <span aria-hidden>{passwordChecks.hasNumber ? "✓" : "○"}</span> Al menos un numero
+              <span aria-hidden>{passwordChecks.hasNumber ? "✓" : "○"}</span> Al menos un número
             </li>
           </ul>
 
@@ -356,7 +356,7 @@ export function AuthForm({ mode }: AuthFormProps) {
             required
           />
           {password && passwordChecksCompleted ? (
-            <p className={styles.passwordReady}>Contrasena lista para crear tu cuenta.</p>
+            <p className={styles.passwordReady}>Contraseña lista para crear tu cuenta.</p>
           ) : null}
         </>
       ) : null}
@@ -364,7 +364,7 @@ export function AuthForm({ mode }: AuthFormProps) {
       {feedback ? <StatusMessage variant={feedback.type} message={feedback.message} /> : null}
 
       <Button type="submit" loading={loading}>
-        {isRegister ? "Crear cuenta" : "Iniciar sesion"}
+        {isRegister ? "Crear cuenta" : "Iniciar sesión"}
       </Button>
 
       <p className={styles.switchAuth}>

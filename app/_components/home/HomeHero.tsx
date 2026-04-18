@@ -5,10 +5,10 @@ export function HomeHero() {
   return (
     <section className="row g-4 g-xl-5 align-items-center mt-2">
       <div className="col-12 col-xl-7">
-        <span className={styles.kicker}>Gestion logistica para eCommerce</span>
-        <h1 className={styles.title}>Mantiene tus pedidos fluyendo, incluso en dias de alta demanda.</h1>
+        <span className={styles.kicker}>Gestión logística para eCommerce</span>
+        <h1 className={styles.title}>Mantiene tus pedidos fluyendo, incluso en días de alta demanda.</h1>
         <p className={styles.subtitle}>
-          SmartLogix te ayuda a reducir retrasos, evitar quiebres de stock y coordinar envios
+          SmartLogix te ayuda a reducir retrasos, evitar quiebres de stock y coordinar envíos
           con visibilidad completa para tu equipo y tus clientes.
         </p>
 
@@ -47,7 +47,7 @@ export function HomeHero() {
           </div>
           <div className={styles.timeline}>
             <div>
-              <span>Preparacion</span>
+              <span>Preparación</span>
               <em>112</em>
             </div>
             <div>

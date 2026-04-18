@@ -30,7 +30,7 @@ export function MobileMenu({ pymeName }: MobileMenuProps) {
       <button
         type="button"
         className={`btn ${styles.toggleBtn}`}
-        aria-label="Abrir menu de navegacion"
+        aria-label="Abrir menú de navegación"
         aria-expanded={open}
         onClick={() => setOpen((current) => !current)}
       >
@@ -41,13 +41,13 @@ export function MobileMenu({ pymeName }: MobileMenuProps) {
         type="button"
         className={`${styles.overlay} ${open ? styles.overlayOpen : ""}`}
         aria-hidden={!open}
-        aria-label="Cerrar menu"
+        aria-label="Cerrar menú"
         onClick={closeMenu}
       />
 
       <aside className={`${styles.drawer} ${open ? styles.drawerOpen : ""}`}>
         <div className={styles.drawerHeader}>
-          <p className={styles.drawerKicker}>Menu</p>
+          <p className={styles.drawerKicker}>Menú</p>
           <h2>{pymeName}</h2>
         </div>
 

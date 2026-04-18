@@ -38,7 +38,7 @@ export function LogoutButton({ className }: LogoutButtonProps) {
       onClick={handleLogout}
       disabled={loading}
     >
-      {loading ? "Cerrando..." : "Cerrar sesion"}
+      {loading ? "Cerrando..." : "Cerrar sesión"}
     </button>
   );
 }

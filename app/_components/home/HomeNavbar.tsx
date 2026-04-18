@@ -10,7 +10,7 @@ export function HomeNavbar() {
 
       <div className="d-flex gap-2">
         <Link href="/auth/login" className={`btn ${styles.btnGhost}`}>
-          Iniciar sesion
+          Iniciar sesión
         </Link>
         <Link href="/auth/register" className={`btn ${styles.btnPrimary}`}>
           Crear cuenta

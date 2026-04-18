@@ -68,10 +68,10 @@ export default function DashboardPage() {
   return (
     <div className="d-grid gap-3">
       <section className={styles.panel}>
-        <h2>Overview de operacion</h2>
+        <h2>Overview de operación</h2>
         <p>
-          Desde aqui ves el pulso del negocio y navegas a cada modulo. Inventory y Shipments
-          quedaran activos cuando sus servicios esten implementados.
+          Desde aquí ves el pulso del negocio y navegas a cada módulo. Inventory y Shipments
+          quedarán activos cuando sus servicios estén implementados.
         </p>
 
         {error ? <p>{error}</p> : null}
@@ -96,7 +96,7 @@ export default function DashboardPage() {
         <div className="col-12 col-md-4">
           <article className={styles.moduleCard}>
             <h3>Orders</h3>
-            <p>Modulo disponible hoy para listar, crear y actualizar estado de pedidos.</p>
+            <p>Módulo disponible hoy para listar, crear y actualizar estado de pedidos.</p>
             <div className={styles.moduleLink}>
               <Link href="/dashboard/order" className="btn btn-sm btn-outline-secondary">
                 Ir a Orders
@@ -108,7 +108,7 @@ export default function DashboardPage() {
         <div className="col-12 col-md-4">
           <article className={styles.moduleCard}>
             <h3>Inventory</h3>
-            <p>Proximamente: este modulo se activara cuando el backend de inventario este listo.</p>
+            <p>Próximamente: este módulo se activará cuando el backend de inventario esté listo.</p>
             <div className={styles.moduleLink}>
               <Link href="/dashboard/inventory" className="btn btn-sm btn-outline-secondary">
                 Ver estado
@@ -120,7 +120,7 @@ export default function DashboardPage() {
         <div className="col-12 col-md-4">
           <article className={styles.moduleCard}>
             <h3>Shipments</h3>
-            <p>Proximamente: este modulo se activara cuando el backend de envios este listo.</p>
+            <p>Próximamente: este módulo se activará cuando el backend de envíos esté listo.</p>
             <div className={styles.moduleLink}>
               <Link href="/dashboard/shipment" className="btn btn-sm btn-outline-secondary">
                 Ver estado

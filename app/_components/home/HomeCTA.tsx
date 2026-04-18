@@ -5,7 +5,7 @@ export function HomeCTA() {
   return (
     <section className={styles.ctaPanel}>
       <div>
-        <h2>Tu logistica puede ser una ventaja competitiva</h2>
+        <h2>Tu logística puede ser una ventaja competitiva</h2>
         <p>
           Comienza hoy y organiza tus operaciones con una plataforma diseñada para crecer junto a tu negocio.
         </p>

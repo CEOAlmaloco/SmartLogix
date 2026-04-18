@@ -5,8 +5,8 @@ export default function ShipmentDashboardPage() {
 		<section className={styles.panel}>
 			<h2>Shipments</h2>
 			<p>
-				Este modulo quedara habilitado cuando el backend de envios este implementado por tu equipo.
-				Desde el overview ya puedes entrar aqui como placeholder funcional.
+				Este módulo quedará habilitado cuando el backend de envíos esté implementado por Alex Ampuero.
+				Desde el overview ya puedes entrar aquí como placeholder funcional.
 			</p>
 		</section>
 	);

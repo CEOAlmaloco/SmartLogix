@@ -15,15 +15,15 @@ export function AuthPageLayout({ title, subtitle, helperText, children }: AuthPa
       <section className={styles.brandPanel}>
         <div className={styles.brandContent}>
           <span className={styles.badge}>SmartLogix Platform</span>
-          <h1>Logistica inteligente para eCommerce</h1>
+          <h1>Logística inteligente para eCommerce</h1>
           <p>
-            Plataforma para inventario, pedidos y envios con arquitectura desacoplada,
+            Plataforma para inventario, pedidos y envíos con arquitectura desacoplada,
             escalable y segura para PYMEs.
           </p>
           <ul>
             <li>Inventario sincronizado en tiempo real</li>
             <li>Trazabilidad completa de pedidos</li>
-            <li>Coordinacion de envios y transportistas</li>
+            <li>Coordinación de envíos y transportistas</li>
           </ul>
         </div>
       </section>

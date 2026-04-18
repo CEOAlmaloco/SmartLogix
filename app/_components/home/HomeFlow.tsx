@@ -4,7 +4,7 @@ export function HomeFlow() {
   return (
     <section className={styles.section}>
       <header className={styles.header}>
-        <h2>Como funciona SmartLogix</h2>
+        <h2>Cómo funciona SmartLogix</h2>
         <p>Un flujo simple para mantener control logístico sin tareas manuales repetitivas.</p>
       </header>
 
@@ -13,7 +13,7 @@ export function HomeFlow() {
           <article className={styles.stepCard}>
             <span>01</span>
             <h3>Recibe y valida</h3>
-            <p>El pedido ingresa y se valida automaticamente para evitar errores de proceso.</p>
+            <p>El pedido ingresa y se valida automáticamente para evitar errores de proceso.</p>
           </article>
         </div>
         <div className="col-12 col-lg-4">
@@ -27,7 +27,7 @@ export function HomeFlow() {
           <article className={styles.stepCard}>
             <span>03</span>
             <h3>Despacha y monitorea</h3>
-            <p>Tu equipo sigue estados de envio y responde rapido ante incidencias.</p>
+            <p>Tu equipo sigue estados de envío y responde rápido ante incidencias.</p>
           </article>
         </div>
       </div>

@@ -5,8 +5,7 @@ export default function InventoryDashboardPage() {
 		<section className={styles.panel}>
 			<h2>Inventory</h2>
 			<p>
-				Este modulo quedara habilitado cuando el backend de inventario este implementado por tu
-				equipo. Desde el overview ya puedes entrar aqui como placeholder funcional.
+				Este módulo quedará habilitado cuando el backend de inventario esté implementado por Gabriel Aguila. Desde el overview ya puedes entrar aquí como placeholder funcional.
 			</p>
 		</section>
 	);

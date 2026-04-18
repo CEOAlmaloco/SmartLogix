@@ -4,9 +4,9 @@ export function HomeBenefits() {
   return (
     <section className={styles.section}>
       <header className={styles.header}>
-        <h2>Ventajas para tu operacion</h2>
+        <h2>Ventajas para tu operación</h2>
         <p>
-          Mejora la eficiencia diaria de tu equipo y entrega una experiencia mas confiable a tus clientes.
+          Mejora la eficiencia diaria de tu equipo y entrega una experiencia más confiable a tus clientes.
         </p>
       </header>
 
@@ -25,8 +25,8 @@ export function HomeBenefits() {
         </div>
         <div className="col-12 col-md-6 col-xl-3">
           <article className={styles.card}>
-            <h3>Despacho rapido</h3>
-            <p>Priorizacion y flujo de preparacion para cumplir fechas prometidas.</p>
+            <h3>Despacho rápido</h3>
+            <p>Priorización y flujo de preparación para cumplir fechas prometidas.</p>
           </article>
         </div>
         <div className="col-12 col-md-6 col-xl-3">

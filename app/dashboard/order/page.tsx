@@ -70,7 +70,7 @@ export default function OrderDashboardPage() {
 	return (
 		<section className={styles.panel}>
 			<h2>{title}</h2>
-			<p>Modulo conectado al backend de orders. Aqui ves el listado actual de pedidos.</p>
+			<p>Módulo conectado al backend de orders. Aquí ves el listado actual de pedidos.</p>
 			{error ? <p>{error}</p> : null}
 
 			<div className={styles.tableWrap}>
@@ -100,7 +100,7 @@ export default function OrderDashboardPage() {
 						))}
 						{!loading && orders.length === 0 ? (
 							<tr>
-								<td colSpan={4}>No hay pedidos registrados todavia.</td>
+								<td colSpan={4}>No hay pedidos registrados todavía.</td>
 							</tr>
 						) : null}
 					</tbody>

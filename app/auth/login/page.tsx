@@ -6,7 +6,7 @@ export default function LoginPage() {
 		<AuthPageLayout
 			title="Bienvenido nuevamente"
 			subtitle="Acceso"
-			helperText="Inicia sesion para operar tu flujo logistica en una sola plataforma."
+			helperText="Inicia sesión para operar tu flujo logístico en una sola plataforma."
 		>
 			<AuthForm mode="login" />
 		</AuthPageLayout>

@@ -16,7 +16,7 @@ const spaceMono = Space_Mono({
 
 export const metadata: Metadata = {
   title: "SmartLogix",
-  description: "Plataforma inteligente para la gestion logistica de eCommerce",
+  description: "Plataforma inteligente para la gestión logística de eCommerce",
 };
 
 export default function RootLayout({
