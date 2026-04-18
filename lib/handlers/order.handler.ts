@@ -26,20 +26,20 @@ export async function createOrderHandler(
     }
 ) {
     if (!pymeId) {
-        throw new HandlerError('VALIDATION_ERROR', 'pymeId requerido', 400)
+        throw new HandlerError('VALIDATION_ERROR', 'El ID de la PYME es requerido', 400)
     }
 
     if (!payload.customerName || !payload.customerEmail || payload.total === undefined) {
-        throw new HandlerError('VALIDATION_ERROR', 'customerName, customerEmail y total son requeridos', 400)
+        throw new HandlerError('VALIDATION_ERROR', 'El nombre, email del cliente y total son requeridos', 400)
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(payload.customerEmail)) {
-        throw new HandlerError('VALIDATION_ERROR', 'customerEmail no es valido', 400)
+        throw new HandlerError('VALIDATION_ERROR', 'El email del cliente no es valido', 400)
     }
 
     if (typeof payload.total !== 'number' || payload.total <= 0) {
-        throw new HandlerError('VALIDATION_ERROR', 'total debe ser un numero mayor a 0', 400)
+        throw new HandlerError('VALIDATION_ERROR', 'El total debe ser un numero mayor a 0', 400)
     }
 
     return OrderRepository.createOrder(pymeId, payload)
@@ -53,11 +53,11 @@ export async function updateOrderStatusHandler(
     }
 ) {
     if (!pymeId) {
-        throw new HandlerError('VALIDATION_ERROR', 'pymeId requerido', 400)
+        throw new HandlerError('VALIDATION_ERROR', 'El ID de la PYME requerido', 400)
     }
 
     if (!payload.id || !payload.status) {
-        throw new HandlerError('VALIDATION_ERROR', 'id y status son requeridos', 400)
+        throw new HandlerError('VALIDATION_ERROR', 'El ID y status son requeridos', 400)
     }
 
     const status = payload.status.toLowerCase()
