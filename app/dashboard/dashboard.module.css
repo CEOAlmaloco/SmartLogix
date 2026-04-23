@@ -192,16 +192,23 @@
   color: #954031;
 }
 
-@media (max-width: 992px) {
-  .desktopNav {
-    display: none !important;
-  }
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
 
-  .mobileNav {
-    display: block;
-  }
+.form {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid rgb(223 126 48 / 15%);
+  border-radius: 12px;
+  background: rgb(255 247 233 / 90%);
+}
 
-  .statsGrid {
-    grid-template-columns: 1fr;
-  }
+.formActions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
 }

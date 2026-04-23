@@ -1,29 +1,33 @@
 import { createServiceRoleClient } from "../supabase/supabaseService";
 
-// Repositorio de pedidos: encapsula las consultas e inserciones al esquema order_schema usando service role.
-
+// Asegúrate de que 'order_schema' esté en Settings > API > Exposed Schemas en Supabase
 const SCHEMA = "order_schema";
 
 export const OrderRepository = {
 
-    async findAllOrders(pymeId: string){
+    async findAllOrders(pymeId: string) {
         const db = createServiceRoleClient(SCHEMA);
-        const {data, error} = await db
+        const { data, error } = await db
             .from('purchase_order')
             .select('*')
             .eq('pyme_id', pymeId)
-        if (error) throw error;
-        return data;
-    }, 
+            .order('created_at', { ascending: false });
+
+        if (error) {
+            console.error("❌ Error en OrderRepository (findAll):", error.message);
+            throw error;
+        }
+        return data || [];
+    },
 
     async createOrder(pymeId: string, payload: {
         customerName: string,
         customerEmail: string,
         total: number,
         notes?: string
-    }){
+    }) {
         const db = createServiceRoleClient(SCHEMA);
-        const {data, error} = await db
+        const { data, error } = await db
             .from('purchase_order')
             .insert({
                 pyme_id: pymeId,
@@ -34,21 +38,29 @@ export const OrderRepository = {
                 status: 'pending'
             })
             .select()
-            .single()
-        if (error) throw error;
+            .maybeSingle(); // Cambiado de .single() para mayor seguridad
+
+        if (error) {
+            console.error("❌ Error en OrderRepository (create):", error.message);
+            throw error;
+        }
         return data;
     },
-    
-    async updateOrderStatus(id: string, pymeId: string, status:string){
+
+    async updateOrderStatus(id: string, pymeId: string, status: string) {
         const db = createServiceRoleClient(SCHEMA);
-        const {data, error} = await db
+        const { data, error } = await db
             .from('purchase_order')
-            .update({status})
+            .update({ status })
             .eq('id', id)
             .eq('pyme_id', pymeId)
             .select()
-            .single()
-        if (error) throw error;
+            .maybeSingle(); // Si el ID no existe, devuelve null en lugar de Error 500
+
+        if (error) {
+            console.error("❌ Error en OrderRepository (updateStatus):", error.message);
+            throw error;
+        }
         return data;
     }
 }

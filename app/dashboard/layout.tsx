@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ReactNode } from "react";
 import { redirect } from "next/navigation";
 import { getAuthenticatedUser } from "@/lib/middleware/auth";
+// Importación corregida apuntando al servicio que acabamos de arreglar
 import { createServiceRoleClient } from "@/lib/supabase/supabaseService";
 import { MobileMenu } from "./_components/MobileMenu";
 import { LogoutButton } from "./_components/LogoutButton";
@@ -14,22 +15,30 @@ type DashboardLayoutProps = {
 export default async function DashboardLayout({ children }: DashboardLayoutProps) {
   let pymeName = "PYME";
 
+  // 1. Verificamos autenticación (con el bypass de desarrollo que activamos)
   const auth = await getAuthenticatedUser();
+  
+  // Si hay error en auth o no tenemos pymeId, para afuera
   if (auth.response || !auth.pymeId) {
     redirect("/auth/login");
   }
 
-  if (auth.pymeId) {
-    const db = createServiceRoleClient("public");
-    const { data } = await db
+  // 2. Obtener el nombre de la PYME usando el cliente de servicio
+  try {
+    const db = createServiceRoleClient("public"); // La tabla 'pyme' siempre suele ser public
+    const { data, error } = await db
       .from("pyme")
       .select("name")
       .eq("id", auth.pymeId)
       .single();
 
-    if (data?.name) {
+    if (error) {
+      console.error("❌ Error cargando nombre de PYME:", error.message);
+    } else if (data?.name) {
       pymeName = data.name;
     }
+  } catch (err) {
+    console.error("🔥 Error crítico en Layout:", err);
   }
 
   return (
