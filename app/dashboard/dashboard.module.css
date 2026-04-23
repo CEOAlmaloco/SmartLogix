@@ -187,6 +187,16 @@
   color: #365ea0;
 }
 
+.inTransit {
+  background: rgb(77 133 235 / 16%);
+  color: #365ea0;
+}
+
+.delivered {
+  background: rgb(66 164 99 / 15%);
+  color: #2b7f49;
+}
+
 .cancelled {
   background: rgb(170 77 60 / 15%);
   color: #954031;
