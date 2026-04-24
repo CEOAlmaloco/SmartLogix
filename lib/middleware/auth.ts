@@ -4,24 +4,6 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr';
 
 export async function getAuthenticatedUser() {
     const cookieStore = await cookies();
-
-    // 1. BYPASS DE DESARROLLO
-    // Usamos una variable de entorno adicional para mayor seguridad si fuera necesario
-    if (process.env.NODE_ENV === 'development') {
-        const DEBUG_PYME_ID = 'd5468f9d-eac7-4344-b568-619a0210ad45'; 
-
-        return {
-            user: { 
-                id: '94985713-3a61-43b7-960c-6584682251f9',
-                email: 'ga.aguila@duocuc.cl' 
-            },
-            pymeId: DEBUG_PYME_ID, 
-            role: 'admin' as const, // Forzamos el tipo literal
-            response: null
-        };
-    }
-
-    // 2. Validación de Variables de Entorno
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
@@ -29,7 +11,6 @@ export async function getAuthenticatedUser() {
         throw new Error("Supabase environment variables missing");
     }
 
-    // 3. Cliente Supabase SSR (Producción)
     const supabase = createServerClient(
         supabaseUrl,
         supabaseKey,
@@ -43,15 +24,12 @@ export async function getAuthenticatedUser() {
                         cookiesToSet.forEach(({ name, value, options }) =>
                             cookieStore.set(name, value, options as CookieOptions)
                         );
-                    } catch (err) {
-                        // El error aquí es normal si se llama desde un Server Component
-                    }
+                    } catch {}
                 },
             },
         }
     );
 
-    // 4. Verificación de Sesión Real
     const { data: { user }, error: userError } = await supabase.auth.getUser();
 
     if (userError || !user) {
@@ -60,10 +38,9 @@ export async function getAuthenticatedUser() {
             pymeId: null,
             role: null,
             response: errorResponse('UNAUTHORIZED', 'Usuario no autenticado', 401)
-        }; 
+        };
     }
 
-    // 5. Relación Pyme (Búsqueda en esquema public por defecto)
     const { data: pymeUser, error: pymeError } = await supabase
         .from('pyme_user')
         .select('pyme_id, role')
