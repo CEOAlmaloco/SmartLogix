@@ -1,0 +1,108 @@
+/* Stats */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.statCard {
+  background: var(--color-background-secondary, #f5f3ee);
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.statLabel { font-size: 12px; color: #888780; }
+.statValue { font-size: 22px; font-weight: 500; color: #2c2a24; }
+.statDanger { color: #A32D2D; }
+.statWarn   { color: #854F0B; }
+
+/* Botón agregar */
+.btnAdd {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1.5px solid #c97d3a;
+  border-radius: 20px;
+  background: transparent;
+  color: #c97d3a;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btnAdd:hover { background: #fdf0e3; }
+
+/* Tabla */
+.tableWrap {
+  background: #fff;
+  border: 0.5px solid #e5e2da;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.table thead tr { background: #faf9f6; }
+.table th {
+  padding: 10px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #888780;
+  text-align: left;
+  border-bottom: 0.5px solid #e5e2da;
+  letter-spacing: 0.04em;
+}
+.table td {
+  padding: 11px 14px;
+  font-size: 13px;
+  border-bottom: 0.5px solid #f0ede6;
+  vertical-align: middle;
+}
+.table tbody tr:last-child td { border-bottom: none; }
+.tableRow { transition: background 0.1s; }
+.tableRow:hover { background: #fdf8f2; }
+.tableRow:hover .actions { opacity: 1; }
+.numCol { text-align: right; font-variant-numeric: tabular-nums; }
+.skuCell { font-size: 12px; color: #888780; }
+.mutedCell { color: #888780; }
+
+/* Acciones (iconos) */
+.actions {
+  opacity: 0;
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+  transition: opacity 0.15s;
+}
+.iconBtn {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 0.5px solid #e5e2da;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.12s, border-color 0.12s;
+}
+.iconBtnEdit { color: #3B6D11; }
+.iconBtnEdit:hover { background: #EAF3DE; border-color: #97C459; }
+.iconBtnDel  { color: #A32D2D; }
+.iconBtnDel:hover  { background: #FCEBEB; border-color: #F09595; }
+
+/* Badges de stock */
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+.badgeOk  { background: #EAF3DE; color: #3B6D11; }
+.badgeLow { background: #FAEEDA; color: #854F0B; }
+.badgeOut { background: #FCEBEB; color: #A32D2D; }
+
+/* Vacío */
+.empty { font-size: 13px; color: #888780; padding: 20px 0; }
