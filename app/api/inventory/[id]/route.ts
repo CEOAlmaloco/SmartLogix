@@ -2,8 +2,8 @@ import {
   deleteInventoryItemHandler,
   getInventoryItemHandler,
   updateInventoryItemHandler
-} from '@/lib/handlers/inventory.handler'
-import { getAuthenticatedUser } from '@/lib/middleware/auth'
+} from '@/modules/inventory/inventory.handler'
+import { getAuthenticatedUser } from '@/lib/auth'
 import {
   HandlerError,
   errorResponse,

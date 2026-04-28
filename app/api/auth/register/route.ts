@@ -1,4 +1,4 @@
-import { registerHandler } from '@/lib/handlers/auth.handler'
+import { registerHandler } from '@/modules/auth/auth.handler'
 import { errorResponse, successResponse } from '@/lib/shared'
 
 export async function POST(request: Request) {

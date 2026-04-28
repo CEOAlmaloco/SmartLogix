@@ -1,9 +1,9 @@
 import {
   createInventoryItemHandler,
   getInventoryItemsHandler
-} from '@/lib/handlers/inventory.handler'
+} from '@/modules/inventory/inventory.handler'
 
-import { getAuthenticatedUser } from '@/lib/middleware/auth'
+import { getAuthenticatedUser } from '@/lib/auth'
 
 import {
   HandlerError,

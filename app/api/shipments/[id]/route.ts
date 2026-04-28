@@ -1,5 +1,5 @@
-import { updateShipmentStatusHandler } from "@/lib/handlers/shipment.handler";
-import { getAuthenticatedUser } from "@/lib/middleware/auth";
+import { updateShipmentStatusHandler } from "@/modules/shipments/shipments.handler";
+import { getAuthenticatedUser } from "@/lib/auth";
 import { HandlerError, errorResponse, successResponse } from "@/lib/shared";
 
 //espera a que se autentique el usuario y luego actualiza el estado de envio

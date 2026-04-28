@@ -1,5 +1,5 @@
-import { updateOrderStatusHandler } from '@/lib/handlers/order.handler'
-import { getAuthenticatedUser } from '@/lib/middleware/auth'
+import { updateOrderStatusHandler } from '@/modules/orders/orders.handler'
+import { getAuthenticatedUser } from '@/lib/auth'
 import { HandlerError, errorResponse, successResponse } from '@/lib/shared'
 
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {

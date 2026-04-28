@@ -1,5 +1,5 @@
-import { createShipmentHandler, getShipmentsHandler } from "@/lib/handlers/shipment.handler";
-import { getAuthenticatedUser } from "@/lib/middleware/auth";
+import { createShipmentHandler, getShipmentsHandler } from "@/modules/shipments/shipments.handler";
+import { getAuthenticatedUser } from "@/lib/auth";
 import { HandlerError, errorResponse, successResponse } from "@/lib/shared";
 
 export async function GET() {
