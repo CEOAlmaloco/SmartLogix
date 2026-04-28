@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { mergeCookiesIntoRedirect, runSupabaseMiddleware } from "@/lib/supabase/supabaseMiddleware";
+import { mergeCookiesIntoRedirect, runSupabaseMiddleware } from "@/lib/supabase/server";
 
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;

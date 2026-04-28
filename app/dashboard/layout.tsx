@@ -1,11 +1,10 @@
 import Link from "next/link";
 import { ReactNode } from "react";
 import { redirect } from "next/navigation";
-import { getAuthenticatedUser } from "@/lib/middleware/auth";
-// Importación corregida apuntando al servicio que acabamos de arreglar
-import { createServiceRoleClient } from "@/lib/supabase/supabaseService";
-import { MobileMenu } from "./_components/MobileMenu";
-import { LogoutButton } from "./_components/LogoutButton";
+import { getAuthenticatedUser } from "@/lib/auth";
+import { createServiceRoleClient } from "@/lib/supabase/server";
+import { MobileMenu } from "@/components/dashboard/MobileMenu";
+import { LogoutButton } from "@/components/dashboard/LogoutButton";
 import styles from "./dashboard.module.css";
 
 type DashboardLayoutProps = {
@@ -33,12 +32,12 @@ export default async function DashboardLayout({ children }: DashboardLayoutProps
       .single();
 
     if (error) {
-      console.error("❌ Error cargando nombre de PYME:", error.message);
+      console.error("Error cargando nombre de PYME:", error.message);
     } else if (data?.name) {
       pymeName = data.name;
     }
   } catch (err) {
-    console.error("🔥 Error crítico en Layout:", err);
+    console.error("Error crítico en Layout:", err);
   }
 
   return (
