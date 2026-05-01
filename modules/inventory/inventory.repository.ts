@@ -34,12 +34,65 @@ export const InventoryRepository = {
     return data;
   },
 
+  async findItemBySku(sku: string, pymeId: string) {
+    const db = createServiceRoleClient(SCHEMA);
+    const { data, error } = await db
+      .from("item")
+      .select("*")
+      .eq("sku", sku)
+      .eq("pyme_id", pymeId)
+      .maybeSingle();
+
+    if (error) {
+      console.error("Error en findItemBySku:", error.message);
+      throw error;
+    }
+
+    return data;
+  },
+
+  async adjustStockBySku(pymeId: string, sku: string, quantityDelta: number) {
+    const db = createServiceRoleClient(SCHEMA);
+    const current = await this.findItemBySku(sku, pymeId);
+
+    if (!current) {
+      const err = new Error("Item not found") as Error & { code?: string; status?: number };
+      err.code = "NOT_FOUND";
+      err.status = 404;
+      throw err;
+    }
+
+    const nextQuantity = Number(current.quantity) + quantityDelta;
+    if (nextQuantity < 0) {
+      const err = new Error("Insufficient stock") as Error & { code?: string; status?: number };
+      err.code = "VALIDATION_ERROR";
+      err.status = 422;
+      throw err;
+    }
+
+    const { data, error } = await db
+      .from("item")
+      .update({ quantity: nextQuantity, updated_at: new Date().toISOString() })
+      .eq("id", current.id)
+      .eq("pyme_id", pymeId)
+      .select()
+      .maybeSingle();
+
+    if (error) {
+      console.error("Error en adjustStockBySku:", error.message);
+      throw error;
+    }
+
+    return data;
+  },
+
   async createItem(
     pymeId: string,
     payload: {
       name: string;
       sku: string;
       quantity: number;
+      unit_price?: number;
       warehouse?: string;
     }
   ) {
@@ -62,9 +115,12 @@ export const InventoryRepository = {
       throw err;
     }
 
+    const insertBody: Record<string, unknown> = { ...payload, pyme_id: pymeId };
+    if (payload.unit_price !== undefined) insertBody.unit_price = payload.unit_price;
+
     const { data, error } = await db
       .from("item")
-      .insert({ ...payload, pyme_id: pymeId })
+      .insert(insertBody)
       .select()
       .single();
 
@@ -79,6 +135,7 @@ export const InventoryRepository = {
       name?: string;
       sku?: string;
       quantity?: number;
+      unit_price?: number;
       warehouse?: string;
     }
   ) {

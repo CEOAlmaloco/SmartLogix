@@ -44,6 +44,7 @@ CREATE TABLE inventory_schema.item (
   name TEXT NOT NULL,
   sku TEXT NOT NULL,
   quantity INTEGER NOT NULL DEFAULT 0 CHECK (quantity >= 0),
+  unit_price NUMERIC(10,2) NOT NULL DEFAULT 0 CHECK (unit_price >= 0),
   warehouse TEXT NOT NULL DEFAULT 'principal',
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),

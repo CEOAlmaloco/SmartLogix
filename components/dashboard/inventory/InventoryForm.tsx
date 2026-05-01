@@ -48,6 +48,17 @@ export function InventoryForm({
         }}
         required
       />
+          <TextField
+            label="Precio unitario"
+            type="number"
+            min={0}
+            value={(formData.unitPrice ?? 0).toString()}
+            onChange={(e) => {
+              const parsed = Number(e.target.value);
+              if (!Number.isNaN(parsed)) onChange({ ...formData, unitPrice: parsed });
+            }}
+            required
+          />
       <TextField
         label="Almacén"
         value={formData.warehouse}

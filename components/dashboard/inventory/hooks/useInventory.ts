@@ -5,6 +5,7 @@ export type InventoryItem = {
   name: string;
   sku: string;
   quantity: number;
+  unit_price?: number;
   warehouse: string;
   created_at: string;
   updated_at: string;
@@ -14,6 +15,7 @@ export type FormData = {
   name: string;
   sku: string;
   quantity: number;
+  unitPrice?: number;
   warehouse: string;
 };
 
@@ -21,6 +23,7 @@ const EMPTY_FORM: FormData = {
   name: "",
   sku: "",
   quantity: 0,
+  unitPrice: 0,
   warehouse: "principal",
 };
 
@@ -70,11 +73,15 @@ export function useInventory() {
       const url = editingItem ? `/api/inventory/${editingItem.id}` : "/api/inventory";
       const method = editingItem ? "PATCH" : "POST";
       const payload = editingItem
-        ? {
-            name: formData.name,
-            quantity: formData.quantity,
-            warehouse: formData.warehouse,
-          }
+        ? (() => {
+            const p: Record<string, unknown> = {
+              name: formData.name,
+              quantity: formData.quantity,
+              warehouse: formData.warehouse,
+            };
+            if (formData.unitPrice !== undefined) p.unit_price = formData.unitPrice;
+            return p;
+          })()
         : formData;
 
       const res = await fetch(url, {
@@ -105,6 +112,7 @@ export function useInventory() {
       name: item.name,
       sku: item.sku,
       quantity: item.quantity,
+      unitPrice: (item.unit_price ?? 0),
       warehouse: item.warehouse,
     });
     setShowForm(true);

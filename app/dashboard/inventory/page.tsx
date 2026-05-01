@@ -7,6 +7,7 @@ import { InventoryForm } from "@/components/dashboard/inventory/InventoryForm";
 import { InventoryStats } from "@/components/dashboard/inventory/InventoryStats";
 import { InventoryTable } from "@/components/dashboard/inventory/InventoryTable";
 import { useInventory } from "@/components/dashboard/inventory/hooks/useInventory";
+import { DashboardPanel } from "@/components/dashboard/DashboardPanel";
 import styles from "../dashboard.module.css";
 
 export default function InventoryDashboardPage() {
@@ -31,18 +32,11 @@ export default function InventoryDashboardPage() {
 	} = useInventory();
 
 	return (
-		<section className={styles.panel}>
-			<div className={styles.pageToolbar}>
-				<div>
-					<h2>Inventario</h2>
-					<p>Stock por bodega con acciones rápidas de creación, edición y eliminación.</p>
-				</div>
-				<div className={styles.toolbarActions}>
-					<Button type="button" onClick={startCreate}>
-						Agregar item
-					</Button>
-				</div>
-			</div>
+		<DashboardPanel
+		  title="Inventario"
+		  subtitle="Stock por bodega con acciones rápidas de creación, edición y eliminación."
+		  actions={<Button type="button" onClick={startCreate}>Agregar item</Button>}
+		>
 
 			{error ? <StatusMessage variant="error" message={error} /> : null}
 			{success ? <StatusMessage variant="success" message={success} /> : null}
@@ -86,6 +80,6 @@ export default function InventoryDashboardPage() {
 					</Button>
 				</div>
 			</Modal>
-		</section>
+		</DashboardPanel>
 	);
 }

@@ -32,6 +32,7 @@ export function InventoryTable({ items, onEdit, onDelete }: Props) {
           <tr>
             <th>SKU</th>
             <th>Nombre</th>
+            <th>Precio unit.</th>
             <th>Cantidad</th>
             <th>Bodega</th>
             <th>Creado</th>
@@ -43,6 +44,7 @@ export function InventoryTable({ items, onEdit, onDelete }: Props) {
             <tr key={item.id}>
               <td>{item.sku}</td>
               <td>{item.name}</td>
+              <td>{new Intl.NumberFormat("es-CL", { style: "currency", currency: "CLP", maximumFractionDigits: 0 }).format(Number(item.unit_price ?? 0))}</td>
               <td>{item.quantity}</td>
               <td>{item.warehouse}</td>
               <td>{formatDate(item.created_at)}</td>

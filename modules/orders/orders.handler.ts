@@ -1,4 +1,5 @@
 import { HandlerError } from "@/lib/shared";
+import { InventoryRepository } from "@/modules/inventory/inventory.repository";
 import { OrdersRepository } from "./orders.repository";
 import {
   validateOrderCanDelete,
@@ -40,6 +41,41 @@ export async function updateOrderStatusHandler(
 
   const currentStatus = String((currentOrder as { status?: string }).status ?? "");
   validateStatusTransition(currentStatus, status);
+
+  if (status === "approved") {
+    const currentOrderWithItems = currentOrder as { items?: Array<{ item_sku: string; quantity: number }> };
+    const orderItems = currentOrderWithItems.items ?? [];
+
+    if (orderItems.length === 0) {
+      throw new HandlerError("VALIDATION_ERROR", "No se puede aprobar un pedido sin items", 422);
+    }
+
+    const stockChecks = await Promise.all(
+      orderItems.map(async (item) => {
+        const inventoryItem = await InventoryRepository.findItemBySku(item.item_sku, pymeId);
+        return {
+          item,
+          inventoryItem,
+        };
+      })
+    );
+
+    const insufficient = stockChecks.find(
+      ({ inventoryItem, item }) => !inventoryItem || Number(inventoryItem.quantity) < Number(item.quantity)
+    );
+
+    if (insufficient) {
+      throw new HandlerError(
+        "VALIDATION_ERROR",
+        `Stock insuficiente para SKU ${insufficient.item.item_sku}`,
+        422
+      );
+    }
+
+    for (const { item } of stockChecks) {
+      await InventoryRepository.adjustStockBySku(pymeId, item.item_sku, -Number(item.quantity));
+    }
+  }
 
   return OrdersRepository.updateOrderStatus(payload.id, pymeId, status);
 }

@@ -34,6 +34,29 @@ export function validateCreateOrderInput(payload: CreateOrderInput): void {
       400
     );
   }
+  if (!Array.isArray(payload.items) || payload.items.length === 0) {
+    throw new HandlerError("VALIDATION_ERROR", "El pedido debe incluir al menos un item", 400);
+  }
+
+  for (const item of payload.items) {
+    if (!item.sku || typeof item.sku !== "string") {
+      throw new HandlerError("VALIDATION_ERROR", "Cada item requiere un SKU valido", 400);
+    }
+    if (!Number.isInteger(item.quantity) || item.quantity <= 0) {
+      throw new HandlerError(
+        "VALIDATION_ERROR",
+        "Cada item debe tener una cantidad mayor a 0",
+        400
+      );
+    }
+    if (typeof item.unitPrice !== "number" || item.unitPrice <= 0) {
+      throw new HandlerError(
+        "VALIDATION_ERROR",
+        "Cada item debe tener un precio unitario mayor a 0",
+        400
+      );
+    }
+  }
 }
 
 export function validateStatusTransition(current: string, next: string): void {

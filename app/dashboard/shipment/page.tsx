@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { StatusMessage } from "@/components/ui/StatusMessage";
 import { TextField } from "@/components/ui/TextField";
+import { DashboardPanel } from "@/components/dashboard/DashboardPanel";
 import styles from "../dashboard.module.css";
 
 type ShipmentStatus = "pending" | "in_transit" | "delivered" | "cancelled";
@@ -308,18 +309,11 @@ export default function ShipmentDashboardPage() {
   };
 
   return (
-    <section className={styles.panel}>
-      <div className={styles.pageToolbar}>
-        <div>
-          <h2>{title}</h2>
-          <p>Gestiona envíos vinculados a pedidos aprobados y su ciclo logístico.</p>
-        </div>
-        <div className={styles.toolbarActions}>
-          <Button type="button" onClick={() => void openCreateModal()}>
-            Nuevo envío
-          </Button>
-        </div>
-      </div>
+    <DashboardPanel
+      title={title}
+      subtitle={"Gestiona envíos vinculados a pedidos aprobados y su ciclo logístico."}
+      actions={<Button type="button" onClick={() => void openCreateModal()}>Nuevo envío</Button>}
+    >
 
       {error ? <StatusMessage variant="error" message={error} /> : null}
       {notice ? <StatusMessage variant={notice.variant} message={notice.message} /> : null}
@@ -463,6 +457,6 @@ export default function ShipmentDashboardPage() {
           </div>
         </form>
       </Modal>
-    </section>
+    </DashboardPanel>
   );
 }

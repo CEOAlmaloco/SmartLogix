@@ -116,6 +116,12 @@ export async function POST(request: Request) {
             typeof payload.warehouse === 'string'
               ? payload.warehouse
               : undefined,
+          unit_price:
+            typeof payload.unit_price === 'number'
+              ? payload.unit_price
+              : typeof payload.unitPrice === 'number'
+              ? payload.unitPrice
+              : undefined,
         }
       )
 
