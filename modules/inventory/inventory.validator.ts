@@ -41,6 +41,12 @@ export function validateCreatePayload(payload: CreateInventoryItemPayload): void
       400
     );
   }
+  if (payload.unit_price !== undefined) {
+    const p = Number(payload.unit_price);
+    if (!Number.isFinite(p) || p < 0) {
+      throw new HandlerError("VALIDATION_ERROR", "Precio unitario inválido", 400);
+    }
+  }
 }
 
 export function validateUpdatePayload(payload: UpdateInventoryItemPayload): void {
@@ -63,6 +69,12 @@ export function validateUpdatePayload(payload: UpdateInventoryItemPayload): void
       "La cantidad debe ser un entero mayor o igual a 0",
       400
     );
+  }
+  if (payload.unit_price !== undefined) {
+    const p = Number(payload.unit_price);
+    if (!Number.isFinite(p) || p < 0) {
+      throw new HandlerError("VALIDATION_ERROR", "Precio unitario inválido", 400);
+    }
   }
   if (payload.sku && payload.sku.length > 50) {
     throw new HandlerError(

@@ -4,8 +4,8 @@ export type InventoryItem = {
   name: string;
   sku: string;
   quantity: number;
+  unit_price: number;
   warehouse: string;
-  is_active: boolean;
   created_at: string;
   updated_at: string;
 };
@@ -14,6 +14,7 @@ export type CreateInventoryItemPayload = {
   name: string;
   sku: string;
   quantity: number;
+  unit_price?: number;
   warehouse?: string;
 };
 
@@ -21,5 +22,6 @@ export type UpdateInventoryItemPayload = {
   name?: string;
   sku?: string;
   quantity?: number;
+  unit_price?: number;
   warehouse?: string;
 };

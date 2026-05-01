@@ -54,11 +54,12 @@ export async function PATCH(request: Request, { params }: RouteParams) {
       return errorResponse('VALIDATION_ERROR', 'Body JSON inválido', 400)
     }
 
-    // ✅ Fix: filtrar null Y undefined con un tipo explícito
+    // Fix: filtrar null Y undefined con un tipo explícito
     type UpdatePayload = {
       name?: string
       sku?: string
       quantity?: number
+      unit_price?: number
       warehouse?: string
     }
 
@@ -66,6 +67,7 @@ export async function PATCH(request: Request, { params }: RouteParams) {
       name: body.name,
       sku: body.sku,
       quantity: body.quantity,
+      unit_price: body.unit_price ?? body.unitPrice,
       warehouse: body.warehouse,
     }
 

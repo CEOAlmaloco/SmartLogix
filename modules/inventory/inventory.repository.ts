@@ -9,7 +9,6 @@ export const InventoryRepository = {
       .from("item")
       .select("*")
       .eq("pyme_id", pymeId)
-      .eq("is_active", true)
       .order("created_at", { ascending: false });
 
     if (error) {
@@ -26,7 +25,6 @@ export const InventoryRepository = {
       .select("*")
       .eq("id", id)
       .eq("pyme_id", pymeId)
-      .eq("is_active", true)
       .maybeSingle();
 
     if (error) {
@@ -36,12 +34,65 @@ export const InventoryRepository = {
     return data;
   },
 
+  async findItemBySku(sku: string, pymeId: string) {
+    const db = createServiceRoleClient(SCHEMA);
+    const { data, error } = await db
+      .from("item")
+      .select("*")
+      .eq("sku", sku)
+      .eq("pyme_id", pymeId)
+      .maybeSingle();
+
+    if (error) {
+      console.error("Error en findItemBySku:", error.message);
+      throw error;
+    }
+
+    return data;
+  },
+
+  async adjustStockBySku(pymeId: string, sku: string, quantityDelta: number) {
+    const db = createServiceRoleClient(SCHEMA);
+    const current = await this.findItemBySku(sku, pymeId);
+
+    if (!current) {
+      const err = new Error("Item not found") as Error & { code?: string; status?: number };
+      err.code = "NOT_FOUND";
+      err.status = 404;
+      throw err;
+    }
+
+    const nextQuantity = Number(current.quantity) + quantityDelta;
+    if (nextQuantity < 0) {
+      const err = new Error("Insufficient stock") as Error & { code?: string; status?: number };
+      err.code = "VALIDATION_ERROR";
+      err.status = 422;
+      throw err;
+    }
+
+    const { data, error } = await db
+      .from("item")
+      .update({ quantity: nextQuantity, updated_at: new Date().toISOString() })
+      .eq("id", current.id)
+      .eq("pyme_id", pymeId)
+      .select()
+      .maybeSingle();
+
+    if (error) {
+      console.error("Error en adjustStockBySku:", error.message);
+      throw error;
+    }
+
+    return data;
+  },
+
   async createItem(
     pymeId: string,
     payload: {
       name: string;
       sku: string;
       quantity: number;
+      unit_price?: number;
       warehouse?: string;
     }
   ) {
@@ -49,12 +100,12 @@ export const InventoryRepository = {
 
     const { data: existing } = await db
       .from("item")
-      .select("id, is_active")
+      .select("id")
       .eq("pyme_id", pymeId)
       .eq("sku", payload.sku)
       .maybeSingle();
 
-    if (existing?.is_active) {
+    if (existing) {
       const err = new Error("SKU already exists") as Error & {
         code?: string;
         status?: number;
@@ -64,24 +115,12 @@ export const InventoryRepository = {
       throw err;
     }
 
-    if (existing && !existing.is_active) {
-      const { data, error } = await db
-        .from("item")
-        .update({
-          ...payload,
-          is_active: true,
-          updated_at: new Date().toISOString(),
-        })
-        .eq("id", existing.id)
-        .select()
-        .single();
-      if (error) throw error;
-      return data;
-    }
+    const insertBody: Record<string, unknown> = { ...payload, pyme_id: pymeId };
+    if (payload.unit_price !== undefined) insertBody.unit_price = payload.unit_price;
 
     const { data, error } = await db
       .from("item")
-      .insert({ ...payload, pyme_id: pymeId, is_active: true })
+      .insert(insertBody)
       .select()
       .single();
 
@@ -96,6 +135,7 @@ export const InventoryRepository = {
       name?: string;
       sku?: string;
       quantity?: number;
+      unit_price?: number;
       warehouse?: string;
     }
   ) {
@@ -116,7 +156,6 @@ export const InventoryRepository = {
       })
       .eq("id", id)
       .eq("pyme_id", pymeId)
-      .eq("is_active", true)
       .select()
       .maybeSingle();
 
@@ -131,13 +170,9 @@ export const InventoryRepository = {
     const db = createServiceRoleClient(SCHEMA);
     const { data, error } = await db
       .from("item")
-      .update({
-        is_active: false,
-        updated_at: new Date().toISOString(),
-      })
+      .delete()
       .eq("id", id)
       .eq("pyme_id", pymeId)
-      .eq("is_active", true)
       .select()
       .maybeSingle();
 

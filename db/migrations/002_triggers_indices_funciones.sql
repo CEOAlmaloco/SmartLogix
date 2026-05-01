@@ -64,6 +64,7 @@ CREATE TRIGGER trg_shipment_updated
 CREATE INDEX IF NOT EXISTS idx_item_pyme_id ON inventory_schema.item (pyme_id);
 CREATE INDEX IF NOT EXISTS idx_order_pyme_id ON order_schema.purchase_order (pyme_id);
 CREATE INDEX IF NOT EXISTS idx_order_status ON order_schema.purchase_order (pyme_id, status);
+CREATE INDEX IF NOT EXISTS idx_order_item_order_id ON order_schema.order_item (order_id);
 CREATE INDEX IF NOT EXISTS idx_shipment_pyme_id ON shipment_schema.shipment (pyme_id);
 CREATE INDEX IF NOT EXISTS idx_shipment_order_id ON shipment_schema.shipment (order_id);
 

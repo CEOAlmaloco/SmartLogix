@@ -52,16 +52,16 @@ export default async function DashboardLayout({ children }: DashboardLayoutProps
 
           <div className={`${styles.desktopNav} d-flex gap-2 flex-wrap`}>
             <Link href="/dashboard" className={`btn ${styles.navBtn}`}>
-              Overview
-            </Link>
-            <Link href="/dashboard/order" className={`btn ${styles.navBtn}`}>
-              Orders
+              Resumen
             </Link>
             <Link href="/dashboard/inventory" className={`btn ${styles.navBtn}`}>
-              Inventory
+              Inventario
+            </Link>
+            <Link href="/dashboard/order" className={`btn ${styles.navBtn}`}>
+              Pedidos
             </Link>
             <Link href="/dashboard/shipment" className={`btn ${styles.navBtn}`}>
-              Shipments
+              Envios
             </Link>
             <LogoutButton />
           </div>

@@ -3,6 +3,7 @@ import { ShipmentsRepository } from "./shipments.repository";
 import {
   ensureValidShipmentStatus,
   validateCreateShipmentInput,
+  validateShipmentCanDelete,
   validatePymeId,
   validateShipmentTransition,
 } from "./shipments.validator";
@@ -55,4 +56,21 @@ export async function updateShipmentStatusHandler(
     status,
     delivered_at: status === "delivered" ? new Date().toISOString() : undefined,
   });
+}
+
+export async function deleteShipmentHandler(pymeId: string, id: string) {
+  validatePymeId(pymeId);
+  if (!id) {
+    throw new HandlerError("VALIDATION_ERROR", "El ID es requerido", 400);
+  }
+
+  const currentRows = (await ShipmentsRepository.findAll(pymeId)) as Shipment[];
+  const currentShipment = currentRows.find((shipment) => shipment.id === id);
+  if (!currentShipment) {
+    throw new HandlerError("NOT_FOUND", "Envio no encontrado", 404);
+  }
+
+  validateShipmentCanDelete(currentShipment.status);
+
+  return ShipmentsRepository.delete(id, pymeId);
 }

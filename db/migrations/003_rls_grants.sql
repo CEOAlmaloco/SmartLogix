@@ -9,6 +9,7 @@ ALTER TABLE public.pyme ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.pyme_user ENABLE ROW LEVEL SECURITY;
 ALTER TABLE inventory_schema.item ENABLE ROW LEVEL SECURITY;
 ALTER TABLE order_schema.purchase_order ENABLE ROW LEVEL SECURITY;
+ALTER TABLE order_schema.order_item ENABLE ROW LEVEL SECURITY;
 ALTER TABLE shipment_schema.shipment ENABLE ROW LEVEL SECURITY;
 
 -- pyme: el dueño ve y crea su registro
@@ -63,6 +64,25 @@ CREATE POLICY "order_by_membership"
   WITH CHECK (
     pyme_id IN (
       SELECT pu.pyme_id FROM public.pyme_user pu WHERE pu.user_id = auth.uid()
+    )
+  );
+
+CREATE POLICY "order_item_by_membership"
+  ON order_schema.order_item FOR ALL
+  USING (
+    order_id IN (
+      SELECT o.id FROM order_schema.purchase_order o
+      WHERE o.pyme_id IN (
+        SELECT pu.pyme_id FROM public.pyme_user pu WHERE pu.user_id = auth.uid()
+      )
+    )
+  )
+  WITH CHECK (
+    order_id IN (
+      SELECT o.id FROM order_schema.purchase_order o
+      WHERE o.pyme_id IN (
+        SELECT pu.pyme_id FROM public.pyme_user pu WHERE pu.user_id = auth.uid()
+      )
     )
   );
 

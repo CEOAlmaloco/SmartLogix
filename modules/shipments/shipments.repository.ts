@@ -52,4 +52,18 @@ export const ShipmentsRepository = {
     if (error) throw error;
     return data;
   },
+
+  async delete(id: string, pymeId: string) {
+    const db = createServiceRoleClient(SCHEMA);
+    const { data, error } = await db
+      .from("shipment")
+      .delete()
+      .eq("id", id)
+      .eq("pyme_id", pymeId)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
 };

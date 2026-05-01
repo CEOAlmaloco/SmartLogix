@@ -44,6 +44,7 @@ CREATE TABLE inventory_schema.item (
   name TEXT NOT NULL,
   sku TEXT NOT NULL,
   quantity INTEGER NOT NULL DEFAULT 0 CHECK (quantity >= 0),
+  unit_price NUMERIC(10,2) NOT NULL DEFAULT 0 CHECK (unit_price >= 0),
   warehouse TEXT NOT NULL DEFAULT 'principal',
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -64,6 +65,14 @@ CREATE TABLE order_schema.purchase_order (
   total NUMERIC(10, 2) NOT NULL DEFAULT 0 CHECK (total >= 0),
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE order_schema.order_item (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  order_id UUID NOT NULL REFERENCES order_schema.purchase_order(id) ON DELETE CASCADE,
+  item_sku TEXT NOT NULL,
+  quantity INTEGER NOT NULL CHECK (quantity > 0),
+  unit_price NUMERIC(10,2) NOT NULL
 );
 
 -- Envios

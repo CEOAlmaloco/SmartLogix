@@ -53,16 +53,16 @@ export function MobileMenu({ pymeName }: MobileMenuProps) {
 
         <div className={styles.menuList}>
           <Link href="/dashboard" className={`btn ${styles.menuLink}`} onClick={closeMenu}>
-            Overview
-          </Link>
-          <Link href="/dashboard/order" className={`btn ${styles.menuLink}`} onClick={closeMenu}>
-            Orders
+            Resumen
           </Link>
           <Link href="/dashboard/inventory" className={`btn ${styles.menuLink}`} onClick={closeMenu}>
-            Inventory
+            Inventario
+          </Link>
+          <Link href="/dashboard/order" className={`btn ${styles.menuLink}`} onClick={closeMenu}>
+            Pedidos
           </Link>
           <Link href="/dashboard/shipment" className={`btn ${styles.menuLink}`} onClick={closeMenu}>
-            Shipments
+            Envios
           </Link>
         </div>
 

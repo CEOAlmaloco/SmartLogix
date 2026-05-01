@@ -50,3 +50,13 @@ export function validateShipmentTransition(
     );
   }
 }
+
+export function validateShipmentCanDelete(status: ShipmentStatus): void {
+  if (status !== "pending") {
+    throw new HandlerError(
+      "VALIDATION_ERROR",
+      "Solo se puede eliminar un envio en estado pending",
+      400
+    );
+  }
+}
