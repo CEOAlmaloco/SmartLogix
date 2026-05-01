@@ -5,7 +5,6 @@ export type InventoryItem = {
   sku: string;
   quantity: number;
   warehouse: string;
-  is_active: boolean;
   created_at: string;
   updated_at: string;
 };

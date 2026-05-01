@@ -70,8 +70,8 @@ export default function DashboardPage() {
       <section className={styles.panel}>
         <h2>Overview de operación</h2>
         <p>
-          Desde aquí ves el pulso del negocio y navegas a cada módulo. Inventory y Shipments
-          quedarán activos cuando sus servicios estén implementados.
+          Desde aquí ves el pulso del negocio y navegas a cada módulo operativo de pedidos,
+          inventario y envíos.
         </p>
 
         {error ? <p>{error}</p> : null}
@@ -108,10 +108,10 @@ export default function DashboardPage() {
         <div className="col-12 col-md-4">
           <article className={styles.moduleCard}>
             <h3>Inventory</h3>
-            <p>Próximamente: este módulo se activará cuando el backend de inventario esté listo.</p>
+            <p>Visualiza stock por bodega y gestiona altas, ajustes y bajas de ítems.</p>
             <div className={styles.moduleLink}>
               <Link href="/dashboard/inventory" className="btn btn-sm btn-outline-secondary">
-                Ver estado
+                Ir a Inventory
               </Link>
             </div>
           </article>
@@ -120,10 +120,10 @@ export default function DashboardPage() {
         <div className="col-12 col-md-4">
           <article className={styles.moduleCard}>
             <h3>Shipments</h3>
-            <p>Próximamente: este módulo se activará cuando el backend de envíos esté listo.</p>
+            <p>Gestiona envíos ligados a pedidos aprobados y su trazabilidad logística.</p>
             <div className={styles.moduleLink}>
               <Link href="/dashboard/shipment" className="btn btn-sm btn-outline-secondary">
-                Ver estado
+                Ir a Shipments
               </Link>
             </div>
           </article>

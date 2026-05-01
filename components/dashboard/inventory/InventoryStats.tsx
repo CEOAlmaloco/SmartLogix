@@ -12,22 +12,18 @@ export function InventoryStats({ items }: { items: InventoryItem[] }) {
 
   return (
     <div className={styles.statsGrid}>
-      <div className={styles.statCard}>
-        <span className={styles.statLabel}>Total de productos</span>
-        <span className={styles.statValue}>{total}</span>
-      </div>
-      <div className={styles.statCard}>
-        <span className={styles.statLabel}>Sin stock</span>
-        <span className={`${styles.statValue} ${styles.statDanger}`}>
-          {outOfStock}
-        </span>
-      </div>
-      <div className={styles.statCard}>
-        <span className={styles.statLabel}>Stock bajo (≤{LOW_STOCK_THRESHOLD})</span>
-        <span className={`${styles.statValue} ${styles.statWarn}`}>
-          {lowStock}
-        </span>
-      </div>
+      <article>
+        <strong>{total}</strong>
+        <span>Total de productos</span>
+      </article>
+      <article>
+        <strong>{outOfStock}</strong>
+        <span>Sin stock</span>
+      </article>
+      <article>
+        <strong>{lowStock}</strong>
+        <span>Stock bajo (≤{LOW_STOCK_THRESHOLD})</span>
+      </article>
     </div>
   );
 }

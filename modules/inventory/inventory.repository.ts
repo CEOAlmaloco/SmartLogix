@@ -9,7 +9,6 @@ export const InventoryRepository = {
       .from("item")
       .select("*")
       .eq("pyme_id", pymeId)
-      .eq("is_active", true)
       .order("created_at", { ascending: false });
 
     if (error) {
@@ -26,7 +25,6 @@ export const InventoryRepository = {
       .select("*")
       .eq("id", id)
       .eq("pyme_id", pymeId)
-      .eq("is_active", true)
       .maybeSingle();
 
     if (error) {
@@ -49,12 +47,12 @@ export const InventoryRepository = {
 
     const { data: existing } = await db
       .from("item")
-      .select("id, is_active")
+      .select("id")
       .eq("pyme_id", pymeId)
       .eq("sku", payload.sku)
       .maybeSingle();
 
-    if (existing?.is_active) {
+    if (existing) {
       const err = new Error("SKU already exists") as Error & {
         code?: string;
         status?: number;
@@ -64,24 +62,9 @@ export const InventoryRepository = {
       throw err;
     }
 
-    if (existing && !existing.is_active) {
-      const { data, error } = await db
-        .from("item")
-        .update({
-          ...payload,
-          is_active: true,
-          updated_at: new Date().toISOString(),
-        })
-        .eq("id", existing.id)
-        .select()
-        .single();
-      if (error) throw error;
-      return data;
-    }
-
     const { data, error } = await db
       .from("item")
-      .insert({ ...payload, pyme_id: pymeId, is_active: true })
+      .insert({ ...payload, pyme_id: pymeId })
       .select()
       .single();
 
@@ -116,7 +99,6 @@ export const InventoryRepository = {
       })
       .eq("id", id)
       .eq("pyme_id", pymeId)
-      .eq("is_active", true)
       .select()
       .maybeSingle();
 
@@ -131,13 +113,9 @@ export const InventoryRepository = {
     const db = createServiceRoleClient(SCHEMA);
     const { data, error } = await db
       .from("item")
-      .update({
-        is_active: false,
-        updated_at: new Date().toISOString(),
-      })
+      .delete()
       .eq("id", id)
       .eq("pyme_id", pymeId)
-      .eq("is_active", true)
       .select()
       .maybeSingle();
 

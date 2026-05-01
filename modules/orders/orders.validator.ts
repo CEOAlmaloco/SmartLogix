@@ -47,3 +47,14 @@ export function validateStatusTransition(current: string, next: string): void {
     );
   }
 }
+
+export function validateOrderCanDelete(status: string): void {
+  const normalized = status.toLowerCase() as OrderStatus;
+  if (normalized !== "pending" && normalized !== "cancelled") {
+    throw new HandlerError(
+      "VALIDATION_ERROR",
+      "No se puede eliminar un pedido en curso",
+      400
+    );
+  }
+}

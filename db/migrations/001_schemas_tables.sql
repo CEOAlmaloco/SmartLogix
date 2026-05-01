@@ -66,6 +66,14 @@ CREATE TABLE order_schema.purchase_order (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+CREATE TABLE order_schema.order_item (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  order_id UUID NOT NULL REFERENCES order_schema.purchase_order(id) ON DELETE CASCADE,
+  item_sku TEXT NOT NULL,
+  quantity INTEGER NOT NULL CHECK (quantity > 0),
+  unit_price NUMERIC(10,2) NOT NULL
+);
+
 -- Envios
 CREATE SCHEMA IF NOT EXISTS shipment_schema;
 

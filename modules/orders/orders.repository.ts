@@ -1,7 +1,7 @@
 import { createServiceRoleClient } from "@/lib/supabase/server";
 
 const SCHEMA = "order_schema";
-const TABLE = "order";
+const TABLE = "purchase_order";
 
 export const OrdersRepository = {
   async findAllOrders(pymeId: string) {
@@ -63,6 +63,24 @@ export const OrdersRepository = {
       console.error("Error en OrdersRepository (updateStatus):", error.message);
       throw error;
     }
+    return data;
+  },
+
+  async deleteOrder(id: string, pymeId: string) {
+    const db = createServiceRoleClient(SCHEMA);
+    const { data, error } = await db
+      .from(TABLE)
+      .delete()
+      .eq("id", id)
+      .eq("pyme_id", pymeId)
+      .select()
+      .maybeSingle();
+
+    if (error) {
+      console.error("Error en OrdersRepository (delete):", error.message);
+      throw error;
+    }
+
     return data;
   },
 };
