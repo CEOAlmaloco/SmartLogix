@@ -450,11 +450,11 @@
 
 @media (max-width: 992px) {
   .desktopNav {
-    display: none;
+    display: none !important;
   }
 
   .mobileNav {
-    display: block;
+    display: block !important;
   }
 }
 
