@@ -11,16 +11,14 @@ export async function middleware(request: NextRequest) {
   }
 
   const isDashboard = pathname.startsWith("/dashboard");
-  const isAuthLogin = pathname.startsWith("/auth/login");
-  const isAuthRegister = pathname.startsWith("/auth/register");
-  const isAuthPage = isAuthLogin || isAuthRegister;
+  const isHome = pathname === "/";
 
   if (isDashboard && !isAuthenticated) {
     const redirect = NextResponse.redirect(new URL("/auth/login", request.url));
     return mergeCookiesIntoRedirect(response, redirect);
   }
 
-  if (isAuthPage && isAuthenticated) {
+  if (isHome && isAuthenticated) {
     const redirect = NextResponse.redirect(new URL("/dashboard", request.url));
     return mergeCookiesIntoRedirect(response, redirect);
   }
@@ -30,6 +28,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
+    "/",
     "/dashboard/:path*",
     "/auth/login",
     "/auth/register",
