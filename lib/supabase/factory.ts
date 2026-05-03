@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { ENV } from "@/config/env";
 
 /**
  * Factory Method: crea un cliente Supabase con service_role apuntado a un schema.
@@ -9,12 +10,7 @@ import { createClient } from "@supabase/supabase-js";
  *   const db = createSupabaseClientForSchema("inventory_schema");
  */
 export function createSupabaseClientForSchema(schema: string) {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !key) {
-    throw new Error(
-      "Faltan variables NEXT_PUBLIC_SUPABASE_URL o SUPABASE_SERVICE_ROLE_KEY"
-    );
-  }
+  const url = ENV.SUPABASE_URL();
+  const key = ENV.SUPABASE_SERVICE_ROLE_KEY();
   return createClient(url, key, { db: { schema } });
 }

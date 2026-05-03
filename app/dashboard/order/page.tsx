@@ -123,6 +123,7 @@ export default function OrderDashboardPage() {
 	const [nextStatuses, setNextStatuses] = useState<Record<string, OrderStatus>>({});
 	const [error, setError] = useState<string | null>(null);
 	const [selectedItems, setSelectedItems] = useState<SelectedOrderItem[]>([]);
+	const [deleteTarget, setDeleteTarget] = useState<OrderItemRecord | null>(null);
 
 	const loadOrders = useCallback(async () => {
 		try {
@@ -369,20 +370,28 @@ export default function OrderDashboardPage() {
 		}
 	};
 
-	const onDeleteOrder = async (order: OrderItemRecord) => {
+	const requestDeleteOrder = (order: OrderItemRecord) => {
 		const status = (order.status ?? "pending") as OrderStatus;
 		if (!canDeleteOrder(status)) {
 			setNotice({ variant: "error", message: "No se puede eliminar un pedido en curso" });
 			return;
 		}
 
-		const confirmed = window.confirm("¿Eliminar este pedido? Esta acción no se puede deshacer.");
-		if (!confirmed) return;
+		setDeleteTarget(order);
+	};
+
+	const cancelDeleteOrder = () => {
+		if (submitting) return;
+		setDeleteTarget(null);
+	};
+
+	const confirmDeleteOrder = async () => {
+		if (!deleteTarget) return;
 
 		try {
 			setSubmitting(true);
 			setNotice(null);
-			const response = await fetch(`/api/orders/${order.id}`, {
+			const response = await fetch(`/api/orders/${deleteTarget.id}`, {
 				method: "DELETE",
 				credentials: "include",
 			});
@@ -393,6 +402,7 @@ export default function OrderDashboardPage() {
 			}
 
 			setNotice({ variant: "success", message: "Pedido eliminado correctamente" });
+			setDeleteTarget(null);
 			await loadOrders();
 		} catch (requestError: unknown) {
 			setNotice({
@@ -500,7 +510,7 @@ export default function OrderDashboardPage() {
 											}
 											onClick={(event) => {
 												event.stopPropagation();
-												void onDeleteOrder(order);
+												requestDeleteOrder(order);
 											}}
 										>
 											Eliminar
@@ -568,7 +578,7 @@ export default function OrderDashboardPage() {
 													<th>Producto</th>
 													<th>SKU</th>
 													<th>Stock</th>
-													<th>Qty</th>
+													<th>Cantidad</th>
 													<th>Precio unit.</th>
 													<th>Acción</th>
 												</tr>
@@ -695,6 +705,24 @@ export default function OrderDashboardPage() {
 						</div>
 					</div>
 				) : null}
+			</Modal>
+
+			<Modal
+				open={Boolean(deleteTarget)}
+				onClose={cancelDeleteOrder}
+				title="Eliminar pedido"
+			>
+				<p className={styles.confirmText}>
+					¿Eliminar este pedido? Esta acción no se puede deshacer.
+				</p>
+				<div className={styles.formActions}>
+					<Button type="button" variant="soft" onClick={confirmDeleteOrder} loading={submitting}>
+						Confirmar eliminación
+					</Button>
+					<Button type="button" variant="ghost" onClick={cancelDeleteOrder} disabled={submitting}>
+						Cancelar
+					</Button>
+				</div>
 			</Modal>
 		</DashboardPanel>
 	);

@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { ENV } from "@/config/env";
 import { createSupabaseClientForSchema } from "./factory";
 
 /**
@@ -20,20 +21,8 @@ export async function runSupabaseMiddleware(request: NextRequest): Promise<{
 }> {
   let response = NextResponse.next({ request });
 
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !anonKey) {
-    return {
-      response: NextResponse.json(
-        {
-          code: "CONFIG_ERROR",
-          message: "Faltan NEXT_PUBLIC_SUPABASE_URL o NEXT_PUBLIC_SUPABASE_ANON_KEY",
-        },
-        { status: 500 }
-      ),
-      isAuthenticated: false,
-    };
-  }
+  const url = ENV.SUPABASE_URL();
+  const anonKey = ENV.SUPABASE_ANON_KEY();
 
   const supabase = createServerClient(url, anonKey, {
     cookies: {

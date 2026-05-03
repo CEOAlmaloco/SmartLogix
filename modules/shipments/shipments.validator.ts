@@ -52,10 +52,10 @@ export function validateShipmentTransition(
 }
 
 export function validateShipmentCanDelete(status: ShipmentStatus): void {
-  if (status !== "pending") {
+  if (status !== "pending" && status !== "cancelled") {
     throw new HandlerError(
       "VALIDATION_ERROR",
-      "Solo se puede eliminar un envio en estado pending",
+      "Solo se puede eliminar un envio en estado pending o cancelled",
       400
     );
   }

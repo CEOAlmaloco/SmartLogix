@@ -65,7 +65,7 @@ function formatOrderLabel(customerName: string | undefined, total: number | unde
 }
 
 function canDeleteShipment(status: ShipmentStatus) {
-  return status === "pending";
+  return status === "pending" || status === "cancelled";
 }
 
 function statusClass(status: ShipmentStatus | undefined, classes: typeof styles) {
@@ -84,6 +84,7 @@ export default function ShipmentDashboardPage() {
   const [nextStatuses, setNextStatuses] = useState<Record<string, ShipmentStatus>>({});
   const [notice, setNotice] = useState<{ variant: "success" | "error"; message: string } | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<ShipmentItem | null>(null);
   const [formData, setFormData] = useState<ShipmentForm>({
     orderId: "",
     carrier: "",
@@ -270,20 +271,28 @@ export default function ShipmentDashboardPage() {
     }
   };
 
-  const onDeleteShipment = async (shipment: ShipmentItem) => {
+  const requestDeleteShipment = (shipment: ShipmentItem) => {
     const status = (shipment.status ?? "pending") as ShipmentStatus;
     if (!canDeleteShipment(status)) {
       setNotice({ variant: "error", message: "No se puede eliminar este envío" });
       return;
     }
 
-    const confirmed = window.confirm("¿Eliminar este envío? Esta acción no se puede deshacer.");
-    if (!confirmed) return;
+    setDeleteTarget(shipment);
+  };
+
+  const cancelDeleteShipment = () => {
+    if (submitting) return;
+    setDeleteTarget(null);
+  };
+
+  const confirmDeleteShipment = async () => {
+    if (!deleteTarget) return;
 
     try {
       setSubmitting(true);
       setNotice(null);
-      const response = await fetch(`/api/shipments/${shipment.id}`, {
+      const response = await fetch(`/api/shipments/${deleteTarget.id}`, {
         method: "DELETE",
         credentials: "include",
       });
@@ -294,6 +303,7 @@ export default function ShipmentDashboardPage() {
       }
 
       setNotice({ variant: "success", message: "Envío eliminado correctamente" });
+      setDeleteTarget(null);
       await loadShipments();
     } catch (requestError: unknown) {
       setNotice({
@@ -387,7 +397,7 @@ export default function ShipmentDashboardPage() {
                         ? "Eliminar envío"
                         : "No se puede eliminar este envío"
                     }
-                    onClick={() => void onDeleteShipment(shipment)}
+                    onClick={() => requestDeleteShipment(shipment)}
                   >
                     Eliminar
                   </button>
@@ -456,6 +466,24 @@ export default function ShipmentDashboardPage() {
             </Button>
           </div>
         </form>
+      </Modal>
+
+      <Modal
+        open={Boolean(deleteTarget)}
+        onClose={cancelDeleteShipment}
+        title="Eliminar envío"
+      >
+        <p className={styles.confirmText}>
+          ¿Eliminar este envío? Esta acción no se puede deshacer.
+        </p>
+        <div className={styles.formActions}>
+          <Button type="button" variant="soft" onClick={confirmDeleteShipment} loading={submitting}>
+            Confirmar eliminación
+          </Button>
+          <Button type="button" variant="ghost" onClick={cancelDeleteShipment} disabled={submitting}>
+            Cancelar
+          </Button>
+        </div>
       </Modal>
     </DashboardPanel>
   );

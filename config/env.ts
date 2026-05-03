@@ -16,9 +16,18 @@ function optional(name: string, fallback = ""): string {
   return process.env[name] ?? fallback;
 }
 
+export const PUBLIC_ENV = {
+  SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
+  SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "",
+} as const;
+
+export const SERVER_ENV = {
+  SUPABASE_SERVICE_ROLE_KEY: () => required("SUPABASE_SERVICE_ROLE_KEY"),
+  NODE_ENV: () => optional("NODE_ENV", "development"),
+};
+
 export const ENV = {
   SUPABASE_URL: () => required("NEXT_PUBLIC_SUPABASE_URL"),
   SUPABASE_ANON_KEY: () => required("NEXT_PUBLIC_SUPABASE_ANON_KEY"),
-  SUPABASE_SERVICE_ROLE_KEY: () => required("SUPABASE_SERVICE_ROLE_KEY"),
-  NODE_ENV: () => optional("NODE_ENV", "development"),
+  ...SERVER_ENV,
 };

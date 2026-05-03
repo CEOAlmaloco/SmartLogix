@@ -68,7 +68,7 @@ export default function DashboardPage() {
   return (
     <div className="d-grid gap-3">
       <section className={styles.panel}>
-        <h2>Overview de operación</h2>
+        <h2>Resumen de operación</h2>
         <p>
           Desde aquí ves el pulso del negocio y navegas a cada módulo operativo de pedidos,
           inventario y envíos.
@@ -95,23 +95,11 @@ export default function DashboardPage() {
       <section className="row g-3">
         <div className="col-12 col-md-4">
           <article className={styles.moduleCard}>
-            <h3>Orders</h3>
-            <p>Módulo disponible hoy para listar, crear y actualizar estado de pedidos.</p>
-            <div className={styles.moduleLink}>
-              <Link href="/dashboard/order" className="btn btn-sm btn-outline-secondary">
-                Ir a Orders
-              </Link>
-            </div>
-          </article>
-        </div>
-
-        <div className="col-12 col-md-4">
-          <article className={styles.moduleCard}>
-            <h3>Inventory</h3>
+            <h3>Inventario</h3>
             <p>Visualiza stock por bodega y gestiona altas, ajustes y bajas de ítems.</p>
             <div className={styles.moduleLink}>
               <Link href="/dashboard/inventory" className="btn btn-sm btn-outline-secondary">
-                Ir a Inventory
+                Ir a Inventario
               </Link>
             </div>
           </article>
@@ -119,11 +107,23 @@ export default function DashboardPage() {
 
         <div className="col-12 col-md-4">
           <article className={styles.moduleCard}>
-            <h3>Shipments</h3>
+            <h3>Pedidos</h3>
+            <p>Módulo disponible hoy para listar, crear y actualizar estado de pedidos.</p>
+            <div className={styles.moduleLink}>
+              <Link href="/dashboard/order" className="btn btn-sm btn-outline-secondary">
+                Ir a Pedidos
+              </Link>
+            </div>
+          </article>
+        </div>
+
+        <div className="col-12 col-md-4">
+          <article className={styles.moduleCard}>
+            <h3>Envios</h3>
             <p>Gestiona envíos ligados a pedidos aprobados y su trazabilidad logística.</p>
             <div className={styles.moduleLink}>
               <Link href="/dashboard/shipment" className="btn btn-sm btn-outline-secondary">
-                Ir a Shipments
+                Ir a Envios
               </Link>
             </div>
           </article>
