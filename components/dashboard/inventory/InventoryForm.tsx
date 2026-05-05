@@ -2,7 +2,7 @@ import type { FormData } from "./hooks/useInventory";
 import type { FormEvent } from "react";
 import { Button } from "@/components/ui/Button";
 import { TextField } from "@/components/ui/TextField";
-import styles from "@/app/dashboard/dashboard.module.css";
+import styles from "@/app/(views)/dashboard/dashboard.module.css";
 
 type Props = {
   formData: FormData;

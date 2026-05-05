@@ -1,5 +1,5 @@
 import type { InventoryItem } from "./hooks/useInventory";
-import styles from "@/app/dashboard/dashboard.module.css";
+import styles from "@/app/(views)/dashboard/dashboard.module.css";
 
 const LOW_STOCK_THRESHOLD = 5;
 

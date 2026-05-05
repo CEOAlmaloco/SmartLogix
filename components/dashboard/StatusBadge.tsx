@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "@/app/dashboard/dashboard.module.css";
+import styles from "@/app/(views)/dashboard/dashboard.module.css";
 
 type Props = {
   variant?: string;

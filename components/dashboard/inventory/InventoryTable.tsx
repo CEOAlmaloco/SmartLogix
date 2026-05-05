@@ -1,5 +1,5 @@
 import type { InventoryItem } from "./hooks/useInventory";
-import styles from "@/app/dashboard/dashboard.module.css";
+import styles from "@/app/(views)/dashboard/dashboard.module.css";
 
 function formatDate(value?: string) {
   if (!value) return "-";
