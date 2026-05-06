@@ -9,7 +9,7 @@ Plataforma logistica para PYMEs eCommerce: inventario, pedidos y envios, con un 
 ## Arbol
 
 ```text
-smartlogixrefactoring/
+smartlogix/
 ├── app/
 │   ├── api/                      # BFF: solo entrypoints HTTP, sin logica
 │   │   ├── auth/
@@ -25,16 +25,17 @@ smartlogixrefactoring/
 │   │   └── shipments/
 │   │       ├── route.ts
 │   │       └── [id]/route.ts
-│   ├── auth/
-│   │   ├── login/page.tsx
-│   │   └── register/page.tsx
-│   ├── dashboard/
-│   │   ├── layout.tsx
-│   │   ├── page.tsx
-│   │   ├── dashboard.module.css
-│   │   ├── inventory/page.tsx
-│   │   ├── order/page.tsx
-│   │   └── shipment/page.tsx
+│   ├── (views)/                  
+│   │   ├── auth/
+│   │   │   ├── login/page.tsx
+│   │   │   └── register/page.tsx
+│   │   └── dashboard/
+│   │       ├── layout.tsx
+│   │       ├── page.tsx
+│   │       ├── dashboard.module.css
+│   │       ├── inventory/page.tsx
+│   │       ├── order/page.tsx
+│   │       └── shipment/page.tsx
 │   ├── globals.css
 │   ├── layout.tsx
 │   ├── page.tsx
@@ -306,7 +307,7 @@ Ejemplos:
 ## Buenas practicas del equipo
 
 - No trabajar directamente en `main` ni `develop`.
-- PRs pequenos y enfocados (idealmente < 400 lineas modificadas).
+- PRs pequeños y enfocados (idealmente < 400 lineas modificadas).
 - Mensajes de commit descriptivos en presente (`feat: agrega ...`, no `agregue ...`).
 - Eliminar la rama remota despues del merge.
 - Si una regla de validacion aplica en dos modulos, **vive en el del dueno** y el otro la importa. **No copiar.**
