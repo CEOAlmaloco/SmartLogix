@@ -1,8 +1,8 @@
-import { HomeBenefits } from "./_components/home/HomeBenefits";
-import { HomeCTA } from "./_components/home/HomeCTA";
-import { HomeFlow } from "./_components/home/HomeFlow";
-import { HomeHero } from "./_components/home/HomeHero";
-import { HomeNavbar } from "./_components/home/HomeNavbar";
+import { HomeBenefits } from "@/components/home/HomeBenefits";
+import { HomeCTA } from "@/components/home/HomeCTA";
+import { HomeFlow } from "@/components/home/HomeFlow";
+import { HomeHero } from "@/components/home/HomeHero";
+import { HomeNavbar } from "@/components/home/HomeNavbar";
 import styles from "./page.module.css";
 
 export default function Home() {

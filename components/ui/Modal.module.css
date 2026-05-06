@@ -1,0 +1,63 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  background: rgb(62 34 12 / 42%);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal {
+  width: min(680px, 100%);
+  max-height: min(88vh, 900px);
+  overflow: auto;
+  border-radius: 18px;
+  border: 1px solid rgb(223 126 48 / 22%);
+  background: #fff9ef;
+  box-shadow: 0 24px 48px rgb(88 42 12 / 24%);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.95rem 1rem;
+  border-bottom: 1px solid rgb(223 126 48 / 18%);
+}
+
+.header h3 {
+  margin: 0;
+  color: #5f2a08;
+  font-size: 1.05rem;
+}
+
+.closeBtn {
+  border: 1px solid rgb(223 126 48 / 24%);
+  background: #fff2de;
+  color: #8b4b1a;
+  border-radius: 9px;
+  width: 32px;
+  height: 32px;
+  line-height: 1;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.body {
+  padding: 1rem;
+}
+
+@media (max-width: 640px) {
+  .backdrop {
+    padding: 0.7rem;
+  }
+
+  .modal {
+    border-radius: 14px;
+  }
+}
