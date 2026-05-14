@@ -1,0 +1,24 @@
+name: SonarQube Cloud Analysis
+
+on:
+  push:
+    branches:
+      - main # Cambia a master o tu rama principal si es diferente
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  sonarcloud:
+    name: SonarQube Cloud Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Crucial: desactiva el clonado superficial para que Sonar analice el historial
+
+      - name: SonarQube Cloud Scan
+        uses: sonarsource/sonarcloud-github-action@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Generado automáticamente por GitHub
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}   # Debes crearlo en SonarQube y añadirlo a GitHub
