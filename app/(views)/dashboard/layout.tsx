@@ -5,6 +5,7 @@ import { getAuthenticatedUser } from "@/lib/auth";
 import { createServiceRoleClient } from "@/lib/supabase/server";
 import { MobileMenu } from "@/components/dashboard/MobileMenu";
 import { LogoutButton } from "@/components/dashboard/LogoutButton";
+import { FooterMinimal } from "@/components/auth/FooterMinimal";
 import styles from "./dashboard.module.css";
 
 type DashboardLayoutProps = {
@@ -60,46 +61,50 @@ export default async function DashboardLayout({ children }: DashboardLayoutProps
   }
 
   return (
-    <main className={styles.page}>
-      <div className="container py-4 py-lg-5">
-        <header className={`${styles.topbar} d-flex align-items-center justify-content-between`}>
-          <div>
-            <p className={styles.kicker}>SmartLogix</p>
-            <h1 className={styles.title}>Panel de operaciones</h1>
-            <p className={styles.pymeName}>{pymeName}</p>
-          </div>
+    <>
+      <main className={styles.page}>
+        <div className="container py-4 py-lg-5">
+          <header className={`${styles.topbar} d-flex align-items-center justify-content-between`}>
+            <div>
+              <p className={styles.kicker}>SmartLogix</p>
+              <h1 className={styles.title}>Panel de operaciones</h1>
+              <p className={styles.pymeName}>{pymeName}</p>
+            </div>
 
-          <div className={`${styles.desktopNav} d-flex gap-2 flex-wrap`}>
-            <Link href="/dashboard" className={`btn ${styles.navBtn}`}>
-              Resumen
-            </Link>
-            <Link href="/dashboard/inventory" className={`btn ${styles.navBtn}`}>
-              Inventario
-            </Link>
-            <Link href="/dashboard/order" className={`btn ${styles.navBtn}`}>
-              Pedidos
-            </Link>
-            <Link href="/dashboard/shipment" className={`btn ${styles.navBtn}`}>
-              Envios
-            </Link>
-            <LogoutButton />
-          </div>
+            <div className={`${styles.desktopNav} d-flex gap-2 flex-wrap`}>
+              <Link href="/dashboard" className={`btn ${styles.navBtn}`}>
+                Resumen
+              </Link>
+              <Link href="/dashboard/inventory" className={`btn ${styles.navBtn}`}>
+                Inventario
+              </Link>
+              <Link href="/dashboard/order" className={`btn ${styles.navBtn}`}>
+                Pedidos
+              </Link>
+              <Link href="/dashboard/shipment" className={`btn ${styles.navBtn}`}>
+                Envios
+              </Link>
+              <LogoutButton />
+            </div>
 
-          <div className={styles.mobileNav}>
-            <MobileMenu
-              title={pymeName}
-              links={[
-                { href: "/dashboard", label: "Resumen" },
-                { href: "/dashboard/inventory", label: "Inventario" },
-                { href: "/dashboard/order", label: "Pedidos" },
-                { href: "/dashboard/shipment", label: "Envios" },
-              ]}
-            />
-          </div>
-        </header>
+            <div className={styles.mobileNav}>
+              <MobileMenu
+                title={pymeName}
+                links={[
+                  { href: "/dashboard", label: "Resumen" },
+                  { href: "/dashboard/inventory", label: "Inventario" },
+                  { href: "/dashboard/order", label: "Pedidos" },
+                  { href: "/dashboard/shipment", label: "Envios" },
+                ]}
+              />
+            </div>
+          </header>
 
-        <section className={styles.content}>{children}</section>
-      </div>
-    </main>
+          <section className={styles.content}>{children}</section>
+        </div>
+      </main>
+
+      <FooterMinimal />
+    </>
   );
 }

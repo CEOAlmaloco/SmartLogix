@@ -1,4 +1,10 @@
 .navbar {
+  width: 100%;
+  padding: 0.6rem 0; /* vertical spacing while inner handles visual box */
+}
+
+/* inner content box: centered, rounded and with background */
+.inner {
   border: 1px solid rgb(223 126 48 / 18%);
   border-radius: 16px;
   background: rgb(255 252 247 / 82%);

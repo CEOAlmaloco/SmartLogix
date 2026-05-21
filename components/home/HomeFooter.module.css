@@ -1,0 +1,88 @@
+.footer {
+  width: 100%;
+  background: var(--background);
+  color: var(--foreground);
+  border-top: 1px solid rgba(81,38,11,0.08);
+}
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.25rem 1rem 1rem;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.logoRow {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+.logoText {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--foreground);
+}
+.tagline {
+  color: rgba(81,38,11,0.8);
+  font-size: 0.95rem;
+}
+.colTitle {
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+}
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+.link {
+  color: rgba(81,38,11,0.9);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+.link:hover {
+  text-decoration: underline;
+}
+.bottomBar {
+  border-top: 1px solid rgba(81,38,11,0.06);
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+.socials {
+  display: flex;
+  gap: 0.75rem;
+}
+.socialLink {
+  color: rgba(81,38,11,0.9);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .bottomBar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

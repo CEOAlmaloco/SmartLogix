@@ -37,7 +37,7 @@
 }
 
 .filterBar {
-  margin-bottom: 0.9rem;
+  margin: 0.9rem 0 0.9rem 0;
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) repeat(2, minmax(0, 0.8fr));
   gap: 0.7rem;
@@ -141,10 +141,17 @@
 }
 
 .actionGrid {
-  margin-top: 0.75rem;
   display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
   flex-wrap: wrap;
   gap: 0.55rem;
+}
+
+.toolbarActions {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
 }
 
 .usersTableWrap {

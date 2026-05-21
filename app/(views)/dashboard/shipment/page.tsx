@@ -54,6 +54,10 @@ function defaultEstimatedDelivery() {
   return date.toISOString().slice(0, 10);
 }
 
+function getTodayISODate() {
+  return new Date().toISOString().slice(0, 10);
+}
+
 function formatOrderLabel(customerName: string | undefined, total: number | undefined) {
   const formatted = new Intl.NumberFormat("es-CL", {
     style: "currency",
@@ -91,6 +95,7 @@ export default function ShipmentDashboardPage() {
     trackingCode: "",
     estimatedDelivery: defaultEstimatedDelivery(),
   });
+  const minimumEstimatedDelivery = useMemo(() => getTodayISODate(), []);
 
   const loadShipments = useCallback(async () => {
     try {
@@ -189,6 +194,14 @@ export default function ShipmentDashboardPage() {
 
     if (!formData.orderId) {
       setNotice({ variant: "error", message: "Debes seleccionar un pedido aprobado" });
+      return;
+    }
+
+    if (formData.estimatedDelivery < minimumEstimatedDelivery) {
+      setNotice({
+        variant: "error",
+        message: "La fecha de entrega estimada no puede ser anterior a hoy",
+      });
       return;
     }
 
@@ -451,6 +464,7 @@ export default function ShipmentDashboardPage() {
           <TextField
             label="Entrega estimada"
             type="date"
+            min={minimumEstimatedDelivery}
             value={formData.estimatedDelivery}
             onChange={(event) =>
               setFormData((prev) => ({ ...prev, estimatedDelivery: event.target.value }))

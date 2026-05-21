@@ -74,6 +74,7 @@ export default function PlatformOverviewPage() {
     <DashboardPanel
       title="Overview global"
       subtitle="Visibilidad operativa sobre la plataforma, sus PYMEs y los volúmenes transaccionales acumulados."
+      actionsClassName={platformStyles.toolbarActions}
       actions={<Link href="/platform/pymes" className={`btn ${styles.navBtn}`}>Ver PYMEs</Link>}
     >
       {error ? <StatusMessage variant="error" message={error} /> : null}

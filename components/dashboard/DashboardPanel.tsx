@@ -7,10 +7,11 @@ type Props = {
   title?: ReactNode;
   subtitle?: ReactNode;
   actions?: ReactNode;
+  actionsClassName?: string;
   children?: ReactNode;
 };
 
-export function DashboardPanel({ title, subtitle, actions, children }: Props) {
+export function DashboardPanel({ title, subtitle, actions, actionsClassName, children }: Props) {
   return (
     <section className={styles.panel}>
       <div className={styles.pageToolbar}>
@@ -18,7 +19,7 @@ export function DashboardPanel({ title, subtitle, actions, children }: Props) {
           {title ? <h2>{title}</h2> : null}
           {subtitle ? <p>{subtitle}</p> : null}
         </div>
-        <div className={styles.toolbarActions}>{actions}</div>
+        <div className={`${styles.toolbarActions} ${actionsClassName ?? ""}`.trim()}>{actions}</div>
       </div>
 
       {children}

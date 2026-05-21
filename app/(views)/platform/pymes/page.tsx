@@ -106,6 +106,7 @@ export default function PlatformPymesPage() {
     <DashboardPanel
       title="PYMEs registradas"
       subtitle="Listado y control del estado operativo de cada empresa conectada a SmartLogix."
+      actionsClassName={platformStyles.toolbarActions}
       actions={
         <div className={platformStyles.actionGrid}>
           <Link href="/platform" className={`btn ${styles.navBtn}`}>Volver al overview</Link>

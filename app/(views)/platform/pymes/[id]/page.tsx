@@ -141,6 +141,7 @@ export default function PlatformPymeDetailPage() {
     <DashboardPanel
       title={detail?.name ?? (loading ? "Cargando PYME..." : "Detalle de PYME")}
       subtitle="Gestión del estado operativo de la empresa y revisión de los usuarios vinculados."
+      actionsClassName={platformStyles.toolbarActions}
       actions={<Link href="/platform/pymes" className={`btn ${styles.navBtn}`}>Volver a PYMEs</Link>}
     >
       {error ? <StatusMessage variant="error" message={error} /> : null}
