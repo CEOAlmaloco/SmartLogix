@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Sora, Space_Mono } from "next/font/google";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./globals.css";
+import { CookieConsent } from "@/components/legal/CookieConsent";
 
 const sora = Sora({
   variable: "--font-sora",
@@ -26,10 +27,13 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="es"
       className={`${sora.variable} ${spaceMono.variable} h-full antialiased`}
     >
-      <body className="app-root">{children}</body>
+      <body className="app-root">
+        <div className="app-main">{children}</div>
+        <CookieConsent />
+      </body>
     </html>
   );
 }

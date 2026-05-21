@@ -12,10 +12,25 @@
   backdrop-filter: blur(6px);
 }
 
-.logoWrap {
+.brandLink {
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 12px;
+  padding: 0.15rem 0.35rem 0.15rem 0.15rem;
+  transition: background-color 160ms ease, opacity 160ms ease;
+}
+
+.brandLink:hover {
+  background: rgb(249 180 85 / 16%);
+  text-decoration: none;
+}
+
+.brandLink:focus-visible {
+  outline: 2px solid #df7e30;
+  outline-offset: 2px;
 }
 
 .logoImage {

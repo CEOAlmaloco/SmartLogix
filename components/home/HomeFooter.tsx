@@ -1,7 +1,31 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { FOOTER_HOME, LEGAL, type FooterLink } from "@/config/legal";
 import styles from "./HomeFooter.module.css";
+
+function FooterColumn({
+  title,
+  ariaLabel,
+  links,
+}: {
+  title: string;
+  ariaLabel: string;
+  links: readonly FooterLink[];
+}) {
+  return (
+    <div>
+      <div className={styles.colTitle}>{title}</div>
+      <nav className={styles.links} aria-label={ariaLabel}>
+        {links.map((link) => (
+          <Link key={link.href} className={styles.link} href={link.href}>
+            {link.label}
+          </Link>
+        ))}
+      </nav>
+    </div>
+  );
+}
 
 export function HomeFooter() {
   return (
@@ -10,51 +34,26 @@ export function HomeFooter() {
         <div className={styles.grid}>
           <div className={styles.brand}>
             <div className={styles.logoRow}>
-              <Image src="/brand/sl_icon.png" alt="SmartLogix" width={40} height={40} priority />
-              <span className={styles.logoText}>SmartLogix</span>
+              <Image src="/brand/sl_icon.png" alt={LEGAL.brandName} width={40} height={40} priority />
+              <span className={styles.logoText}>{LEGAL.brandName}</span>
             </div>
             <div className={styles.tagline}>La plataforma logística para PYMEs de eCommerce.</div>
             <div>Gestiona inventario, pedidos y envíos desde un solo lugar.</div>
-            <div style={{ marginTop: "0.5rem", fontSize: "0.95rem" }}>contacto@smartlogix.cl</div>
+            <a className={styles.contactEmail} href={`mailto:${LEGAL.contactEmail}`}>
+              {LEGAL.contactEmail}
+            </a>
           </div>
 
-          <div>
-            <div className={styles.colTitle}>Producto</div>
-            <nav className={styles.links} aria-label="Producto">
-              <Link className={styles.link} href="/#features">Funcionalidades</Link>
-              <Link className={styles.link} href="/#pricing">Precios</Link>
-              <Link className={styles.link} href="/#integrations">Integraciones</Link>
-              <Link className={styles.link} href="/legal/seguridad">Seguridad</Link>
-            </nav>
-          </div>
-
-          <div>
-            <div className={styles.colTitle}>Legal</div>
-            <nav className={styles.links} aria-label="Legal">
-              <Link className={styles.link} href="/legal/terminos">Términos de servicio</Link>
-              <Link className={styles.link} href="/legal/privacidad">Política de privacidad</Link>
-              <Link className={styles.link} href="/legal/cookies">Política de cookies</Link>
-            </nav>
-          </div>
-
-          <div>
-            <div className={styles.colTitle}>Empresa</div>
-            <nav className={styles.links} aria-label="Empresa">
-              <Link className={styles.link} href="/about">Nosotros</Link>
-              <Link className={styles.link} href="/contact">Contacto</Link>
-            </nav>
-          </div>
+          <FooterColumn title="Producto" ariaLabel="Producto" links={FOOTER_HOME.producto} />
+          <FooterColumn title="Legal" ariaLabel="Legal" links={FOOTER_HOME.legal} />
+          <FooterColumn title="Empresa" ariaLabel="Empresa" links={FOOTER_HOME.empresa} />
         </div>
 
         <div className={styles.bottomBar}>
-          <div>© 2026 SmartLogix SpA. Todos los derechos reservados.</div>
-          <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-            <div>contacto@smartlogix.cl</div>
-            <div className={styles.socials}>
-              <a className={styles.socialLink} href="TODO" target="_blank" rel="noreferrer">SOCIAL1</a>
-              <a className={styles.socialLink} href="TODO" target="_blank" rel="noreferrer">SOCIAL2</a>
-            </div>
-          </div>
+          <p className={styles.stageNotice}>{LEGAL.stageNotice}</p>
+          <p className={styles.copyright}>
+            © {LEGAL.copyrightYear} {LEGAL.companyName}. Todos los derechos reservados.
+          </p>
         </div>
       </div>
     </footer>

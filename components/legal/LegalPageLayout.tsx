@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { HomeFooter } from "@/components/home/HomeFooter";
+import { FooterMinimal } from "@/components/auth/FooterMinimal";
 import { HomeNavbar } from "@/components/home/HomeNavbar";
 import styles from "./LegalPageLayout.module.css";
 
@@ -14,14 +14,15 @@ type LegalPageLayoutProps = {
   title: string;
   summary: string;
   updatedAt: string;
+  version?: string;
   contactEmail: string;
-  highlights: string[];
+  /** Etiqueta del correo en el encabezado (p. ej. «Contacto de seguridad»). */
+  contactLabel?: string;
   sections: LegalSection[];
-  /**
-   * When false, hide the aside (table of contents) and render only the
-   * stacked cards. Useful for single-card legal pages that must feel formal.
-   */
-  showAside?: boolean;
+  /** Texto introductorio antes del primer capítulo (opcional). */
+  preamble?: ReactNode;
+  /** Nota bajo el índice lateral (opcional). */
+  tocNote?: ReactNode;
 };
 
 export function LegalPageLayout({
@@ -29,74 +30,76 @@ export function LegalPageLayout({
   title,
   summary,
   updatedAt,
+  version = "1.0",
   contactEmail,
-  highlights,
+  contactLabel = "Consultas",
   sections,
-  showAside = true,
+  preamble,
+  tocNote,
 }: LegalPageLayoutProps) {
-  return (
+  const defaultTocNote = (
     <>
-      <main className={styles.page}>
-        <section className="container py-4 py-lg-5">
-          <HomeNavbar />
-
-          <header className={styles.hero}>
-            <span className={styles.eyebrow}>{eyebrow}</span>
-            <h1 className={styles.title}>{title}</h1>
-            <p className={styles.summary}>{summary}</p>
-            <p className={styles.heroMeta}>Actualizado: {updatedAt}</p>
-
-            <div className={styles.highlights}>
-              {highlights.map((highlight) => (
-                <span key={highlight} className={styles.pill}>
-                  {highlight}
-                </span>
-              ))}
-            </div>
-          </header>
-
-          {showAside === false ? (
-            <div className={styles.cards}>
-              {sections.map((section) => (
-                <article id={section.id} key={section.id} className={styles.card}>
-                  <h2>{section.title}</h2>
-                  {section.content}
-                </article>
-              ))}
-            </div>
-          ) : (
-            <div className={styles.layout}>
-              <aside className={styles.asideCard}>
-                <h2 className={styles.asideTitle}>Contenido</h2>
-                <nav aria-label="Secciones legales">
-                  <ul className={styles.quickLinks}>
-                    {sections.map((section) => (
-                      <li key={section.id}>
-                        <a href={`#${section.id}`}>{section.title}</a>
-                      </li>
-                    ))}
-                  </ul>
-                </nav>
-
-                <div className={styles.contact}>
-                  Consultas legales: <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
-                </div>
-              </aside>
-
-              <div className={styles.cards}>
-                {sections.map((section) => (
-                  <article id={section.id} key={section.id} className={styles.card}>
-                    <h2>{section.title}</h2>
-                    {section.content}
-                  </article>
-                ))}
-              </div>
-            </div>
-          )}
-        </section>
-      </main>
-
-      <HomeFooter />
+      Consultas sobre este documento:{" "}
+      <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
     </>
+  );
+  return (
+    <main className={styles.page}>
+      <section className={`container ${styles.wrap}`}>
+        <HomeNavbar />
+
+        <header className={styles.docHeader}>
+          <p className={styles.eyebrow}>{eyebrow}</p>
+          <h1 className={styles.title}>{title}</h1>
+          <p className={styles.summary}>{summary}</p>
+          <dl className={styles.meta}>
+            <div>
+              <dt>Versión</dt>
+              <dd>{version}</dd>
+            </div>
+            <div>
+              <dt>Última actualización</dt>
+              <dd>{updatedAt}</dd>
+            </div>
+            <div>
+              <dt>{contactLabel}</dt>
+              <dd>
+                <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+              </dd>
+            </div>
+          </dl>
+        </header>
+
+        <div className={styles.docShell}>
+          <aside className={styles.toc} aria-label="Índice del documento">
+            <p className={styles.tocLabel}>Índice</p>
+            <nav>
+              <ol className={styles.tocList}>
+                {sections.map((section, index) => (
+                  <li key={section.id}>
+                    <a href={`#${section.id}`}>
+                      <span className={styles.tocNum}>{index + 1}.</span>
+                      <span>{section.title}</span>
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+            <p className={styles.tocNote}>{tocNote ?? defaultTocNote}</p>
+          </aside>
+
+          <article className={styles.document}>
+            {preamble ? <div className={styles.preamble}>{preamble}</div> : null}
+            {sections.map((section) => (
+              <section key={section.id} id={section.id} className={styles.chapter}>
+                <h2 className={styles.chapterTitle}>{section.title}</h2>
+                <div className={styles.prose}>{section.content}</div>
+              </section>
+            ))}
+          </article>
+        </div>
+      </section>
+      <FooterMinimal />
+    </main>
   );
 }

@@ -3,10 +3,12 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useMemo, useState } from "react";
+import { AppIcon } from "@/components/icons/AppIcon";
 import { Button } from "@/components/ui/Button";
 import { StatusMessage } from "@/components/ui/StatusMessage";
 import { TextField } from "@/components/ui/TextField";
 import styles from "./AuthForm.module.css";
+import { FOOTER_HOME } from "@/config/legal";
 
 type AuthMode = "login" | "register";
 
@@ -43,6 +45,7 @@ export function AuthForm({ mode }: AuthFormProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [pymeName, setPymeName] = useState("");
+  const [acceptTerms, setAcceptTerms] = useState(false);
   const [loading, setLoading] = useState(false);
   const [feedback, setFeedback] = useState<Feedback>(null);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
@@ -121,6 +124,14 @@ export function AuthForm({ mode }: AuthFormProps) {
     const validationErrors = isRegister
       ? validateRegister(emailValue, passwordValue, pymeValue)
       : validateLogin(emailValue, passwordValue);
+
+    if (isRegister && !acceptTerms) {
+      setFeedback({
+        type: "error",
+        message: "Debes aceptar los términos de servicio y la política de privacidad para registrarte.",
+      });
+      return;
+    }
 
     if (Object.keys(validationErrors).length > 0) {
       setFieldErrors(validationErrors);
@@ -310,16 +321,36 @@ export function AuthForm({ mode }: AuthFormProps) {
         <>
           <ul className={styles.passwordChecklist}>
             <li className={passwordChecks.minLength ? styles.met : styles.unmet}>
-              <span aria-hidden>{passwordChecks.minLength ? "✓" : "○"}</span> Mínimo 8 caracteres
+              <AppIcon
+                name={passwordChecks.minLength ? "check" : "circle"}
+                size={14}
+                className={styles.checkIcon}
+              />
+              Mínimo 8 caracteres
             </li>
             <li className={passwordChecks.hasUppercase ? styles.met : styles.unmet}>
-              <span aria-hidden>{passwordChecks.hasUppercase ? "✓" : "○"}</span> Al menos una mayúscula
+              <AppIcon
+                name={passwordChecks.hasUppercase ? "check" : "circle"}
+                size={14}
+                className={styles.checkIcon}
+              />
+              Al menos una mayúscula
             </li>
             <li className={passwordChecks.hasLowercase ? styles.met : styles.unmet}>
-              <span aria-hidden>{passwordChecks.hasLowercase ? "✓" : "○"}</span> Al menos una minúscula
+              <AppIcon
+                name={passwordChecks.hasLowercase ? "check" : "circle"}
+                size={14}
+                className={styles.checkIcon}
+              />
+              Al menos una minúscula
             </li>
             <li className={passwordChecks.hasNumber ? styles.met : styles.unmet}>
-              <span aria-hidden>{passwordChecks.hasNumber ? "✓" : "○"}</span> Al menos un número
+              <AppIcon
+                name={passwordChecks.hasNumber ? "check" : "circle"}
+                size={14}
+                className={styles.checkIcon}
+              />
+              Al menos un número
             </li>
           </ul>
 
@@ -361,6 +392,31 @@ export function AuthForm({ mode }: AuthFormProps) {
             <p className={styles.passwordReady}>Contraseña lista para crear tu cuenta.</p>
           ) : null}
         </>
+      ) : null}
+
+      {isRegister ? (
+        <label className={styles.termsLabel}>
+          <input
+            type="checkbox"
+            checked={acceptTerms}
+            onChange={(e) => setAcceptTerms(e.target.checked)}
+          />
+          <span>
+            Acepto los{" "}
+            <Link href={FOOTER_HOME.legal[0].href} target="_blank" rel="noopener noreferrer">
+              términos de servicio
+            </Link>
+            , la{" "}
+            <Link href={FOOTER_HOME.legal[1].href} target="_blank" rel="noopener noreferrer">
+              política de privacidad
+            </Link>{" "}
+            y la{" "}
+            <Link href={FOOTER_HOME.legal[2].href} target="_blank" rel="noopener noreferrer">
+              política de cookies
+            </Link>
+            .
+          </span>
+        </label>
       ) : null}
 
       {feedback ? <StatusMessage variant={feedback.type} message={feedback.message} /> : null}

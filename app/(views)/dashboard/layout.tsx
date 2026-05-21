@@ -66,7 +66,9 @@ export default async function DashboardLayout({ children }: DashboardLayoutProps
         <div className="container py-4 py-lg-5">
           <header className={`${styles.topbar} d-flex align-items-center justify-content-between`}>
             <div>
-              <p className={styles.kicker}>SmartLogix</p>
+              <Link href="/" className={styles.kicker}>
+                SmartLogix
+              </Link>
               <h1 className={styles.title}>Panel de operaciones</h1>
               <p className={styles.pymeName}>{pymeName}</p>
             </div>
@@ -103,7 +105,6 @@ export default async function DashboardLayout({ children }: DashboardLayoutProps
           <section className={styles.content}>{children}</section>
         </div>
       </main>
-
       <FooterMinimal />
     </>
   );

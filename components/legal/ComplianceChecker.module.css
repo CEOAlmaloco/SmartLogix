@@ -1,0 +1,107 @@
+.wrap {
+  margin: 1.25rem 0 0;
+  padding: 1.15rem 1.25rem;
+  background: rgb(255 248 236 / 85%);
+  border: 1px solid rgb(223 126 48 / 16%);
+  border-radius: 12px;
+}
+
+.summary {
+  padding: 0.8rem 1rem;
+  border-radius: 10px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.summaryOk {
+  background: rgb(47 143 72 / 10%);
+  border: 1px solid rgb(47 143 72 / 28%);
+  color: #2f8f48;
+}
+
+.summaryWarn {
+  background: rgb(249 180 85 / 20%);
+  border: 1px solid rgb(223 126 48 / 25%);
+  color: #7b3b11;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+  align-items: start;
+  font-size: 0.92rem;
+}
+
+.badgeOk,
+.badgeFail {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.45rem;
+  border-radius: 6px;
+}
+
+.badgeOk {
+  background: rgb(47 143 72 / 12%);
+  color: #2f8f48;
+}
+
+.badgeFail {
+  background: rgb(223 126 48 / 14%);
+  color: #8f4b16;
+}
+
+.detail {
+  margin: 0.2rem 0 0;
+  color: rgb(81 38 11 / 78%);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.details {
+  margin-top: 1rem;
+  font-size: 0.88rem;
+}
+
+.details summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: #5d2a08;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.65rem;
+  font-size: 0.86rem;
+}
+
+.table th,
+.table td {
+  border: 1px solid rgb(223 126 48 / 18%);
+  padding: 0.4rem 0.55rem;
+  text-align: left;
+}
+
+.table th {
+  background: rgb(255 252 247 / 90%);
+}
+
+.note {
+  margin-top: 1rem;
+  font-size: 0.82rem;
+  color: rgb(81 38 11 / 72%);
+  line-height: 1.5;
+}

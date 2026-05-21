@@ -1,62 +1,25 @@
-import { LegalPageLayout, type LegalSection } from "@/components/legal/LegalPageLayout";
+import { LegalPageLayout } from "@/components/legal/LegalPageLayout";
+import { privacidadPreamble, privacidadSections } from "@/content/legal/privacidad";
+import { LEGAL } from "@/config/legal";
 
 export default function PrivacidadPage() {
-  const sections: LegalSection[] = [
-    {
-      id: "datos",
-      title: "Qué datos recopilamos",
-      content: (
-        <ul>
-          <li>Identidad de cuenta: correo y metadatos de autenticación.</li>
-          <li>Datos de organización: razón social, RUT y datos de operación.</li>
-          <li>Datos transaccionales: inventario, pedidos, envíos y estados logísticos.</li>
-        </ul>
-      ),
-    },
-    {
-      id: "uso",
-      title: "Cómo usamos la información",
-      content: (
-        <p>
-          Utilizamos los datos para operar la plataforma, habilitar trazabilidad,
-          generar métricas del servicio, gestionar soporte y fortalecer medidas
-          de seguridad técnica y operativa.
-        </p>
-      ),
-    },
-    {
-      id: "terceros",
-      title: "Con quién compartimos datos",
-      content: (
-        <p>
-          SmartLogix utiliza Supabase como proveedor de infraestructura para
-          autenticación, base de datos y servicios asociados. No comercializamos
-          datos personales con terceros.
-        </p>
-      ),
-    },
-    {
-      id: "derechos",
-      title: "Derechos del titular",
-      content: (
-        <p>
-          Usted puede solicitar acceso, rectificación, eliminación o limitación
-          del tratamiento de datos personales escribiendo al canal oficial de
-          privacidad.
-        </p>
-      ),
-    },
-  ];
-
   return (
     <LegalPageLayout
-      eyebrow="Protección de Datos"
+      eyebrow="Privacidad y tratamiento de datos"
       title="Política de privacidad"
-      summary="Transparencia sobre los datos que procesamos, su finalidad y los mecanismos de control disponibles para nuestros clientes."
-      updatedAt="21 mayo 2026"
-      contactEmail="privacidad@smartlogix.cl"
-      highlights={["Datos Operativos", "Supabase", "Derechos ARCO"]}
-      sections={sections}
+      summary="Cómo SmartLogix trata datos personales de usuarios, PYMEs y flujos operativos en un entorno cloud multi-tenant."
+      updatedAt="21 de mayo de 2026"
+      version="2.2"
+      contactEmail={LEGAL.privacyEmail}
+      contactLabel="Contacto de privacidad"
+      preamble={privacidadPreamble}
+      sections={privacidadSections}
+      tocNote={
+        <>
+          Documento para clientes B2B y sus usuarios autorizados. Consultas:{" "}
+          <a href={`mailto:${LEGAL.privacyEmail}`}>{LEGAL.privacyEmail}</a>
+        </>
+      }
     />
   );
 }

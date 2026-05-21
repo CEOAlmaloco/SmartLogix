@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { ReactNode } from "react";
-import styles from "./AuthPageLayout.module.css";
 import { FooterMinimal } from "@/components/auth/FooterMinimal";
-
+import styles from "./AuthPageLayout.module.css";
 type AuthPageLayoutProps = {
   title: string;
   subtitle: string;

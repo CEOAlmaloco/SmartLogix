@@ -7,6 +7,11 @@
   --dark-orange: #df7e30;
   --background: var(--soft-white);
   --foreground: #51260b;
+  --link: #51260b;
+  --link-hover: #8f4b16;
+  --bs-link-color: var(--link);
+  --bs-link-hover-color: var(--link-hover);
+  --bs-link-decoration-color: rgb(81 38 11 / 35%);
 }
 
 @theme inline {
@@ -23,9 +28,23 @@ body {
   font-family: var(--font-sora), sans-serif;
 }
 
+/* Enlaces: café oscuro (sin celeste Bootstrap por defecto) */
+a:not(.btn):not(.nav-link):not(.dropdown-item):not(.page-link) {
+  color: var(--link);
+}
+
+a:not(.btn):not(.nav-link):not(.dropdown-item):not(.page-link):hover {
+  color: var(--link-hover);
+}
+
 /* App root grid: header - content - footer */
 .app-root {
-  display: grid;
-  grid-template-rows: auto 1fr auto;
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
+}
+
+.app-main {
+  flex: 1;
+  min-height: 0;
 }

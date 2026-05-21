@@ -2,7 +2,7 @@ import styles from "./HomeBenefits.module.css";
 
 export function HomeBenefits() {
   return (
-    <section className={styles.section}>
+    <section id="features" className={styles.section}>
       <header className={styles.header}>
         <h2>Ventajas para tu operación</h2>
         <p>

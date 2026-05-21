@@ -22,8 +22,8 @@
   font-size: 0.8rem;
 }
 
-.passwordChecklist li span {
-  min-width: 14px;
+.checkIcon {
+  flex-shrink: 0;
 }
 
 .met {
@@ -40,6 +40,30 @@
   color: #2f8f48;
   font-size: 0.8rem;
   font-weight: 700;
+}
+
+.termsLabel {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: rgba(81, 38, 11, 0.9);
+}
+
+.termsLabel input {
+  margin-top: 0.2rem;
+  flex-shrink: 0;
+}
+
+.termsLabel a {
+  color: #9a4f18;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.termsLabel a:hover {
+  text-decoration: underline;
 }
 
 .switchAuth {

@@ -1,9 +1,10 @@
 import { HomeBenefits } from "@/components/home/HomeBenefits";
 import { HomeCTA } from "@/components/home/HomeCTA";
+import { HomePricing } from "@/components/home/HomePricing";
 import { HomeFlow } from "@/components/home/HomeFlow";
 import { HomeHero } from "@/components/home/HomeHero";
-import { HomeNavbar } from "@/components/home/HomeNavbar";
 import { HomeFooter } from "@/components/home/HomeFooter";
+import { HomeNavbar } from "@/components/home/HomeNavbar";
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -15,6 +16,7 @@ export default function Home() {
           <HomeHero />
           <HomeBenefits />
           <HomeFlow />
+          <HomePricing />
           <HomeCTA />
         </section>
       </main>

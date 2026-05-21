@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+import { AppIcon } from "@/components/icons/AppIcon";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { StatusMessage } from "@/components/ui/StatusMessage";
@@ -644,8 +645,14 @@ export default function OrderDashboardPage() {
 									<div>
 										{item.quantity} x {formatCurrency(item.unitPrice)} = {formatCurrency(item.quantity * item.unitPrice)}
 									</div>
-									<button type="button" className={styles.tableActionBtn} onClick={() => onRemoveSelectedItem(item.sku)}>
-										🗑
+									<button
+										type="button"
+										className={styles.tableActionBtn}
+										onClick={() => onRemoveSelectedItem(item.sku)}
+										aria-label={`Eliminar ${item.name}`}
+										title="Eliminar producto"
+									>
+										<AppIcon name="trash" size={16} aria-hidden />
 									</button>
 								</div>
 							))}

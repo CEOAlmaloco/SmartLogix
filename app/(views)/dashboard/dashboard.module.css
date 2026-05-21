@@ -16,12 +16,19 @@
 }
 
 .kicker {
+  display: inline-block;
   margin: 0;
   color: #8f4b16;
   font-size: 0.78rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  text-decoration: none;
+}
+
+.kicker:hover {
+  color: #5d2a08;
+  text-decoration: underline;
 }
 
 .title {

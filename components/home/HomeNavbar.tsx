@@ -11,17 +11,17 @@ export async function HomeNavbar() {
 
   return (
     <div className={`${styles.inner} d-flex align-items-center justify-content-between`}>
-      <div className={styles.logoWrap}>
+      <Link href="/" className={styles.brandLink} aria-label="Ir a la página principal de SmartLogix">
         <Image
           src="/brand/sl_icon.png"
-          alt="Logo SmartLogix"
+          alt=""
           width={50}
           height={50}
           className={styles.logoImage}
           priority
         />
         <span className={styles.logoText}>SmartLogix</span>
-      </div>
+      </Link>
 
       <div className="d-flex gap-2">
         {isLoggedIn ? (

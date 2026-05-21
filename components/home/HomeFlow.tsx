@@ -2,10 +2,14 @@ import styles from "./HomeFlow.module.css";
 
 export function HomeFlow() {
   return (
-    <section className={styles.section}>
+    <section id="integrations" className={styles.section}>
       <header className={styles.header}>
         <h2>Cómo funciona SmartLogix</h2>
-        <p>Un flujo simple para mantener control logístico sin tareas manuales repetitivas.</p>
+        <p>
+          Un flujo simple para mantener control logístico sin tareas manuales repetitivas. Integración
+          con canales de venta y operación mediante API y conectores en roadmap (consulte en{" "}
+          <a href="/contact">Contacto</a>).
+        </p>
       </header>
 
       <div className="row g-3">

@@ -24,7 +24,9 @@ export default async function PlatformLayout({ children }: PlatformLayoutProps) 
         <div className="container py-4 py-lg-5">
           <header className={`${styles.topbar} d-flex align-items-center justify-content-between`}>
             <div>
-              <p className={styles.kicker}>SmartLogix</p>
+              <Link href="/" className={styles.kicker}>
+                SmartLogix
+              </Link>
               <h1 className={styles.title}>Panel de plataforma</h1>
               <p className={styles.pymeName}>Administración global de la operación</p>
             </div>
@@ -53,7 +55,6 @@ export default async function PlatformLayout({ children }: PlatformLayoutProps) 
           <section className={styles.content}>{children}</section>
         </div>
       </main>
-
       <FooterMinimal />
     </>
   );

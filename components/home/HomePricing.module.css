@@ -1,0 +1,49 @@
+.section {
+  margin-top: 3.5rem;
+  scroll-margin-top: 5rem;
+}
+
+.header {
+  margin-bottom: 1.25rem;
+}
+
+.header h2 {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+  color: var(--foreground);
+}
+
+.header p {
+  margin: 0;
+  max-width: 42rem;
+  color: rgb(81 38 11 / 78%);
+}
+
+.card {
+  padding: 1.25rem 1.35rem;
+  border-radius: 12px;
+  border: 1px solid rgb(223 126 48 / 18%);
+  background: rgb(254 248 239 / 90%);
+}
+
+.card p {
+  margin: 0 0 0.65rem;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: rgb(81 38 11 / 88%);
+}
+
+.card p:last-of-type {
+  margin-bottom: 1rem;
+}
+
+.link {
+  display: inline-block;
+  font-weight: 600;
+  color: #8f4b16;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
