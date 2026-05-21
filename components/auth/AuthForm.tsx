@@ -179,6 +179,7 @@ export function AuthForm({ mode }: AuthFormProps) {
 
         const loginJson = (await loginResponse.json().catch(() => null)) as {
           message?: string;
+          redirectTo?: string;
         } | null;
 
         if (!loginResponse.ok) {
@@ -190,7 +191,7 @@ export function AuthForm({ mode }: AuthFormProps) {
           return;
         }
 
-        router.push("/dashboard");
+        router.push(loginJson?.redirectTo ?? "/dashboard");
         router.refresh();
         return;
       }
@@ -208,13 +209,14 @@ export function AuthForm({ mode }: AuthFormProps) {
 
       const loginJson = (await loginResponse.json().catch(() => null)) as {
         message?: string;
+        redirectTo?: string;
       } | null;
 
       if (!loginResponse.ok) {
         throw new Error(loginJson?.message || "Credenciales inválidas");
       }
 
-      router.push("/dashboard");
+      router.push(loginJson?.redirectTo ?? "/dashboard");
       router.refresh();
     } catch (error: unknown) {
       const message =

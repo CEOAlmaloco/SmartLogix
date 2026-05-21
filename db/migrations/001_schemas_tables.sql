@@ -8,6 +8,7 @@
     public, inventory_schema, order_schema, shipment_schema
 **/
 
+DROP TABLE IF EXISTS public.platform_admin CASCADE;
 DROP TABLE IF EXISTS public.pyme CASCADE;
 DROP TABLE IF EXISTS public.pyme_user CASCADE;
 DROP TABLE IF EXISTS inventory_schema.item CASCADE;
@@ -18,11 +19,22 @@ DROP SCHEMA IF EXISTS shipment_schema CASCADE;
 DROP SCHEMA IF EXISTS inventory_schema CASCADE;
 
 -- Multi Tenant
+CREATE TABLE public.platform_admin (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id     UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE(user_id)
+);
+
 CREATE TABLE public.pyme (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  name TEXT NOT NULL,
-  owner_id UUID NOT NULL REFERENCES auth.users (id),
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name             TEXT NOT NULL,
+  owner_id         UUID NOT NULL REFERENCES auth.users(id),
+  status           TEXT NOT NULL DEFAULT 'active'
+                     CHECK (status IN ('active', 'suspended', 'pending_review')),
+  suspended_at     TIMESTAMPTZ,
+  suspended_reason TEXT,
+  created_at       TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE public.pyme_user (

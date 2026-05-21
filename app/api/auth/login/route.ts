@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { getAuthLandingPath, resolveAuthScope } from "@/lib/auth";
 import { ENV } from "@/config/env";
 import { errorResponse, successResponse } from "@/lib/shared";
 
@@ -41,10 +42,17 @@ export async function POST(request: Request) {
       return errorResponse("AUTH_ERROR", error.message, 401);
     }
 
+    const userId = data.user?.id ?? null;
+    const scope = userId ? await resolveAuthScope(supabase, userId) : null;
+    const redirectTo = scope ? getAuthLandingPath(scope) : "/dashboard";
+
     return successResponse(
       {
         userId: data.user?.id ?? null,
         hasSession: Boolean(data.session),
+        redirectTo,
+        isPlatformAdmin: Boolean(scope?.isPlatformAdmin),
+        pymeStatus: scope?.pymeStatus ?? null,
       },
       "Login exitoso",
       200

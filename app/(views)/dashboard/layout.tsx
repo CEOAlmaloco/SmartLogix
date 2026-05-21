@@ -14,15 +14,34 @@ type DashboardLayoutProps = {
 export default async function DashboardLayout({ children }: DashboardLayoutProps) {
   let pymeName = "PYME";
 
-  // 1. Verificamos autenticación (con el bypass de desarrollo que activamos)
   const auth = await getAuthenticatedUser();
-  
-  // Si hay error en auth o no tenemos pymeId, para afuera
+  if (!auth.user) {
+    redirect("/auth/login");
+  }
+
+  if (auth.isPlatformAdmin) {
+    redirect("/platform");
+  }
+
+  if (auth.pymeStatus === "suspended") {
+    const params = new URLSearchParams();
+
+    if (auth.suspendedReason) {
+      params.set("reason", auth.suspendedReason);
+    }
+
+    if (auth.suspendedAt) {
+      params.set("suspendedAt", auth.suspendedAt);
+    }
+
+    const query = params.toString();
+    redirect(query ? `/auth/suspended?${query}` : "/auth/suspended");
+  }
+
   if (auth.response || !auth.pymeId) {
     redirect("/auth/login");
   }
 
-  // 2. Obtener el nombre de la PYME usando el cliente de servicio
   try {
     const db = createServiceRoleClient("public"); // La tabla 'pyme' siempre suele ser public
     const { data, error } = await db
@@ -67,7 +86,15 @@ export default async function DashboardLayout({ children }: DashboardLayoutProps
           </div>
 
           <div className={styles.mobileNav}>
-            <MobileMenu pymeName={pymeName} />
+            <MobileMenu
+              title={pymeName}
+              links={[
+                { href: "/dashboard", label: "Resumen" },
+                { href: "/dashboard/inventory", label: "Inventario" },
+                { href: "/dashboard/order", label: "Pedidos" },
+                { href: "/dashboard/shipment", label: "Envios" },
+              ]}
+            />
           </div>
         </header>
 

@@ -5,6 +5,9 @@ import { HandlerError, errorResponse, successResponse } from "@/lib/shared";
 export async function GET() {
   const auth = await getAuthenticatedUser();
   if (auth.response) return auth.response;
+  if (auth.isPlatformAdmin) {
+    return errorResponse("FORBIDDEN", "Acceso restringido a administradores de plataforma", 403);
+  }
 
   try {
     const shipments = await getShipmentsHandler(auth.pymeId!);
@@ -25,6 +28,9 @@ export async function GET() {
 export async function POST(request: Request) {
   const auth = await getAuthenticatedUser();
   if (auth.response) return auth.response;
+  if (auth.isPlatformAdmin) {
+    return errorResponse("FORBIDDEN", "Acceso restringido a administradores de plataforma", 403);
+  }
 
   try {
     const body = await request.json().catch(() => null);

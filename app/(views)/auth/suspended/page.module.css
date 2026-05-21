@@ -1,0 +1,36 @@
+.card {
+  margin-top: 1rem;
+  border-radius: 14px;
+  border: 1px solid rgb(223 126 48 / 15%);
+  background: rgb(255 250 242 / 90%);
+  padding: 1rem;
+}
+
+.label {
+  margin: 0;
+  color: #8f4b16;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.value {
+  margin: 0.35rem 0 0;
+  color: #5f2a08;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.support {
+  margin-top: 0.9rem;
+  color: #865127;
+  line-height: 1.55;
+}
+
+.actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}

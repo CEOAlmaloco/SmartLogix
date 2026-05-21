@@ -6,6 +6,9 @@ import { HandlerError, errorResponse, successResponse } from "@/lib/shared";
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const auth = await getAuthenticatedUser();
   if (auth.response) return auth.response;
+  if (auth.isPlatformAdmin) {
+    return errorResponse("FORBIDDEN", "Acceso restringido a administradores de plataforma", 403);
+  }
  
   try {
     const resolvedParams = await params;
@@ -37,6 +40,9 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 export async function DELETE(_: Request, { params }: { params: Promise<{ id: string }> }) {
   const auth = await getAuthenticatedUser();
   if (auth.response) return auth.response;
+  if (auth.isPlatformAdmin) {
+    return errorResponse("FORBIDDEN", "Acceso restringido a administradores de plataforma", 403);
+  }
 
   try {
     const resolvedParams = await params;

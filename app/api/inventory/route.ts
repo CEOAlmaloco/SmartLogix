@@ -19,6 +19,13 @@ export async function GET() {
   const auth = await getAuthenticatedUser()
 
   if (auth.response) return auth.response
+  if (auth.isPlatformAdmin) {
+    return errorResponse(
+      'FORBIDDEN',
+      'Acceso restringido a administradores de plataforma',
+      403
+    )
+  }
 
   try {
 
@@ -68,6 +75,13 @@ export async function POST(request: Request) {
   const auth = await getAuthenticatedUser()
 
   if (auth.response) return auth.response
+  if (auth.isPlatformAdmin) {
+    return errorResponse(
+      'FORBIDDEN',
+      'Acceso restringido a administradores de plataforma',
+      403
+    )
+  }
 
   try {
 

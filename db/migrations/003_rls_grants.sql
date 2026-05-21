@@ -5,12 +5,56 @@
   Políticas multi-tenant: el usuario solo ve/gestiona datos de PYMEs donde es miembro.
 **/
 
+ALTER TABLE public.platform_admin ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.pyme ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.pyme_user ENABLE ROW LEVEL SECURITY;
 ALTER TABLE inventory_schema.item ENABLE ROW LEVEL SECURITY;
 ALTER TABLE order_schema.purchase_order ENABLE ROW LEVEL SECURITY;
 ALTER TABLE order_schema.order_item ENABLE ROW LEVEL SECURITY;
 ALTER TABLE shipment_schema.shipment ENABLE ROW LEVEL SECURITY;
+
+-- platform_admin: gestiona PYMEs
+ALTER TABLE public.platform_admin ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "platform_admin_select_self"
+  ON public.platform_admin FOR SELECT
+  USING (user_id = auth.uid());
+
+-- El platform_admin puede ver todas las PYMEs
+CREATE POLICY "platform_admin_select_all_pymes"
+  ON public.pyme FOR SELECT
+  USING (
+    EXISTS (
+      SELECT 1 FROM public.platform_admin pa
+      WHERE pa.user_id = auth.uid()
+    )
+  );
+
+-- El platform_admin puede actualizar cualquier PYME
+CREATE POLICY "platform_admin_update_all_pymes"
+  ON public.pyme FOR UPDATE
+  USING (
+    EXISTS (
+      SELECT 1 FROM public.platform_admin pa
+      WHERE pa.user_id = auth.uid()
+    )
+  )
+  WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM public.platform_admin pa
+      WHERE pa.user_id = auth.uid()
+    )
+  );
+
+-- El platform_admin puede ver todos los pyme_user
+CREATE POLICY "platform_admin_select_all_pyme_users"
+  ON public.pyme_user FOR SELECT
+  USING (
+    EXISTS (
+      SELECT 1 FROM public.platform_admin pa
+      WHERE pa.user_id = auth.uid()
+    )
+  );
 
 -- pyme: el dueño ve y crea su registro
 CREATE POLICY "pyme_select_owner"

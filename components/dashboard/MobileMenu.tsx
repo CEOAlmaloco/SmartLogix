@@ -1,15 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { LogoutButton } from "./LogoutButton";
 import styles from "./MobileMenu.module.css";
 
 type MobileMenuProps = {
-  pymeName: string;
+  title: string;
+  links: Array<{
+    href: string;
+    label: string;
+  }>;
+  footer?: ReactNode;
 };
 
-export function MobileMenu({ pymeName }: MobileMenuProps) {
+export function MobileMenu({ title, links, footer }: MobileMenuProps) {
   const [open, setOpen] = useState(false);
 
   const closeMenu = () => setOpen(false);
@@ -48,26 +53,19 @@ export function MobileMenu({ pymeName }: MobileMenuProps) {
       <aside className={`${styles.drawer} ${open ? styles.drawerOpen : ""}`}>
         <div className={styles.drawerHeader}>
           <p className={styles.drawerKicker}>Menú</p>
-          <h2>{pymeName}</h2>
+          <h2>{title}</h2>
         </div>
 
         <div className={styles.menuList}>
-          <Link href="/dashboard" className={`btn ${styles.menuLink}`} onClick={closeMenu}>
-            Resumen
-          </Link>
-          <Link href="/dashboard/inventory" className={`btn ${styles.menuLink}`} onClick={closeMenu}>
-            Inventario
-          </Link>
-          <Link href="/dashboard/order" className={`btn ${styles.menuLink}`} onClick={closeMenu}>
-            Pedidos
-          </Link>
-          <Link href="/dashboard/shipment" className={`btn ${styles.menuLink}`} onClick={closeMenu}>
-            Envios
-          </Link>
+          {links.map((link) => (
+            <Link key={link.href} href={link.href} className={`btn ${styles.menuLink}`} onClick={closeMenu}>
+              {link.label}
+            </Link>
+          ))}
         </div>
 
         <div className={styles.drawerFooter}>
-          <LogoutButton className={styles.drawerLogout} />
+          {footer ?? <LogoutButton className={styles.drawerLogout} />}
         </div>
       </aside>
     </div>

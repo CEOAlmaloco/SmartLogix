@@ -16,6 +16,9 @@ type RouteParams = { params: Promise<{ id: string }> };
 export async function GET(request: Request, { params }: RouteParams) {
   const auth = await getAuthenticatedUser()
   if (auth.response) return auth.response
+  if (auth.isPlatformAdmin) {
+    return errorResponse('FORBIDDEN', 'Acceso restringido a administradores de plataforma', 403)
+  }
 
   try {
     const { id } = await params;
@@ -45,6 +48,9 @@ export async function GET(request: Request, { params }: RouteParams) {
 export async function PATCH(request: Request, { params }: RouteParams) {
   const auth = await getAuthenticatedUser()
   if (auth.response) return auth.response
+  if (auth.isPlatformAdmin) {
+    return errorResponse('FORBIDDEN', 'Acceso restringido a administradores de plataforma', 403)
+  }
 
   try {
     const { id } = await params;
@@ -72,8 +78,8 @@ export async function PATCH(request: Request, { params }: RouteParams) {
     }
 
     const updateData = Object.fromEntries(
-  Object.entries(raw).filter(([_, v]) => v != null)  // != filtra null y undefined
-) as UpdatePayload
+      Object.entries(raw).filter(([, v]) => v != null) // != filtra null y undefined
+    ) as UpdatePayload
 
   if (Object.keys(updateData).length === 0) {
     return errorResponse('VALIDATION_ERROR', 'No se enviaron campos para actualizar', 400)
@@ -95,6 +101,9 @@ export async function PATCH(request: Request, { params }: RouteParams) {
 export async function DELETE(request: Request, { params }: RouteParams) {
   const auth = await getAuthenticatedUser()
   if (auth.response) return auth.response
+  if (auth.isPlatformAdmin) {
+    return errorResponse('FORBIDDEN', 'Acceso restringido a administradores de plataforma', 403)
+  }
 
   try {
     const { id } = await params;
