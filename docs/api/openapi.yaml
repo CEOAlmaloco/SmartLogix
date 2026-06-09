@@ -1,0 +1,633 @@
+openapi: 3.0.3
+info:
+  title: SmartLogix BFF API
+  description: |
+    API REST del Backend for Frontend (BFF) de SmartLogix.
+    Monorepo Next.js con microservicios lógicos: Inventory, Orders, Shipments.
+    Autenticación vía Supabase Auth (cookies de sesión).
+  version: 1.0.0
+  contact:
+    name: SmartLogix
+    url: https://github.com/CEOAlmaloco/SmartLogix
+
+servers:
+  - url: http://localhost:3000
+    description: Desarrollo local
+  - url: https://smartlogix.vercel.app
+    description: Producción (ajustar según despliegue)
+
+tags:
+  - name: Auth
+    description: Registro, login y logout
+  - name: Inventory
+    description: Microservicio lógico de inventario
+  - name: Orders
+    description: Microservicio lógico de pedidos
+  - name: Shipments
+    description: Microservicio lógico de envíos
+  - name: Platform
+    description: Administración global de PYMEs (platform_admin)
+  - name: Contact
+    description: Formulario de contacto público
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sb-access-token
+      description: Sesión Supabase establecida tras POST /api/auth/login
+
+  schemas:
+    ApiSuccess:
+      type: object
+      properties:
+        data:
+          type: object
+        message:
+          type: string
+      required: [data]
+
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+          example: VALIDATION_ERROR
+        message:
+          type: string
+        details:
+          type: object
+      required: [code, message]
+
+    RegisterRequest:
+      type: object
+      required: [email, password, pymeName]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 8
+        pymeName:
+          type: string
+
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+
+    CreateInventoryItem:
+      type: object
+      required: [name, sku, quantity]
+      properties:
+        name:
+          type: string
+        sku:
+          type: string
+        quantity:
+          type: integer
+          minimum: 0
+        unit_price:
+          type: number
+        warehouse:
+          type: string
+
+    UpdateInventoryItem:
+      type: object
+      properties:
+        name:
+          type: string
+        sku:
+          type: string
+        quantity:
+          type: integer
+        unit_price:
+          type: number
+        warehouse:
+          type: string
+
+    OrderItemInput:
+      type: object
+      required: [sku, quantity, unitPrice]
+      properties:
+        sku:
+          type: string
+        quantity:
+          type: integer
+        unitPrice:
+          type: number
+
+    CreateOrder:
+      type: object
+      required: [customerName, customerEmail, total, items]
+      properties:
+        customerName:
+          type: string
+        customerEmail:
+          type: string
+          format: email
+        total:
+          type: number
+        notes:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItemInput'
+
+    UpdateOrderStatus:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [pending, approved, dispatched, cancelled]
+
+    CreateShipment:
+      type: object
+      required: [orderId]
+      properties:
+        orderId:
+          type: string
+          format: uuid
+        carrier:
+          type: string
+        trackingCode:
+          type: string
+        estimatedDelivery:
+          type: string
+          format: date-time
+          example: "2026-06-15T12:00:00.000Z"
+
+    UpdateShipmentStatus:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [pending, in_transit, delivered, cancelled]
+
+    UpdatePyme:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [active, suspended, pending_review]
+        suspended_reason:
+          type: string
+          description: Obligatorio cuando status es suspended
+
+    ContactRequest:
+      type: object
+      required: [name, email, message]
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        message:
+          type: string
+
+paths:
+  /api/auth/register:
+    post:
+      tags: [Auth]
+      summary: Registrar dueño de PYME
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+            example:
+              email: owner@pyme.cl
+              password: MiClave123
+              pymeName: Mi Tienda SPA
+      responses:
+        '201':
+          description: Registro exitoso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccess'
+        '400':
+          description: Error de validación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+  /api/auth/login:
+    post:
+      tags: [Auth]
+      summary: Iniciar sesión
+      description: Establece cookies de sesión Supabase para requests posteriores.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+            example:
+              email: owner@pyme.cl
+              password: MiClave123
+      responses:
+        '200':
+          description: Login exitoso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccess'
+        '401':
+          description: Credenciales inválidas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+  /api/auth/logout:
+    post:
+      tags: [Auth]
+      summary: Cerrar sesión
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Sesión cerrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccess'
+
+  /api/inventory:
+    get:
+      tags: [Inventory]
+      summary: Listar ítems de inventario
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Lista de ítems
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccess'
+        '401':
+          description: No autenticado
+    post:
+      tags: [Inventory]
+      summary: Crear ítem de inventario
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateInventoryItem'
+            example:
+              name: Caja mediana
+              sku: SKU-001
+              quantity: 50
+              unit_price: 1990
+              warehouse: Bodega Central
+      responses:
+        '201':
+          description: Ítem creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccess'
+
+  /api/inventory/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      tags: [Inventory]
+      summary: Obtener ítem por ID
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Detalle del ítem
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccess'
+    patch:
+      tags: [Inventory]
+      summary: Actualizar ítem
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateInventoryItem'
+      responses:
+        '200':
+          description: Ítem actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccess'
+    delete:
+      tags: [Inventory]
+      summary: Eliminar ítem
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Ítem eliminado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccess'
+
+  /api/orders:
+    get:
+      tags: [Orders]
+      summary: Listar pedidos
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Lista de pedidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccess'
+    post:
+      tags: [Orders]
+      summary: Crear pedido
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrder'
+            example:
+              customerName: Juan Pérez
+              customerEmail: juan@cliente.cl
+              total: 15000
+              items:
+                - sku: SKU-001
+                  quantity: 2
+                  unitPrice: 7500
+      responses:
+        '201':
+          description: Pedido creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccess'
+
+  /api/orders/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    patch:
+      tags: [Orders]
+      summary: Actualizar estado del pedido
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrderStatus'
+            example:
+              status: approved
+      responses:
+        '200':
+          description: Estado actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccess'
+    delete:
+      tags: [Orders]
+      summary: Eliminar pedido
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Pedido eliminado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccess'
+
+  /api/shipments:
+    get:
+      tags: [Shipments]
+      summary: Listar envíos
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Lista de envíos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccess'
+    post:
+      tags: [Shipments]
+      summary: Crear envío
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateShipment'
+            example:
+              orderId: "00000000-0000-0000-0000-000000000001"
+              carrier: Chilexpress
+              trackingCode: TRK-12345
+      responses:
+        '201':
+          description: Envío creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccess'
+
+  /api/shipments/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    patch:
+      tags: [Shipments]
+      summary: Actualizar estado del envío
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateShipmentStatus'
+            example:
+              status: in_transit
+      responses:
+        '200':
+          description: Estado actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccess'
+    delete:
+      tags: [Shipments]
+      summary: Eliminar envío
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Envío eliminado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccess'
+
+  /api/platform/pymes:
+    get:
+      tags: [Platform]
+      summary: Listar todas las PYMEs
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Lista de PYMEs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccess'
+        '403':
+          description: Requiere rol platform_admin
+
+  /api/platform/pymes/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      tags: [Platform]
+      summary: Detalle de PYME
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Detalle con usuarios
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccess'
+    patch:
+      tags: [Platform]
+      summary: Actualizar estado de PYME
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePyme'
+            example:
+              status: suspended
+              suspended_reason: Incumplimiento de términos
+      responses:
+        '200':
+          description: PYME actualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccess'
+
+  /api/platform/pymes/{id}/users:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      tags: [Platform]
+      summary: Listar usuarios de una PYME
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Usuarios de la PYME
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccess'
+
+  /api/platform/metrics:
+    get:
+      tags: [Platform]
+      summary: Métricas globales de la plataforma
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Métricas agregadas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccess'
+
+  /api/contact:
+    post:
+      tags: [Contact]
+      summary: Enviar mensaje de contacto
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactRequest'
+            example:
+              name: María López
+              email: maria@ejemplo.cl
+              message: Quiero información sobre SmartLogix
+      responses:
+        '200':
+          description: Mensaje enviado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccess'

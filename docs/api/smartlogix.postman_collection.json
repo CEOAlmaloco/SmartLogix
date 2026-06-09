@@ -1,0 +1,317 @@
+{
+  "info": {
+    "_postman_id": "smartlogix-bff-ev3",
+    "name": "SmartLogix BFF API",
+    "description": "Colección básica del BFF SmartLogix. Ejecutar Auth → Login antes del resto.\n\nVariable `baseUrl`: http://localhost:3000",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "inventoryId",
+      "value": ""
+    },
+    {
+      "key": "orderId",
+      "value": ""
+    },
+    {
+      "key": "shipmentId",
+      "value": ""
+    },
+    {
+      "key": "pymeId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"owner@pyme.cl\",\n  \"password\": \"MiClave123\",\n  \"pymeName\": \"Mi Tienda SPA\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/register"
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"owner@pyme.cl\",\n  \"password\": \"MiClave123\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/login"
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/auth/logout"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Inventory",
+      "item": [
+        {
+          "name": "List inventory",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/inventory"
+          }
+        },
+        {
+          "name": "Create item",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Caja mediana\",\n  \"sku\": \"SKU-001\",\n  \"quantity\": 50,\n  \"unit_price\": 1990,\n  \"warehouse\": \"Bodega Central\"\n}"
+            },
+            "url": "{{baseUrl}}/api/inventory"
+          }
+        },
+        {
+          "name": "Get item by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/inventory/{{inventoryId}}"
+          }
+        },
+        {
+          "name": "Update item",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 45\n}"
+            },
+            "url": "{{baseUrl}}/api/inventory/{{inventoryId}}"
+          }
+        },
+        {
+          "name": "Delete item",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/inventory/{{inventoryId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "List orders",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/orders"
+          }
+        },
+        {
+          "name": "Create order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerName\": \"Juan Pérez\",\n  \"customerEmail\": \"juan@cliente.cl\",\n  \"total\": 15000,\n  \"items\": [\n    {\n      \"sku\": \"SKU-001\",\n      \"quantity\": 2,\n      \"unitPrice\": 7500\n    }\n  ]\n}"
+            },
+            "url": "{{baseUrl}}/api/orders"
+          }
+        },
+        {
+          "name": "Update order status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"approved\"\n}"
+            },
+            "url": "{{baseUrl}}/api/orders/{{orderId}}"
+          }
+        },
+        {
+          "name": "Delete order",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/orders/{{orderId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Shipments",
+      "item": [
+        {
+          "name": "List shipments",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/shipments"
+          }
+        },
+        {
+          "name": "Create shipment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderId\": \"{{orderId}}\",\n  \"carrier\": \"Chilexpress\",\n  \"trackingCode\": \"TRK-12345\"\n}"
+            },
+            "url": "{{baseUrl}}/api/shipments"
+          }
+        },
+        {
+          "name": "Update shipment status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"in_transit\"\n}"
+            },
+            "url": "{{baseUrl}}/api/shipments/{{shipmentId}}"
+          }
+        },
+        {
+          "name": "Delete shipment",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/shipments/{{shipmentId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Platform",
+      "description": "Requiere sesión de platform_admin.",
+      "item": [
+        {
+          "name": "List PYMEs",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/platform/pymes"
+          }
+        },
+        {
+          "name": "Get PYME detail",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/platform/pymes/{{pymeId}}"
+          }
+        },
+        {
+          "name": "Update PYME status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"suspended\",\n  \"suspended_reason\": \"Incumplimiento de términos\"\n}"
+            },
+            "url": "{{baseUrl}}/api/platform/pymes/{{pymeId}}"
+          }
+        },
+        {
+          "name": "List PYME users",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/platform/pymes/{{pymeId}}/users"
+          }
+        },
+        {
+          "name": "Platform metrics",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/platform/metrics"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Contact",
+      "item": [
+        {
+          "name": "Send contact message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"María López\",\n  \"email\": \"maria@ejemplo.cl\",\n  \"message\": \"Quiero información sobre SmartLogix\"\n}"
+            },
+            "url": "{{baseUrl}}/api/contact"
+          }
+        }
+      ]
+    }
+  ]
+}
