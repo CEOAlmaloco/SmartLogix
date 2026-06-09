@@ -1,5 +1,5 @@
 import { LegalPageLayout } from "@/components/legal/LegalPageLayout";
-import { avisoLegalSections } from "@/content/legal/aviso-legal";
+import { avisoLegalSections } from "./content";
 import { LEGAL } from "@/config/legal";
 
 export default function AvisoLegalPage() {

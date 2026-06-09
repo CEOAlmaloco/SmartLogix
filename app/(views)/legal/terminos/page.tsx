@@ -1,5 +1,5 @@
 import { LegalPageLayout } from "@/components/legal/LegalPageLayout";
-import { terminosPreamble, terminosSections } from "@/content/legal/terminos";
+import { terminosPreamble, terminosSections } from "./content";
 import { LEGAL } from "@/config/legal";
 
 export default function TerminosPage() {

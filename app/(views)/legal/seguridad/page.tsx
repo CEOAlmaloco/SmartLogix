@@ -1,5 +1,5 @@
 import { LegalPageLayout } from "@/components/legal/LegalPageLayout";
-import { seguridadPreamble, seguridadSections } from "@/content/legal/seguridad";
+import { seguridadPreamble, seguridadSections } from "./content";
 
 export default function SeguridadPage() {
   return (

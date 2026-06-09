@@ -1,5 +1,5 @@
 import { LegalPageLayout } from "@/components/legal/LegalPageLayout";
-import { privacidadPreamble, privacidadSections } from "@/content/legal/privacidad";
+import { privacidadPreamble, privacidadSections } from "./content";
 import { LEGAL } from "@/config/legal";
 
 export default function PrivacidadPage() {

@@ -1,5 +1,5 @@
 import { LegalPageLayout } from "@/components/legal/LegalPageLayout";
-import { cookiesPreamble, cookiesSections } from "@/content/legal/cookies";
+import { cookiesPreamble, cookiesSections } from "./content";
 import { LEGAL } from "@/config/legal";
 
 export default function CookiesPage() {
