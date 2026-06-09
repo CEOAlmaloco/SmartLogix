@@ -177,8 +177,9 @@ cd SmartLogix
 # 2. Instalar dependencias
 npm install
 
-# 3. Crear .env.local con tus credenciales (ver .env.local.example)
-copy .env.local.example .env.local
+# 3. Crear .env.local (copiar plantilla desde env-ejemplo.md)
+copy env-ejemplo.md .env.local
+notepad .env.local
 
 # 4. Aplicar migraciones SQL en Supabase (ver db/migrations/)
 
@@ -190,20 +191,14 @@ Abre `http://localhost:3000`.
 
 ### Variables de entorno
 
-```env
-NEXT_PUBLIC_SUPABASE_URL=https://<tu-proyecto>.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_...
-SUPABASE_SERVICE_ROLE_KEY=sb_secret_...
+Plantilla lista para copiar: **[env-ejemplo.md](./env-ejemplo.md)** (mismo formato que un `.env`).
 
-# Opcional — correo de bienvenida vía Brevo al registrar una PYME
-BREVO_API_KEY=xkeysib-...
-BREVO_SENDER_NAME=SmartLogix
-BREVO_SENDER_EMAIL=noreply@tudominio.com
+```powershell
+copy env-ejemplo.md .env.local
+notepad .env.local
 ```
 
-- Las dos `NEXT_PUBLIC_*` son visibles en cliente; usalas con RLS estricto.
-- `SUPABASE_SERVICE_ROLE_KEY` es **solo servidor**; nunca exponerla en `NEXT_PUBLIC_*`.
-- **Brevo (opcional):** si no configuras `BREVO_API_KEY` y `BREVO_SENDER_EMAIL`, el registro funciona igual; solo se omite el correo de bienvenida. `BREVO_SENDER_EMAIL` debe ser un remitente verificado en tu cuenta Brevo.
+Edita las 3 variables de Supabase (obligatorias). Descomenta las opcionales si las necesitas (Brevo, Resend, Docker).
 
 ### Scripts npm
 
