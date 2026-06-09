@@ -1,6 +1,6 @@
 import { deleteShipmentHandler, updateShipmentStatusHandler } from "@/modules/shipments/shipments.handler";
 import { getAuthenticatedUser } from "@/lib/auth";
-import { HandlerError, errorResponse, successResponse } from "@/lib/shared";
+import { errorResponse, handleRouteError, successResponse } from "@/lib/shared";
 
 //espera a que se autentique el usuario y luego actualiza el estado de envio
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -25,15 +25,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
    
     return successResponse(updated, "Estado de envio actualizado", 200);
   } catch (error: unknown) {
-    if (error instanceof HandlerError) {
-      return errorResponse(error.code, error.message, error.status);
-    }
-    const err = error as { code?: string; message?: string; status?: number };
-    return errorResponse(
-      err.code ?? "INTERNAL_ERROR",
-      err.message ?? "Error interno del servidor",
-      err.status ?? 500
-    );
+    return handleRouteError(error, "PATCH /api/shipments/[id]");
   }
 }
 
@@ -50,14 +42,6 @@ export async function DELETE(_: Request, { params }: { params: Promise<{ id: str
 
     return successResponse(deleted, "Envio eliminado", 200);
   } catch (error: unknown) {
-    if (error instanceof HandlerError) {
-      return errorResponse(error.code, error.message, error.status);
-    }
-    const err = error as { code?: string; message?: string; status?: number };
-    return errorResponse(
-      err.code ?? "INTERNAL_ERROR",
-      err.message ?? "Error interno del servidor",
-      err.status ?? 500
-    );
+    return handleRouteError(error, "DELETE /api/shipments/[id]");
   }
 }

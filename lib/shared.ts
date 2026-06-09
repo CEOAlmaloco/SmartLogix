@@ -35,3 +35,16 @@ export function errorResponse(
 ) {
   return Response.json({ code, message, details } satisfies ApiError, { status });
 }
+
+/**
+ * Maneja errores de un Route Handler sin filtrar detalles internos al cliente.
+ * Solo expone el mensaje de errores de dominio (HandlerError); para cualquier
+ * otro error registra el detalle en el servidor y responde genérico.
+ */
+export function handleRouteError(error: unknown, context: string) {
+  if (error instanceof HandlerError) {
+    return errorResponse(error.code, error.message, error.status);
+  }
+  console.error(`Error en ${context}:`, error);
+  return errorResponse("INTERNAL_ERROR", "Error interno del servidor", 500);
+}

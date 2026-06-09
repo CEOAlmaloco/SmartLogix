@@ -3,9 +3,20 @@ import { cookies } from "next/headers";
 import { getAuthLandingPath, resolveAuthScope } from "@/lib/auth";
 import { ENV } from "@/config/env";
 import { errorResponse, successResponse } from "@/lib/shared";
+import { getClientIp, rateLimit } from "@/lib/rate-limit";
 
 export async function POST(request: Request) {
   try {
+    const limit = rateLimit(`login:${getClientIp(request)}`, 10, 60_000);
+    if (!limit.allowed) {
+      return errorResponse(
+        "RATE_LIMITED",
+        "Demasiados intentos de inicio de sesión. Intenta más tarde.",
+        429,
+        { retryAfterSeconds: limit.retryAfterSeconds }
+      );
+    }
+
     const body = await request.json().catch(() => null);
     if (!body || typeof body !== "object") {
       return errorResponse("VALIDATION_ERROR", "Body JSON invalido", 400);
@@ -58,7 +69,7 @@ export async function POST(request: Request) {
       200
     );
   } catch (error: unknown) {
-    const err = error as { message?: string };
-    return errorResponse("INTERNAL_ERROR", err.message ?? "Error interno del servidor", 500);
+    console.error("Error en POST /api/auth/login:", error);
+    return errorResponse("INTERNAL_ERROR", "Error interno del servidor", 500);
   }
 }

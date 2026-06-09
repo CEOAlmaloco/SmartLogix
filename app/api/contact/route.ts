@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { CONTACT_REASONS, type ContactReason } from "@/config/contact";
 import { LEGAL } from "@/config/legal";
+import { getClientIp, rateLimit } from "@/lib/rate-limit";
+
+const MAX_FIELD = 2000;
 
 type ContactBody = {
   name?: string;
@@ -76,6 +79,14 @@ async function sendViaResend(body: ContactBody) {
 }
 
 export async function POST(request: Request) {
+  const limit = rateLimit(`contact:${getClientIp(request)}`, 5, 60_000);
+  if (!limit.allowed) {
+    return NextResponse.json(
+      { message: "Demasiados mensajes. Intenta más tarde." },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfterSeconds) } }
+    );
+  }
+
   let json: ContactBody;
 
   try {
@@ -104,6 +115,14 @@ export async function POST(request: Request) {
   }
   if (!message || message.length < 10) {
     return NextResponse.json({ message: "El mensaje debe tener al menos 10 caracteres" }, { status: 400 });
+  }
+  if (
+    name.length > MAX_FIELD ||
+    company.length > MAX_FIELD ||
+    email.length > MAX_FIELD ||
+    message.length > MAX_FIELD
+  ) {
+    return NextResponse.json({ message: "Uno o más campos exceden el tamaño permitido" }, { status: 400 });
   }
 
   const payload = { name, company, email, reason, message };

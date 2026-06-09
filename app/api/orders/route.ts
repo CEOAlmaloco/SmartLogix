@@ -1,6 +1,8 @@
 import { createOrderHandler, getOrdersHandler } from '@/modules/orders/orders.handler'
 import { getAuthenticatedUser } from '@/lib/auth'
-import { HandlerError, errorResponse, successResponse } from '@/lib/shared'
+import { errorResponse, handleRouteError, successResponse } from '@/lib/shared'
+
+const MAX_ORDER_ITEMS = 200
 
 export async function GET() {
   const auth = await getAuthenticatedUser()
@@ -13,12 +15,7 @@ export async function GET() {
     const orders = await getOrdersHandler(auth.pymeId!)
     return successResponse(orders, 'Pedidos obtenidos', 200)
   } catch (error: unknown) {
-    if (error instanceof HandlerError) {
-      return errorResponse(error.code, error.message, error.status)
-    }
-
-    const err = error as { code?: string; message?: string; status?: number }
-    return errorResponse(err.code ?? 'INTERNAL_ERROR', err.message ?? 'Error interno del servidor', err.status ?? 500)
+    return handleRouteError(error, 'GET /api/orders')
   }
 }
 
@@ -37,6 +34,13 @@ export async function POST(request: Request) {
 
     const payload = body as Record<string, unknown>
     const rawItems = Array.isArray(payload.items) ? payload.items : []
+    if (rawItems.length > MAX_ORDER_ITEMS) {
+      return errorResponse(
+        'VALIDATION_ERROR',
+        `El pedido no puede tener más de ${MAX_ORDER_ITEMS} items`,
+        400
+      )
+    }
     const items = rawItems
       .map((item) => {
         if (!item || typeof item !== 'object') return null
@@ -82,12 +86,7 @@ export async function POST(request: Request) {
 
     return successResponse(created, 'Pedido creado', 201)
   } catch (error: unknown) {
-    if (error instanceof HandlerError) {
-      return errorResponse(error.code, error.message, error.status)
-    }
-
-    const err = error as { code?: string; message?: string; status?: number }
-    return errorResponse(err.code ?? 'INTERNAL_ERROR', err.message ?? 'Error interno del servidor', err.status ?? 500)
+    return handleRouteError(error, 'POST /api/orders')
   }
 }
 

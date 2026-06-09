@@ -143,22 +143,44 @@ CREATE POLICY "shipment_by_membership"
     )
   );
 
--- PostgREST (Supabase Data API): permisos sobre esquemas custom 
-GRANT USAGE ON SCHEMA inventory_schema TO anon, authenticated, service_role;
-GRANT USAGE ON SCHEMA order_schema TO anon, authenticated, service_role;
-GRANT USAGE ON SCHEMA shipment_schema TO anon, authenticated, service_role;
+-- PostgREST (Supabase Data API): permisos sobre esquemas custom.
+-- Principio de mínimo privilegio:
+--   * service_role: acceso completo (lo usa el BFF en el servidor).
+--   * authenticated: lectura/escritura controlada por RLS (membresía en pyme_user).
+--   * anon (clave pública del navegador): SIN acceso a datos de dominio.
+GRANT USAGE ON SCHEMA inventory_schema TO authenticated, service_role;
+GRANT USAGE ON SCHEMA order_schema TO authenticated, service_role;
+GRANT USAGE ON SCHEMA shipment_schema TO authenticated, service_role;
 
-GRANT ALL ON ALL TABLES IN SCHEMA inventory_schema TO anon, authenticated, service_role;
-GRANT ALL ON ALL TABLES IN SCHEMA order_schema TO anon, authenticated, service_role;
-GRANT ALL ON ALL TABLES IN SCHEMA shipment_schema TO anon, authenticated, service_role;
+-- service_role: control total (RLS no aplica a este rol).
+GRANT ALL ON ALL TABLES IN SCHEMA inventory_schema TO service_role;
+GRANT ALL ON ALL TABLES IN SCHEMA order_schema TO service_role;
+GRANT ALL ON ALL TABLES IN SCHEMA shipment_schema TO service_role;
 
-GRANT ALL ON ALL SEQUENCES IN SCHEMA inventory_schema TO anon, authenticated, service_role;
-GRANT ALL ON ALL SEQUENCES IN SCHEMA order_schema TO anon, authenticated, service_role;
-GRANT ALL ON ALL SEQUENCES IN SCHEMA shipment_schema TO anon, authenticated, service_role;
+-- authenticated: DML acotado por las políticas RLS definidas arriba.
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA inventory_schema TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA order_schema TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA shipment_schema TO authenticated;
+
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA inventory_schema TO authenticated, service_role;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA order_schema TO authenticated, service_role;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA shipment_schema TO authenticated, service_role;
 
 ALTER DEFAULT PRIVILEGES IN SCHEMA inventory_schema
-  GRANT ALL ON TABLES TO anon, authenticated, service_role;
+  GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO authenticated;
 ALTER DEFAULT PRIVILEGES IN SCHEMA order_schema
-  GRANT ALL ON TABLES TO anon, authenticated, service_role;
+  GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO authenticated;
 ALTER DEFAULT PRIVILEGES IN SCHEMA shipment_schema
-  GRANT ALL ON TABLES TO anon, authenticated, service_role;
+  GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO authenticated;
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA inventory_schema GRANT ALL ON TABLES TO service_role;
+ALTER DEFAULT PRIVILEGES IN SCHEMA order_schema GRANT ALL ON TABLES TO service_role;
+ALTER DEFAULT PRIVILEGES IN SCHEMA shipment_schema GRANT ALL ON TABLES TO service_role;
+
+-- Revoca cualquier privilegio previo del rol anónimo sobre los esquemas de dominio.
+REVOKE ALL ON ALL TABLES IN SCHEMA inventory_schema FROM anon;
+REVOKE ALL ON ALL TABLES IN SCHEMA order_schema FROM anon;
+REVOKE ALL ON ALL TABLES IN SCHEMA shipment_schema FROM anon;
+REVOKE USAGE ON SCHEMA inventory_schema FROM anon;
+REVOKE USAGE ON SCHEMA order_schema FROM anon;
+REVOKE USAGE ON SCHEMA shipment_schema FROM anon;

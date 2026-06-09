@@ -1,5 +1,5 @@
 import { getPlatformAdmin } from "@/lib/auth";
-import { errorResponse, successResponse } from "@/lib/shared";
+import { errorResponse, handleRouteError, successResponse } from "@/lib/shared";
 import { getPymeDetailHandler, updatePymeStatusHandler } from "@/modules/platform/platform.handler";
 
 type RouteParams = {
@@ -16,12 +16,7 @@ export async function GET(_: Request, { params }: RouteParams) {
     const pyme = await getPymeDetailHandler(resolved.id);
     return successResponse(pyme, "PYME obtenida", 200);
   } catch (error: unknown) {
-    const err = error as { code?: string; message?: string; status?: number };
-    return errorResponse(
-      err.code ?? "INTERNAL_ERROR",
-      err.message ?? "Error interno del servidor",
-      err.status ?? 500
-    );
+    return handleRouteError(error, "GET /api/platform/pymes/[id]");
   }
 }
 
@@ -36,11 +31,6 @@ export async function PATCH(request: Request, { params }: RouteParams) {
     const updated = await updatePymeStatusHandler(resolved.id, body);
     return successResponse(updated, "Estado de PYME actualizado correctamente", 200);
   } catch (error: unknown) {
-    const err = error as { code?: string; message?: string; status?: number };
-    return errorResponse(
-      err.code ?? "INTERNAL_ERROR",
-      err.message ?? "Error interno del servidor",
-      err.status ?? 500
-    );
+    return handleRouteError(error, "PATCH /api/platform/pymes/[id]");
   }
 }
