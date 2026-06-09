@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { validateCreateShipmentInput } from "@/modules/shipments/shipments.validator";
+import {
+  validateCreateShipmentInput,
+  validatePymeId,
+} from "@/modules/shipments/shipments.validator";
 
 describe("Shipment Create Payload Validator", () => {
   it("rechaza envío sin orderId", () => {
@@ -26,5 +29,9 @@ describe("Shipment Create Payload Validator", () => {
         estimatedDelivery: "fecha-invalida",
       })
     ).toThrow();
+  });
+
+  it("rechaza pymeId vacío", () => {
+    expect(() => validatePymeId("")).toThrow(/ID de la PYME es requerido/);
   });
 });

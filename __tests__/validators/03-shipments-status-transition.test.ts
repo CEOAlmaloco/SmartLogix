@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 
-import { validateShipmentTransition } from "@/modules/shipments/shipments.validator";
+import {
+  ensureValidShipmentStatus,
+  validateShipmentCanDelete,
+  validateShipmentTransition,
+} from "@/modules/shipments/shipments.validator";
 
 describe("Shipment Status Transition Validator", () => {
   it("permite pending -> in_transit", () => {
@@ -19,5 +23,17 @@ describe("Shipment Status Transition Validator", () => {
     expect(() =>
       validateShipmentTransition("cancelled", "in_transit")
     ).toThrow();
+  });
+
+  it("rechaza un status invalido", () => {
+    expect(() => ensureValidShipmentStatus("estado_inexistente")).toThrow(
+      /Status de envio invalido/
+    );
+  });
+
+  it("rechaza eliminar un envio en estado in_transit", () => {
+    expect(() => validateShipmentCanDelete("in_transit")).toThrow(
+      /Solo se puede eliminar/
+    );
   });
 });
