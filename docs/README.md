@@ -6,6 +6,7 @@
 |---------|-------------|
 | [api/openapi.yaml](./api/openapi.yaml) | Especificación OpenAPI 3.0 (Swagger) |
 | [api/smartlogix.postman_collection.json](./api/smartlogix.postman_collection.json) | Colección Postman importable |
+| [integraciones.md](./integraciones.md) | Microservicio Docker marketplace-adapter |
 
 ## Cómo usar
 

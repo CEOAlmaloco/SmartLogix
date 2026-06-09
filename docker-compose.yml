@@ -1,0 +1,43 @@
+# Demo EV3: un microservicio Docker + PostgreSQL dedicado (independiente de Supabase)
+#
+# Uso: docker compose up --build
+# Health: http://localhost:3001/health
+# DB host: localhost:5433 (solo para debug local)
+
+services:
+  marketplace-db:
+    image: postgres:16-alpine
+    container_name: smartlogix-marketplace-db
+    environment:
+      POSTGRES_USER: ${MARKETPLACE_DB_USER:-marketplace}
+      POSTGRES_PASSWORD: ${MARKETPLACE_DB_PASSWORD:-marketplace}
+      POSTGRES_DB: ${MARKETPLACE_DB_NAME:-marketplace_db}
+    # Puerto solo accesible desde localhost (no expuesto en la red).
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - marketplace_pg_data:/var/lib/postgresql/data
+      - ./services/marketplace-adapter/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U marketplace -d marketplace_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  marketplace-adapter:
+    build:
+      context: ./services/marketplace-adapter
+      dockerfile: Dockerfile
+    container_name: smartlogix-marketplace-adapter
+    ports:
+      - "127.0.0.1:3001:3001"
+    environment:
+      PORT: 3001
+      DATABASE_URL: postgres://${MARKETPLACE_DB_USER:-marketplace}:${MARKETPLACE_DB_PASSWORD:-marketplace}@marketplace-db:5432/${MARKETPLACE_DB_NAME:-marketplace_db}
+      ADAPTER_API_TOKEN: ${ADAPTER_API_TOKEN:-}
+    depends_on:
+      marketplace-db:
+        condition: service_healthy
+
+volumes:
+  marketplace_pg_data:
