@@ -4,6 +4,8 @@ Plataforma logistica para PYMEs eCommerce: inventario, pedidos y envios, con un 
 
 **Stack:** Next.js (App Router) + TypeScript + Supabase (Postgres + Auth + RLS) + Vercel.
 
+**Documentacion tecnica:** [docs/](./docs/) (OpenAPI, Postman, integraciones Docker).
+
 ---
 
 ## Arbol
@@ -11,106 +13,64 @@ Plataforma logistica para PYMEs eCommerce: inventario, pedidos y envios, con un 
 ```text
 smartlogix/
 ├── app/
-│   ├── api/                      # BFF: solo entrypoints HTTP, sin logica
-│   │   ├── auth/
-│   │   │   ├── login/route.ts
-│   │   │   ├── logout/route.ts
-│   │   │   └── register/route.ts
+│   ├── api/                      # BFF: entrypoints HTTP (sin logica de negocio)
+│   │   ├── auth/                 # login, register, logout
 │   │   ├── inventory/
-│   │   │   ├── route.ts
-│   │   │   └── [id]/route.ts
 │   │   ├── orders/
-│   │   │   ├── route.ts
-│   │   │   └── [id]/route.ts
-│   │   └── shipments/
-│   │       ├── route.ts
-│   │       └── [id]/route.ts
-│   ├── (views)/                  
-│   │   ├── auth/
-│   │   │   ├── login/page.tsx
-│   │   │   └── register/page.tsx
-│   │   └── dashboard/
-│   │       ├── layout.tsx
-│   │       ├── page.tsx
-│   │       ├── dashboard.module.css
-│   │       ├── inventory/page.tsx
-│   │       ├── order/page.tsx
-│   │       └── shipment/page.tsx
+│   │   ├── shipments/
+│   │   ├── platform/             # admin global (platform_admin)
+│   │   └── contact/              # formulario publico
+│   ├── (views)/                  # paginas por ruta
+│   │   ├── auth/                 # login, register, suspended
+│   │   ├── dashboard/            # inventario, pedidos, envios (owner)
+│   │   ├── platform/             # panel admin global
+│   │   ├── legal/                # terminos, privacidad, etc. (content.tsx por ruta)
+│   │   ├── contact/
+│   │   ├── about/
+│   │   └── blog/
 │   ├── globals.css
 │   ├── layout.tsx
-│   ├── page.tsx
-│   └── page.module.css
+│   └── page.tsx                  # landing
 │
 ├── modules/                      # Microservicios logicos (1 carpeta = 1 dominio)
 │   ├── auth/
-│   │   ├── auth.handler.ts       # Controller (orquesta y aplica reglas)
-│   │   ├── auth.repository.ts    # Repository (acceso a datos)
-│   │   ├── auth.types.ts         # DTOs / tipos del dominio
-│   │   └── auth.validator.ts     # Validador unico del dominio
 │   ├── inventory/
-│   │   ├── inventory.handler.ts
-│   │   ├── inventory.repository.ts
-│   │   ├── inventory.types.ts
-│   │   └── inventory.validator.ts
 │   ├── orders/
-│   │   ├── orders.handler.ts
-│   │   ├── orders.repository.ts
-│   │   ├── orders.types.ts
-│   │   └── orders.validator.ts
-│   └── shipments/
-│       ├── shipments.handler.ts
-│       ├── shipments.repository.ts
-│       ├── shipments.types.ts
-│       └── shipments.validator.ts
+│   ├── shipments/
+│   ├── platform/
+│   └── notifications/            # correo bienvenida (Brevo, opcional)
 │
-├── lib/                          # Infraestructura compartida (lo justo)
-│   ├── supabase/
-│   │   ├── server.ts             # cliente service_role (servidor) + middleware util
-│   │   ├── browser.ts            # clientes anon (cliente)
-│   │   └── factory.ts            # Factory method por schema
-│   ├── http/
-│   │   └── circuit-breaker.ts    # Circuit breaker para APIs externas
-│   ├── auth.ts                   # getAuthenticatedUser (BFF guard)
-│   └── shared.ts                 # HandlerError, successResponse, errorResponse
-│
-├── components/                   # UI: unica carpeta, sin _components duplicados
+├── components/                   # UI reutilizable
 │   ├── ui/
-│   │   ├── Button.tsx
-│   │   ├── TextField.tsx
-│   │   └── StatusMessage.tsx
 │   ├── auth/
-│   │   ├── AuthForm.tsx
-│   │   └── AuthPageLayout.tsx
 │   ├── dashboard/
-│   │   ├── MobileMenu.tsx
-│   │   ├── LogoutButton.tsx
-│   │   └── inventory/
-│   │       ├── InventoryForm.tsx
-│   │       ├── InventoryStats.tsx
-│   │       ├── InventoryTable.tsx
-│   │       └── hooks/useInventory.ts
-│   └── home/
-│       ├── HomeNavbar.tsx
-│       ├── HomeHero.tsx
-│       ├── HomeBenefits.tsx
-│       ├── HomeFlow.tsx
-│       └── HomeCTA.tsx
+│   ├── home/
+│   └── legal/
 │
-├── db/
-│   └── migrations/
-│       ├── 001_schemas_tables.sql
-│       ├── 002_triggers_indices_funciones.sql
-│       └── 003_rls_grants.sql
+├── lib/                          # Infraestructura compartida
+│   ├── supabase/                 # server, browser, factory (por schema)
+│   ├── http/circuit-breaker.ts   # APIs externas (marketplaces, transportistas)
+│   ├── rate-limit.ts             # login, register, contact
+│   ├── auth.ts
+│   └── shared.ts
 │
-├── config/
-│   ├── constants.ts              # SCHEMAS, ORDER_STATUS, SHIPMENT_STATUS, etc.
-│   └── env.ts                    # Acceso centralizado a process.env
+├── __tests__/validators/         # Pruebas unitarias Vitest (reglas de negocio)
 │
-├── middleware.ts                 # refresca sesion Supabase en Edge
-├── next-env.d.ts
-├── next.config.ts
-├── package.json
-└── tsconfig.json
+├── docs/
+│   ├── api/openapi.yaml
+│   ├── api/smartlogix.postman_collection.json
+│   └── integraciones.md
+│
+├── services/
+│   └── marketplace-adapter/      # Microservicio Docker simulado (:3001)
+│
+├── db/migrations/                # 001 schemas, 002 triggers, 003 RLS
+├── config/                       # env, legal, contact, constants
+├── docker-compose.yml            # adapter + PostgreSQL local (opcional)
+├── env-ejemplo.md                # plantilla .env (copiar a .env.local)
+├── middleware.ts
+├── vitest.config.ts
+└── vitest.setup.ts
 ```
 
 ---
@@ -150,6 +110,17 @@ lib/supabase/factory.ts              ← Factory Method (cliente por schema)
 Supabase (inventory_schema.item)
 ```
 
+### Integraciones externas (simuladas)
+
+```text
+[Next.js BFF :3000]  ──(futuro)──►  [marketplace-adapter Docker :3001]
+                                              │
+                                              ▼
+                                    PostgreSQL Docker (:5433)
+```
+
+El core en Vercel no levanta Docker. El adaptador es para demo local; ver [docs/integraciones.md](./docs/integraciones.md) y [services/marketplace-adapter/README.md](./services/marketplace-adapter/README.md).
+
 ---
 
 ## Reglas que se sostienen solas
@@ -158,14 +129,18 @@ Supabase (inventory_schema.item)
 - **Cada dominio se basta solo.** Si un cambio en `orders` rompe `inventory`, algo esta mal.
 - **El validador del dominio es unico** (`<x>.validator.ts`). Si una regla aplica en otro lado, llaman a esa funcion, no la copian.
 - **`lib/` solo guarda lo verdaderamente compartido.** Si algo es de un dominio, va al modulo.
-- **Sin Observer / Pub-Sub / Singleton manual** hasta que un caso real lo pida. Ya hay `useState`, modulos ESM y RLS para eso.
+- **Textos legales** viven en `app/(views)/legal/<pagina>/content.tsx`, junto a su `page.tsx`.
+
+---
 
 ## Setup local
 
 ### Requisitos
+
 - Node.js 20 LTS o superior
 - npm 10+
 - Cuenta Supabase con un proyecto creado
+- Docker Desktop (opcional, solo para marketplace-adapter)
 
 ### Pasos
 
@@ -177,130 +152,124 @@ cd SmartLogix
 # 2. Instalar dependencias
 npm install
 
-# 3. Crear .env.local (copiar plantilla desde env-ejemplo.md)
+# 3. Variables de entorno
 copy env-ejemplo.md .env.local
 notepad .env.local
+# Obligatorias: NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY
 
-# 4. Aplicar migraciones SQL en Supabase (ver db/migrations/)
+# 4. Migraciones SQL en Supabase → SQL Editor (orden):
+#    db/migrations/001_schemas_tables.sql
+#    db/migrations/002_triggers_indices_funciones.sql
+#    db/migrations/003_rls_grants.sql
 
-# 5. Levantar dev server
+# 5. Dev server
 npm run dev
 ```
 
 Abre `http://localhost:3000`.
 
-### Variables de entorno
+Plantilla de variables: **[env-ejemplo.md](./env-ejemplo.md)**.
 
-Plantilla lista para copiar: **[env-ejemplo.md](./env-ejemplo.md)** (mismo formato que un `.env`).
+### Docker (opcional)
 
 ```powershell
-copy env-ejemplo.md .env.local
-notepad .env.local
+docker compose up -d
+Invoke-RestMethod http://localhost:3001/health
 ```
 
-Edita las 3 variables de Supabase (obligatorias). Descomenta las opcionales si las necesitas (Brevo, Resend, Docker).
+---
 
-### Scripts npm
+## Scripts npm
 
 | Comando | Que hace |
 |---|---|
-| `npm run dev` | Servidor de desarrollo (Turbopack) |
+| `npm run dev` | Servidor de desarrollo |
 | `npm run build` | Build de produccion |
 | `npm start` | Sirve el build de produccion |
-| `npm run lint` | ESLint sobre todo el repo |
-| `npm audit` | Reporte de vulnerabilidades (objetivo: 0) |
+| `npm run lint` | ESLint |
+| `npm run test` | Vitest en modo watch |
+| `npm run test:run` | Vitest una ejecucion (CI / entrega) |
+| `npm run test:ui` | Vitest UI |
+| `npx vitest run --coverage` | Reporte de cobertura |
+| `npm audit` | Vulnerabilidades (objetivo: 0) |
+
+---
+
+## Pruebas unitarias
+
+Vitest sobre **validators** de negocio (`__tests__/validators/`): transiciones de estado, payloads y reglas de Platform.
+
+```powershell
+npm run test:run
+```
+
+Salida esperada: **5 archivos, 19 tests passed**.
 
 ---
 
 ## Base de datos (Supabase)
 
-Schemas separados por dominio para aislar permisos y tablas:
+Schemas separados por dominio:
 
-- `public` → `pyme`, `pyme_user`
-- `inventory_schema` → `item`
-- `order_schema` → `order`
-- `shipment_schema` → `shipment`
+- `public` → `pyme`, `pyme_user`, `platform_admin`
+- `inventory_schema` → `item` (campo `warehouse` por bodega)
+- `order_schema` → `purchase_order`, `order_item`
+- `shipment_schema` → `shipment` (campo `carrier`)
 
-Las migraciones viven en `db/migrations/` y se aplican en orden:
+Migraciones en `db/migrations/` — aplicar en orden en **Supabase → SQL Editor**.
 
-1. `001_schemas_tables.sql` — crea schemas + tablas + columnas.
-2. `002_triggers_indices_funciones.sql` — triggers de `updated_at`, indices, funciones helper.
-3. `003_rls_grants.sql` — politicas RLS y permisos por schema.
+---
 
-> Aplicalas pegandolas en **Supabase → SQL Editor** (o con `supabase db push` si usas Supabase CLI).
+## Documentacion API
+
+| Recurso | Ruta |
+|---|---|
+| OpenAPI / Swagger | [docs/api/openapi.yaml](./docs/api/openapi.yaml) |
+| Postman | [docs/api/smartlogix.postman_collection.json](./docs/api/smartlogix.postman_collection.json) |
+| Integraciones Docker | [docs/integraciones.md](./docs/integraciones.md) |
+| Indice docs | [docs/README.md](./docs/README.md) |
 
 ---
 
 ## Estrategia de ramas (Git Flow simplificado)
 
 ### Ramas principales
-- `main` — produccion (estable, deploy automatico)
+
+- `main` — produccion (estable, deploy en Vercel)
 - `develop` — integracion del equipo
 
-### Ramas de trabajo (creadas desde `develop`)
+### Ramas de trabajo (desde `develop`)
+
 - `feature/<nombre>` — nueva funcionalidad
 - `fix/<nombre>` — bugfix
-- `chore/<nombre>` — tareas tecnicas (deps, docs, configs)
-- `refactor/<nombre>` — refactor sin cambios de comportamiento
-
-#### Ejemplos
-- `feature/orders-pdf-export`
-- `fix/register-validation`
-- `chore/upgrade-next`
-- `refactor/structure-mvp`
+- `chore/<nombre>` — deps, docs, configs
+- `refactor/<nombre>` — refactor sin cambio de comportamiento
 
 ### Flujo
 
-```bash
-# 1. Comenzar
+```powershell
 git checkout develop
 git pull origin develop
 git checkout -b feature/mi-funcionalidad
 
-# 2. Trabajar y commitear
 git add .
 git commit -m "feat: agrega validacion de SKU"
-
-# 3. Subir y abrir PR
 git push -u origin feature/mi-funcionalidad
-# Pull Request: feature/* -> develop  (requiere 1 aprobacion)
+# PR: feature/* -> develop (1 aprobacion)
 
-# 4. Promocion a produccion
-# Pull Request: develop -> main
+# Promocion a produccion: PR develop -> main
 ```
 
-### Convencion de commits (Conventional Commits)
+### Convencion de commits
 
-Formato: `tipo: descripcion`
-
-| Tipo | Cuando |
-|---|---|
-| `feat` | Nueva funcionalidad |
-| `fix` | Correccion de bug |
-| `refactor` | Mejora de codigo sin cambio de comportamiento |
-| `chore` | Tareas internas (deps, build, configs) |
-| `docs` | Solo documentacion |
-| `test` | Solo tests |
-
-Ejemplos:
-- `feat: agrega endpoint POST /api/shipments`
-- `fix: corrige transicion de estado pending -> approved`
-- `refactor: extrae validaciones a inventory.validator.ts`
-
-### Proteccion de ramas
-
-| Rama | Reglas |
-|---|---|
-| `main` | PR obligatorio · 1 aprobacion · sin push directo · CI verde |
-| `develop` | PR obligatorio recomendado · CI verde |
+Formato: `tipo: descripcion` — `feat`, `fix`, `refactor`, `chore`, `docs`, `test`.
 
 ### Checklist antes de un PR
 
-- [ ] `npm run build` pasa sin errores
-- [ ] `npm run lint` pasa sin errores
+- [ ] `npm run build` sin errores
+- [ ] `npm run test:run` pasa
 - [ ] `npm audit` sin vulnerabilidades altas
-- [ ] No rompe funcionalidades existentes
-- [ ] Commits siguen Conventional Commits
+- [ ] Commits en Conventional Commits
 - [ ] Rama actualizada con `develop`
 
 ---
@@ -308,19 +277,19 @@ Ejemplos:
 ## Buenas practicas del equipo
 
 - No trabajar directamente en `main` ni `develop`.
-- PRs pequeños y enfocados (idealmente < 400 lineas modificadas).
-- Mensajes de commit descriptivos en presente (`feat: agrega ...`, no `agregue ...`).
-- Eliminar la rama remota despues del merge.
-- Si una regla de validacion aplica en dos modulos, **vive en el del dueno** y el otro la importa. **No copiar.**
+- PRs pequeños y enfocados.
+- Si una regla de validacion aplica en dos modulos, **vive en el del dueno**; el otro la importa.
 - Si algo no es claramente compartido, **no va a `lib/`**.
+- No subir `.env.local` ni secretos (ver `.gitignore`).
 
 ---
 
-## Seguridad y deps
+## Seguridad
 
-- `npm audit` debe quedar en **0 vulnerabilidades**.
-- Override actual en `package.json` para forzar `postcss >= 8.5.12` (cierra el moderate transitivo).
-- No subir `.env` ni `.env.local` (ya estan en `.gitignore`).
+- Cabeceras de seguridad en `next.config.ts`
+- Rate limiting en login, register y contact (`lib/rate-limit.ts`)
+- RLS y grants minimos en `003_rls_grants.sql`
+- `npm audit` objetivo: **0 vulnerabilidades**
 
 ---
 
