@@ -194,10 +194,16 @@ Abre `http://localhost:3000`.
 NEXT_PUBLIC_SUPABASE_URL=https://<tu-proyecto>.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_...
 SUPABASE_SERVICE_ROLE_KEY=sb_secret_...
+
+# Opcional — correo de bienvenida vía Brevo al registrar una PYME
+BREVO_API_KEY=xkeysib-...
+BREVO_SENDER_NAME=SmartLogix
+BREVO_SENDER_EMAIL=noreply@tudominio.com
 ```
 
 - Las dos `NEXT_PUBLIC_*` son visibles en cliente; usalas con RLS estricto.
 - `SUPABASE_SERVICE_ROLE_KEY` es **solo servidor**; nunca exponerla en `NEXT_PUBLIC_*`.
+- **Brevo (opcional):** si no configuras `BREVO_API_KEY` y `BREVO_SENDER_EMAIL`, el registro funciona igual; solo se omite el correo de bienvenida. `BREVO_SENDER_EMAIL` debe ser un remitente verificado en tu cuenta Brevo.
 
 ### Scripts npm
 

@@ -31,3 +31,15 @@ export const ENV = {
   SUPABASE_ANON_KEY: () => required("NEXT_PUBLIC_SUPABASE_ANON_KEY"),
   ...SERVER_ENV,
 };
+
+/** Brevo (opcional): correo de bienvenida al registrar una PYME. */
+export const BREVO_ENV = {
+  isConfigured(): boolean {
+    const apiKey = process.env.BREVO_API_KEY?.trim();
+    const senderEmail = process.env.BREVO_SENDER_EMAIL?.trim();
+    return Boolean(apiKey && senderEmail);
+  },
+  apiKey: () => optional("BREVO_API_KEY"),
+  senderName: () => optional("BREVO_SENDER_NAME", "SmartLogix"),
+  senderEmail: () => optional("BREVO_SENDER_EMAIL"),
+};
