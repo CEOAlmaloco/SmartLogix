@@ -1,4 +1,4 @@
-import type { WelcomeEmailPayload } from "../types/email.types";
+import type { WelcomeEmailPayload } from "./notifications.types";
 
 function escapeHtml(value: string): string {
   return value

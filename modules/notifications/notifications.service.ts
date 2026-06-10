@@ -1,6 +1,6 @@
 import { BREVO_ENV } from "@/config/env";
-import { buildWelcomeTemplate } from "../templates/welcome.template";
-import type { WelcomeEmailPayload } from "../types/email.types";
+import { buildWelcomeTemplate } from "./notifications.template";
+import type { WelcomeEmailPayload } from "./notifications.types";
 
 export async function sendWelcomeEmail({
   email,
