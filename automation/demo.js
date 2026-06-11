@@ -8,6 +8,8 @@ const { acceptCookies } = require("./flows/cookies.flow");
 const { home } = require("./flows/home.flow");
 const { login } = require("./flows/login.flow");
 const { goToInventory } = require("./flows/inventory.flow");
+const { goToOrders } = require("./flows/orders.flow");
+const { goToShipments } = require("./flows/shipments.flow");
 
 async function demo() {
 
@@ -22,6 +24,7 @@ async function demo() {
         console.log("=================================");
 
         console.log("Abriendo SmartLogix...");
+
         await driver.get(credentials.baseUrl);
 
         await acceptCookies(driver);
@@ -36,16 +39,40 @@ async function demo() {
 
         console.log("Login realizado correctamente.");
 
-        // Ir al módulo Inventario
+        // Inventario
         await goToInventory(driver);
 
-        console.log("Inventario abierto correctamente.");
+        console.log("Inventario completado correctamente.");
 
-        const { goToOrders } = require("./flows/orders.flow");
-
+        // Pedidos
         await goToOrders(driver);
 
-        console.log("Pedidos abierto correctamente.");
+        console.log("Pedidos completado correctamente.");
+
+        // Envíos
+        await goToShipments(driver);
+
+        console.log("Envíos completado correctamente.");
+
+        console.log("=================================");
+        console.log("FLUJO PYME FINALIZADO");
+        console.log("=================================");
+
+
+        const { logout } = require("./flows/logout.flow");
+        const { loginAdmin } = require("./flows/admin.flow");
+
+        await logout(driver);
+
+        console.log("Sesión PYME finalizada.");
+
+        await loginAdmin(driver);
+
+        console.log("Vista Administrador cargada.");
+
+        console.log("=================================");
+        console.log("DEMOSTRACIÓN FINALIZADA");
+        console.log("=================================");   
 
     } catch (error) {
 
@@ -54,7 +81,12 @@ async function demo() {
 
     }
 
-    // Por ahora dejamos el navegador abierto.
+    // Por ahora dejamos el navegador abierto para verificar visualmente.
+    // Cuando toda la demostración esté lista se puede utilizar:
+    //
+    // finally {
+    //     await driver.quit();
+    // }
 
 }
 
