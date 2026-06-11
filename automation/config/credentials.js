@@ -12,9 +12,9 @@ module.exports = {
 
     admin: {
 
-        email: "",
+        email: "sladmin@gmail.com",
 
-        password: ""
+        password: "admin123"
 
     }
 
