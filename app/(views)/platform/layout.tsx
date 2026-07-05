@@ -33,7 +33,7 @@ export default async function PlatformLayout({ children }: PlatformLayoutProps) 
 
             <div className={`${styles.desktopNav} d-flex gap-2 flex-wrap`}>
               <Link href="/platform" className={`btn ${styles.navBtn}`}>
-                Overview
+                Resumen
               </Link>
               <Link href="/platform/pymes" className={`btn ${styles.navBtn}`}>
                 PYMEs
@@ -45,7 +45,7 @@ export default async function PlatformLayout({ children }: PlatformLayoutProps) 
               <MobileMenu
                 title="Plataforma"
                 links={[
-                  { href: "/platform", label: "Overview" },
+                  { href: "/platform", label: "Resumen" },
                   { href: "/platform/pymes", label: "PYMEs" },
                 ]}
               />

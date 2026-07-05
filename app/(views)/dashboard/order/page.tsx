@@ -7,6 +7,7 @@ import { Modal } from "@/components/ui/Modal";
 import { StatusMessage } from "@/components/ui/StatusMessage";
 import { TextField } from "@/components/ui/TextField";
 import { DashboardPanel } from "@/components/dashboard/DashboardPanel";
+import { getOrderStatusLabel } from "@/lib/status-labels";
 import styles from "../dashboard.module.css";
 
 type OrderStatus = "pending" | "approved" | "dispatched" | "cancelled";
@@ -460,7 +461,7 @@ export default function OrderDashboardPage() {
 									<td>{itemsCount > 0 ? `${itemsCount} productos` : "—"}</td>
 									<td>{formatCurrency(order.total)}</td>
 									<td>
-										<span className={statusClass(order.status, styles)}>{order.status ?? "pending"}</span>
+										<span className={statusClass(order.status, styles)}>{getOrderStatusLabel(order.status)}</span>
 									</td>
 									<td>{order.notes?.trim() ? order.notes : "-"}</td>
 									<td>
@@ -479,7 +480,7 @@ export default function OrderDashboardPage() {
 												>
 													{ORDER_TRANSITIONS[(order.status ?? "pending") as OrderStatus].map((status) => (
 														<option key={status} value={status}>
-															{status}
+															{getOrderStatusLabel(status)}
 														</option>
 													))}
 												</select>
@@ -683,7 +684,7 @@ export default function OrderDashboardPage() {
 				{selectedOrder ? (
 					<div className={styles.detailPanel}>
 						<p><strong>Cliente:</strong> {selectedOrder.customer_name ?? "Sin nombre"} — {selectedOrder.customer_email ?? "Sin email"}</p>
-						<p><strong>Estado:</strong> <span className={statusClass(selectedOrder.status, styles)}>{selectedOrder.status ?? "pending"}</span></p>
+						<p><strong>Estado:</strong> <span className={statusClass(selectedOrder.status, styles)}>{getOrderStatusLabel(selectedOrder.status)}</span></p>
 						<p><strong>Notas:</strong> {selectedOrder.notes?.trim() ? selectedOrder.notes : "-"}</p>
 
 						<div className={styles.sectionHeader}>Ítems</div>

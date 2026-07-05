@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { DashboardPanel } from "@/components/dashboard/DashboardPanel";
 import { Modal } from "@/components/ui/Modal";
 import { StatusMessage } from "@/components/ui/StatusMessage";
+import { getPymeStatusLabel } from "@/lib/status-labels";
 import styles from "../../dashboard/dashboard.module.css";
 import platformStyles from "../platform.module.css";
 
@@ -150,7 +151,7 @@ export default function PlatformPymesPage() {
               <tr key={pyme.id}>
                 <td>{pyme.name}</td>
                 <td>{pyme.owner_id.slice(0, 8)}</td>
-                <td><span className={statusClass(pyme.status)}>{pyme.status}</span></td>
+                <td><span className={statusClass(pyme.status)}>{getPymeStatusLabel(pyme.status)}</span></td>
                 <td>{pyme.user_count}</td>
                 <td>{formatDate(pyme.created_at)}</td>
                 <td>
@@ -183,7 +184,7 @@ export default function PlatformPymesPage() {
               <ul className={platformStyles.detailList}>
                 <li><strong>ID</strong><span>{detailTarget.id}</span></li>
                 <li><strong>Owner ID</strong><span>{detailTarget.owner_id}</span></li>
-                <li><strong>Estado</strong><span><span className={statusClass(detailTarget.status)}>{detailTarget.status}</span></span></li>
+                <li><strong>Estado</strong><span><span className={statusClass(detailTarget.status)}>{getPymeStatusLabel(detailTarget.status)}</span></span></li>
                 <li><strong>Registrada</strong><span>{formatDate(detailTarget.created_at)}</span></li>
                 <li><strong>Suspensión</strong><span>{detailTarget.status === "suspended" ? `${formatDate(detailTarget.suspended_at)} · ${detailTarget.suspended_reason ?? "Sin motivo"}` : "No aplica"}</span></li>
               </ul>

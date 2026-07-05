@@ -37,7 +37,7 @@ export function HomeFooter() {
               <Image src="/brand/sl_icon.png" alt={LEGAL.brandName} width={40} height={40} priority />
               <span className={styles.logoText}>{LEGAL.brandName}</span>
             </div>
-            <div className={styles.tagline}>La plataforma logística para PYMEs de eCommerce.</div>
+            <div>La plataforma logística para PYMEs de eCommerce.</div>
             <div>Gestiona inventario, pedidos y envíos desde un solo lugar.</div>
             <a className={styles.contactEmail} href={`mailto:${LEGAL.contactEmail}`}>
               {LEGAL.contactEmail}

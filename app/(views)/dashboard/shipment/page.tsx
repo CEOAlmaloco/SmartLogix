@@ -6,6 +6,7 @@ import { Modal } from "@/components/ui/Modal";
 import { StatusMessage } from "@/components/ui/StatusMessage";
 import { TextField } from "@/components/ui/TextField";
 import { DashboardPanel } from "@/components/dashboard/DashboardPanel";
+import { getShipmentStatusLabel } from "@/lib/status-labels";
 import styles from "../dashboard.module.css";
 
 type ShipmentStatus = "pending" | "in_transit" | "delivered" | "cancelled";
@@ -364,7 +365,7 @@ export default function ShipmentDashboardPage() {
                 <td>{shipment.estimated_delivery ?? "-"}</td>
                 <td>
                   <span className={statusClass(shipment.status, styles)}>
-                    {shipment.status ?? "pending"}
+                    {getShipmentStatusLabel(shipment.status)}
                   </span>
                 </td>
                 <td>
@@ -382,7 +383,7 @@ export default function ShipmentDashboardPage() {
                         {SHIPMENT_TRANSITIONS[(shipment.status ?? "pending") as ShipmentStatus].map(
                           (status) => (
                             <option key={status} value={status}>
-                              {status}
+                              {getShipmentStatusLabel(status)}
                             </option>
                           )
                         )}

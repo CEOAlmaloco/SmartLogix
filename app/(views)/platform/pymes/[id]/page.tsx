@@ -7,6 +7,7 @@ import { DashboardPanel } from "@/components/dashboard/DashboardPanel";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { StatusMessage } from "@/components/ui/StatusMessage";
+import { getPymeStatusLabel } from "@/lib/status-labels";
 import styles from "../../../dashboard/dashboard.module.css";
 import platformStyles from "../../platform.module.css";
 
@@ -154,7 +155,7 @@ export default function PlatformPymeDetailPage() {
             <ul className={platformStyles.detailList}>
               <li><strong>ID</strong><span>{detail.id}</span></li>
               <li><strong>Owner ID</strong><span>{detail.owner_id}</span></li>
-              <li><strong>Estado</strong><span><span className={statusClass(detail.status)}>{detail.status}</span></span></li>
+              <li><strong>Estado</strong><span><span className={statusClass(detail.status)}>{getPymeStatusLabel(detail.status)}</span></span></li>
               <li><strong>Registrada</strong><span>{formatDate(detail.created_at)}</span></li>
               <li><strong>Usuarios</strong><span>{users.length}</span></li>
               <li><strong>Suspensión</strong><span>{detail.status === "suspended" ? `${formatDate(detail.suspended_at)} · ${detail.suspended_reason ?? "Sin motivo"}` : "No aplica"}</span></li>
